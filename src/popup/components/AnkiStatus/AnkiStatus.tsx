@@ -4,6 +4,7 @@ import ResetSvg from "@/public/Reset-Vector.svg";
 import commonStyle from "@/popup/common.module.css";
 import ankiStatusStyle from "@/popup/components/AnkiStatus/ankiStatus.module.css";
 import ToolTipWrapper from "../TooltipWrapper/ToolTipWrapper";
+import fetchAnki from "@/popup/utils/fetchAnki";
 
 const AnkiStatus = ({}) => { 
     const [isConnected, setIsConnected] = useState(false);
@@ -14,23 +15,17 @@ const AnkiStatus = ({}) => {
 
     const checkConnection = async () => {
         setLoader();
-        await fetch('http://127.0.0.1:8765', {
-        method: 'POST',
-        body: JSON.stringify({ action: 'deckNames', version: 5 }),
-    })
-      .then(async (res) => {
-        if (timeoutId) clearTimeout(timeoutId);
-        timeoutId = setTimeout(()=>unsetLoader(),1000);
-        const data = await res.json();
-        setIsConnected(data.error === null);      
-      })
-      .catch((err) => {
-        console.log(err);
-        timeoutId = setTimeout(()=>unsetLoader(),1000);
-        unsetLoader();
-        setIsConnected(false);
-      });
-  };
+        await fetchAnki({action:'deckNames'}).then((data)=>{
+            if (timeoutId) clearTimeout(timeoutId);
+            timeoutId = setTimeout(()=>unsetLoader(),1000);
+            setIsConnected(data?.error === null);
+        }).catch((err)=>{
+            console.log(err);
+            timeoutId = setTimeout(()=>unsetLoader(),1000);
+            unsetLoader();
+            setIsConnected(false);
+        });
+    };
   useEffect(()=>{checkConnection()},[]);
   return (
     <ToolTipWrapper 
