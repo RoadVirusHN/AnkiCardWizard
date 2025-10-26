@@ -1,0 +1,16 @@
+body {
+  font-family: sans-serif;
+  margin: 10px;
+  background: #fafafa;
+}
+
+.popup {
+  text-align: center;
+  width: 200px;
+}
+
+.no-select {
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
+}

@@ -1,6 +1,6 @@
 import { createRoot } from 'react-dom/client';
-import commonStyle from '@/popup/css/common.module.css';
-import AnkiStatus from '@/popup/AnkiStatus';
+import commonStyle from '@/popup/common.module.css';
+import AnkiStatus from '@/popup/components/AnkiStatus/AnkiStatus';
 
 const Popup: React.FC = () => {
  

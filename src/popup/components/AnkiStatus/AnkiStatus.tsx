@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import AnkiPng from "@/public/Anki-Png.png";
 import ResetSvg from "@/public/Reset-Vector.svg";
-import commonStyle from "@/popup/css/common.module.css";
-import ankiStatusStyle from "@/popup/css/ankiStatus.module.css";
+import commonStyle from "@/popup/common.module.css";
+import ankiStatusStyle from "@/popup/components/AnkiStatus/ankiStatus.module.css";
+import ToolTipWrapper from "../TooltipWrapper/ToolTipWrapper";
 
 const AnkiStatus = ({}) => { 
     const [isConnected, setIsConnected] = useState(false);
@@ -32,11 +33,14 @@ const AnkiStatus = ({}) => {
   };
   useEffect(()=>{checkConnection()},[]);
   return (
-  <div className={`${commonStyle["no-select"]} ${commonStyle.tooltip}`} style={{display: 'flex', justifyContent: "space-around", width: '64px', margin: 'auto'}}>
-    <span className={`${commonStyle.tooltiptext}`}>Anki {isConnected ? 'connected' : 'disconnected'}</span>
-    <img className={(isLoading ? `${ankiStatusStyle.spinning}`:'')} src={AnkiPng} width={20} height={20}/>
-    <span style={{color:isConnected ? 'greenyellow' : 'red'}}>●</span>
-    <ResetSvg className={`${ankiStatusStyle["reset-btn"]} ${ankiStatusStyle.btn}`} onClick={()=>checkConnection()} width={20} height={20}/>
-  </div>);
+    <ToolTipWrapper 
+      text={`Anki ${isConnected ? 'connected' : 'disconnected'}`} 
+      classes={[commonStyle['no-select']]}
+      styles={{display:'flex', justifyContent: 'space-around', gap:'5px', width: '64px', margin: 'auto'}}>
+      <img className={(isLoading ? `${ankiStatusStyle.spinning}`:'')} src={AnkiPng} width={20} height={20}/>
+      <span style={{color:isConnected ? 'greenyellow' : 'red'}}>●</span>
+      <ResetSvg className={`${ankiStatusStyle["reset-btn"]} ${ankiStatusStyle.btn}`} onClick={()=>checkConnection()} width={20} height={20}/>
+    </ToolTipWrapper>
+);
 };
 export default AnkiStatus;
