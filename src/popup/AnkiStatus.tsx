@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import AnkiPng from "@/public/Anki-Png.png";
 import ResetSvg from "@/public/Reset-Vector.svg";
 
-const AnkiConnection = ({}) => { 
+const AnkiStatus = ({}) => { 
     const [isConnected, setIsConnected] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     let setLoader = ()=>setIsLoading(true);
@@ -37,4 +37,4 @@ const AnkiConnection = ({}) => {
     <ResetSvg className="reset-btn btn" onClick={()=>checkConnection()} width={20} height={20}/>
   </div>);
 };
-export default AnkiConnection;
+export default AnkiStatus;

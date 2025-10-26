@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import './popup.css';
-import AnkiConnection from './AnkiConnection';
+import AnkiStatus from './AnkiStatus';
 
 const Popup: React.FC = () => {
  
   return (
     <div className="popup">
       <h3>Popup Test</h3>
-      <AnkiConnection/>
+      <AnkiStatus/>
     </div>
   );
 };
