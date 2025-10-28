@@ -20,8 +20,7 @@ async function fetchAnki(request: fetAnkiRequestBody): Promise<fetchAnkiReturnTy
       return data;
     })
     .catch((err) => {
-      console.log(err);
-      return err;
+      throw err;
     });
   return { data: null, error: null };
 }

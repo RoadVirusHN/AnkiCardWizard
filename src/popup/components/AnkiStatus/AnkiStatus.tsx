@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useTransition } from "react";
 import AnkiPng from "@/public/Anki-Png.png";
 import ResetSvg from "@/public/Reset-Vector.svg";
 import commonStyle from "@/popup/common.module.css";
@@ -8,23 +8,20 @@ import fetchAnki from "@/popup/utils/fetchAnki";
 
 const AnkiStatus = ({}) => { 
     const [isConnected, setIsConnected] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
-    let setLoader = ()=>setIsLoading(true);
-    let unsetLoader = ()=>setIsLoading(false); 
-    let timeoutId:NodeJS.Timeout;
-
-    const checkConnection = async () => {
-        setLoader();
+    const [isPending, startTransition] = useTransition();
+    //TODO : delay && prevent checkConnection to preventing user spamming the anki connection check before the previous one is finished.
+    const checkConnection = async () => { //TODO : check out the "useCallback" hook to optimize this function
+      if (isPending) return;
+      setIsConnected(false);
+      startTransition(async ()=>{
         await fetchAnki({action:'deckNames'}).then((data)=>{
-            if (timeoutId) clearTimeout(timeoutId);
-            timeoutId = setTimeout(()=>unsetLoader(),1000);
-            setIsConnected(data?.error === null);
+          console.log(data);
+          setIsConnected(data?.error === null);
         }).catch((err)=>{
-            console.log(err);
-            timeoutId = setTimeout(()=>unsetLoader(),1000);
-            unsetLoader();
-            setIsConnected(false);
+          console.log(err);
+          setIsConnected(false);
         });
+      });
     };
   useEffect(()=>{checkConnection()},[]);
   return (
@@ -32,9 +29,9 @@ const AnkiStatus = ({}) => {
       text={`Anki ${isConnected ? 'connected' : 'disconnected'}`} 
       classes={[commonStyle['no-select']]}
       styles={{display:'flex', justifyContent: 'space-around', gap:'5px', width: '64px', margin: 'auto'}}>
-      <img className={(isLoading ? `${ankiStatusStyle.spinning}`:'')} src={AnkiPng} width={20} height={20}/>
-      <span style={{color:isConnected ? 'greenyellow' : 'red'}}>●</span>
-      <ResetSvg className={`${ankiStatusStyle["reset-btn"]} ${ankiStatusStyle.btn}`} onClick={()=>checkConnection()} width={20} height={20}/>
+        <img className={(isPending ? `${ankiStatusStyle.spinning}`:'')} src={AnkiPng} width={20} height={20}/>
+        <span style={{color:isPending ? 'gray' : (isConnected ? 'greenyellow' : 'red')}}>●</span>
+        <ResetSvg className={`${ankiStatusStyle["reset-btn"]} ${ankiStatusStyle.btn}`} onClick={()=>checkConnection()} width={20} height={20}/>
     </ToolTipWrapper>
 );
 };
