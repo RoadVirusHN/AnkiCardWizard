@@ -2,8 +2,8 @@ import { useEffect, useState, useTransition } from "react";
 import AnkiPng from "@/public/Anki-Png.png";
 import ResetSvg from "@/public/Reset-Vector.svg";
 import commonStyle from "@/front/common.module.css";
-import ankiStatusStyle from "@/front/components/AnkiStatus/ankiStatus.module.css";
-import ToolTipWrapper from "../TooltipWrapper/ToolTipWrapper";
+import ankiStatusStyle from "./ankiStatus.module.css";
+import ToolTipWrapper from "@/front/components/TooltipWrapper/ToolTipWrapper";
 import fetchAnki from "@/front/utils/fetchAnki";
 
 const AnkiStatus = ({}) => { 
@@ -29,7 +29,7 @@ const AnkiStatus = ({}) => {
     <ToolTipWrapper 
       text={`Anki ${isConnected ? 'connected' : 'disconnected'}`} 
       classes={[commonStyle['no-select']]}
-      styles={{display:'flex', justifyContent: 'space-around', gap:'5px', width: '64px', margin: 'auto'}}>
+      styles={{display:'flex', justifyContent: 'space-around', gap:'3px', width: '60px', margin: 'auto'}}>
         <img className={(isPending ? `${ankiStatusStyle.spinning}`:'')} src={AnkiPng} width={20} height={20}/>
         <span style={{color:isPending ? 'gray' : (isConnected ? 'greenyellow' : 'red')}}>●</span>
         <ResetSvg className={`${ankiStatusStyle["reset-btn"]} ${ankiStatusStyle.btn}`} onClick={()=>checkConnection()} width={20} height={20}/>
