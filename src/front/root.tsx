@@ -1,14 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import {createBrowserRouter, RouterProvider} from "react-router";
 import Popup from "@/front/components/pages/Popup/Popup";
-
-const router = createBrowserRouter([
-  {
-    path: "/index.html",
-    element: <Popup/>
-  }
-]);
+import { RouterProvider } from "react-router";
+import router from "./router/AnkiRouter";
 
 const container = document.getElementById('root');
 if (container) ReactDOM.createRoot(container).render(

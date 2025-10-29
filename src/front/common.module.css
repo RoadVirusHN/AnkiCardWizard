@@ -22,6 +22,11 @@ body {
   display: flex;
   flex-direction: row;
 }
+.main-content {
+  flex: 1;
+  padding: 16px;
+  box-sizing: border-box;
+}
 
 .no-select {
   -webkit-user-select: none; /* Safari */
