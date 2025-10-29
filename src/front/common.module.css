@@ -1,0 +1,30 @@
+:root {
+  --color-primary: #2d4053;
+  --color-secondary: #61758a;
+  --color-dark: #e2e6ec;
+  --color-light: #ffffff;
+  --color-danger: #dc5757;
+  --color-warning: #efff74;
+  --color-on: #68d952;
+  --color-off: #61758a;
+  --color-hyperlink: #81b1e1;
+}
+body {
+  font-family: sans-serif;
+  margin: 0px;
+  background: var(--color-light);
+}
+
+.popup {
+  text-align: center;
+  width: 400px;
+  height: 240px;
+  display: flex;
+  flex-direction: row;
+}
+
+.no-select {
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
+}

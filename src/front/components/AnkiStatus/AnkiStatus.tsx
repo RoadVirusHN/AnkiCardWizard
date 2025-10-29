@@ -1,10 +1,10 @@
 import { useEffect, useState, useTransition } from "react";
 import AnkiPng from "@/public/Anki-Png.png";
 import ResetSvg from "@/public/Reset-Vector.svg";
-import commonStyle from "@/popup/common.module.css";
-import ankiStatusStyle from "@/popup/components/AnkiStatus/ankiStatus.module.css";
+import commonStyle from "@/front/common.module.css";
+import ankiStatusStyle from "@/front/components/AnkiStatus/ankiStatus.module.css";
 import ToolTipWrapper from "../TooltipWrapper/ToolTipWrapper";
-import fetchAnki from "@/popup/utils/fetchAnki";
+import fetchAnki from "@/front/utils/fetchAnki";
 
 const AnkiStatus = ({}) => { 
     const [isConnected, setIsConnected] = useState(false);

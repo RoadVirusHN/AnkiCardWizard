@@ -2,7 +2,6 @@ interface fetAnkiRequestBody {
   action: string;
   params?: Record<string, unknown>;
 }
-// TODO : change the type of result to a generic type T
 interface fetchAnkiResponseBody<T = unknown> {
   result: T;
   error: string | null;
@@ -15,5 +14,5 @@ const fetchAnki = async <T>(request: fetAnkiRequestBody): Promise<fetchAnkiRespo
     throw err;
   });
   return res.json();
-}
+};
 export default fetchAnki;

@@ -6,7 +6,7 @@ module.exports = {
   entry: {
     background: "./src/scripts/background.ts",
     content: "./src/scripts/content.ts",
-    popup: "./src/popup/popup.tsx",
+    root: "./src/front/root.tsx",
   },
   output: {
     filename: "[name].js",
@@ -66,16 +66,14 @@ module.exports = {
   plugins: [    
     // popup.html에 popup.js 번들 자동 주입
     new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, 'src/popup/popup.html'),
-      filename: 'popup.html',
-      chunks: ['popup'],
+      template: path.resolve(__dirname, 'src/front/index.html'),
+      filename: 'index.html',
+      chunks: ['root'],
     }),
     new CopyPlugin({
       patterns: [
         { from: path.resolve(__dirname, 'src/manifest.json'), to: 'manifest.json' },
-        { from: path.resolve(__dirname, 'src/icons'), to: 'icons' },
-        // { from: path.resolve(__dirname, 'src/popup/popup.css'), to: 'popup.css'}
-        // { from: path.resolve(__dirname, 'src/popup/popup.html'), to: 'popup.html' }, // 위 html webpack plugin이 알아서 처리
+        { from: path.resolve(__dirname, 'src/icons'), to: 'icons' }
       ]
     })
   ]
