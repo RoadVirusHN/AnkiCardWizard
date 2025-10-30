@@ -1,9 +1,16 @@
 import AddAnkiBtnSvg from '@/public/AddAnkiBtn-Svg.svg';
+import addAnkiCardBtnStyle from '../footer.module.css';
+import { useState } from 'react';
 const ManualCardAddBtn = ({}) => {
-  return (<div style={{position: 'relative'}}>
-    <button style={{ all: 'unset', cursor: 'pointer' }} title="Add Card to Anki Manually" onClick={() => {}}>
-      <AddAnkiBtnSvg width={40} height={40} style={{ position: 'fixed',bottom: '1px', right: '5px', filter: 'drop-shadow(3px 3px 2px #333)' }}/>
-    </button>
-  </div>);
+  const [isClicked, setIsClicked] = useState(false);
+  const clickBtn = () => {
+    setIsClicked(!isClicked);
+  }
+  return (<button 
+    className={`${addAnkiCardBtnStyle.addAnkiCardButton} ${isClicked ? addAnkiCardBtnStyle.clicked : ''}`}
+    title="Add Card to Anki Manually"
+    onClick={() => clickBtn()}>
+      <AddAnkiBtnSvg />
+    </button>); 
 };
 export default ManualCardAddBtn;
