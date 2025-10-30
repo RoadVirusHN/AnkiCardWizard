@@ -13,7 +13,7 @@
 .tab:hover {
   cursor: pointer;
   background-color: var(--color-light);
-  border-radius: 15px 15px 15px 15px;
+  border-radius: 20px 20px 20px 20px;
 }
 .tab.selected{  
   background-color: var(--color-light);

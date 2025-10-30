@@ -1,6 +1,7 @@
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
-enum Tab {
+export enum Tab {
   CARD = 'CARD',
   HISTORY = 'HISTORY',
   CUSTOM = 'CUSTOM',
@@ -9,14 +10,32 @@ enum Tab {
 
 interface GlobalVarState {
   currentTab: Tab;
-  currentDeck: string | null;
+  currentDeck: string;
   isAddingCard: boolean;
+  setCurrentTab: (tab: Tab) => void;
+  setCurrentDeck: (deck: string) => void;
+  setIsAddingCard: (isAdding: boolean) => void;
 }
 
-const useGlobalVarStore = create<GlobalVarState>(() => ({
-  currentTab: Tab.CARD,
-  currentDeck: null,
-  isAddingCard: false,
-}));
+const useGlobalVarStore = create<GlobalVarState>()(
+  persist(
+    (set) => ({
+      currentTab: Tab.CARD,
+      currentDeck: '',
+      isAddingCard: false,
+      setCurrentTab: (tab: Tab) => set({ currentTab: tab }),
+      setCurrentDeck: (deck: string) => set({ currentDeck: deck }),
+      setIsAddingCard: (isAdding: boolean) => set({ isAddingCard: isAdding }),
+    }),
+    {
+      name: 'anki-card-wizard-global-var-store',
+      storage: {
+        getItem: async (name) => (await chrome.storage.local.get(name))[name],
+        setItem: async (name, value) => await chrome.storage.local.set({ [name]: value }),
+        removeItem: async (name) => await chrome.storage.local.remove(name),
+      },
+    }
+  )
+);
 
 export default useGlobalVarStore;
