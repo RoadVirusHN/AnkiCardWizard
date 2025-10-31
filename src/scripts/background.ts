@@ -24,11 +24,11 @@ chrome.action.onClicked.addListener(async (tab) => {
     }
 
     // 기본 경로
-    let route = '/index.html'; // index -> CardPage
-    if (initialTab === 'HISTORY') route = '/history';
-    else if (initialTab === 'CUSTOM') route = '/custom';
-    else if (initialTab === 'CONFIG') route = '/config';
-    const url = chrome.runtime.getURL(route);
+    let route = 'card'; // index -> CardPage
+    if (initialTab === 'HISTORY') route = 'history';
+    else if (initialTab === 'CUSTOM') route = 'custom';
+    else if (initialTab === 'CONFIG') route = 'config';
+    const url = chrome.runtime.getURL(`index.html#/${route}`);
     chrome.windows.create({ url, type: 'popup', width: 480, height: 320 });
   } catch (err) {
     console.error('Failed to open window with saved route, opening default', err);
