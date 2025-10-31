@@ -37,7 +37,7 @@ const useAnkiConnectionStore = create<AnkiConnectionState>((set, get) => ({
     set({ isPending: true });
     const res = await callAnki<string[]>({ action: 'deckNames' }).catch((err) => {
       set({ isPending: false, isConnected: false, decks: [] });
-      throw err;
+      return { result: null, error: err.message };
     });
     set({ isPending: false, isConnected: !res.error, decks: res.result || [] });
   },
@@ -46,8 +46,8 @@ const useAnkiConnectionStore = create<AnkiConnectionState>((set, get) => ({
     if (get().isPending) return Promise.reject('Another request is pending');
     set({ isPending: true });
     const res = await callAnki<T>(request).catch((err) => {
-      set({ isPending: false });
-      throw err;
+      set({ isPending: false, isConnected: err.message !== 'Failed to fetch' });
+      return { result: null, error: err.message } as AnkiResponseBody<T>;
     });
     set({ isPending: false });
     return res;
