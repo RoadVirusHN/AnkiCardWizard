@@ -1,0 +1,86 @@
+.wrapper {
+  width: 465px;
+  height: 280px;
+  background-color: var(--color-light);
+  color: var(--color-primary);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 3px;
+  box-sizing: border-box;
+}
+
+.header {
+  text-align: center;
+  font-weight: bold;
+  font-size: 13px;
+  margin-bottom: 4px;
+  color: var(--color-primary);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.basicInfo {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 4px;
+}
+
+.basicInfo input {
+  flex: 1;
+  background-color: var(--color-dark);
+  color: var(--color-secondary);
+  border: none;
+  border-radius: 4px;
+  padding: 3px 4px;
+  font-size: 12px;
+}
+
+.cardArea {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  overflow-y: auto;
+}
+
+.cardSide {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cardSide textarea {
+  flex: 1;
+  background-color: var(--color-dark);
+  color: var(--color-secondary);
+  border: none;
+  border-radius: 4px;
+  resize: none;
+  padding: 4px;
+  font-size: 12px;
+  min-height: 80px;
+  word-wrap: break-word;
+}
+
+.submitBtn {
+  background-color: var(--color-warning);
+  color: var(--color-primary);
+  border: none;
+  border-radius: 5px;
+  padding: 5px 0;
+  margin-top: 5px;
+  font-size: 12px;
+  cursor: pointer;
+  filter: drop-shadow(2px 2px 2px var(--color-primary));
+}
+
+.submitBtn:active {
+  filter: none;
+}

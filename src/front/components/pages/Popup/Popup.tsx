@@ -1,5 +1,4 @@
 import commonStyle from '@/front/common.module.css';
-import AnkiStatus from '@/front/components/Footer/AnkiStatus/AnkiStatus';
 import SideBar from '@/front/components/SideBar/SideBar';
 import { Outlet } from 'react-router';
 import Footer from '../../Footer/Footer';

@@ -56,15 +56,22 @@ let popupModalWindowId: number | null = null;
 chrome.runtime.onMessage.addListener(async (message) => {
   console.log(message);
   switch (message.type) {
-    case 'OPEN_ADD_CUSTOM_CARD_MODAL':
+    case 'OPEN_MODIFY_CUSTOM_CARD_MODAL':
       if (popupModalWindowId !== null) {
-        chrome.windows.update(popupModalWindowId, { focused: true });
-      } else {
-        const url = chrome.runtime.getURL('index.html#/add-custom-card');
-        const opened = await chrome.windows.create({ url, type: 'popup', width: 480, height: 320 });
-        popupModalWindowId = opened?.id ?? null;
-        break;
+        chrome.windows.remove(popupModalWindowId);
+      } 
+      const url = chrome.runtime.getURL(
+        'index.html#/modify-custom-card' + (message.index !== undefined ? '/' + message.index : '')
+      );
+      const opened = await chrome.windows.create({ url, type: 'popup', width: 480, height: 320 });
+      popupModalWindowId = opened?.id ?? null;
+      break;
+    case 'CLOSE_MODIFY_CUSTOM_CARD_MODAL':
+      if (popupModalWindowId !== null) {
+        chrome.windows.remove(popupModalWindowId);
+        popupModalWindowId = null;
       }
+      break;
   }
 });
 

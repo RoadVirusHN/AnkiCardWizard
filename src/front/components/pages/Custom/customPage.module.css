@@ -11,7 +11,35 @@
   margin: 5px 0 5px 0;
   border-right: 1px solid var(--color-dark);
   text-wrap-mode: wrap;
+  user-select: none;
 }
-.detail{
+.list div {
+  padding: 10px;
+  border-bottom: 1px solid var(--color-dark);
+}
+.list div.selected{
+  background-color: var(--color-dark);
+  border-radius: 12px;
+}
+.detail h2,h3,h4,p,pre,ul{
+  margin: 0;
+}
+.detail pre{
+  height: 50%;
+  background-color: var(--color-dark);
+  padding: 5px;
+  border-radius: 5px;
+  overflow-x: auto;
+  overflow-y: auto;
+  margin-left: 3px;
+}
+.detail .cardDetail{
+  display: flex !important;
+  flex-direction: row;
+  padding: 5px;
+}
 
+.detail.cardDetail div{
+  flex: 1;
+  margin: 0 5px 0 5px;
 }

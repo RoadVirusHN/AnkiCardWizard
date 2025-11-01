@@ -1,11 +1,34 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-interface CustomCard {
+enum CardFieldDataType {
+  TEXT = 'text',
+  AUDIO = 'audio',
+  IMAGE = 'image',
+}
+enum CardFieldSelectorType {
+  LITERAL = 'literal',
+  CSSSelector = 'cssSelector',
+  URL = 'url',
+}
+export interface CardField {
+  name: string;
+  content: string;
+  selectorType: CardFieldSelectorType;
+  dataType: CardFieldDataType;
+}
+export interface CustomCard {
   cardName: string;
+  description: string;
   modelName: string;
-  Front: string;
-  Back: string;
+  Front: {
+    html: string;
+    fields: CardField[];
+  };
+  Back: {
+    html: string;
+    fields: CardField[];
+  };
   tags: string[];
   audio?: {
     url: string;
@@ -18,6 +41,7 @@ interface CustomCardState {
   customCards: CustomCard[];
   addCustomCard: (card: CustomCard) => void;
   removeCustomCard: (index: number) => void;
+  modifyCustomCard: (index: number, card: CustomCard) => void;
 }
 
 const useCustomCard = create<CustomCardState>()(
@@ -32,6 +56,11 @@ const useCustomCard = create<CustomCardState>()(
           customCards: state.customCards.filter((_, i) => i !== index),
         }));
       },
+      modifyCustomCard: (index: number, card: CustomCard) => {
+        set((state) => ({
+          customCards: state.customCards.map((c, i) => (i === index ? card : c)),
+        }));
+      }
     }),
     {
       name: 'anki-card-wizard-global-var-store',

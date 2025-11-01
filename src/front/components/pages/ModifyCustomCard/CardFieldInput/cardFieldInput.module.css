@@ -1,0 +1,66 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 11px;
+  color: var(--color-primary);
+}
+
+.fieldRow {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background-color: var(--color-dark);
+  border-radius: 4px;
+  padding: 3px;
+}
+
+.input {
+  flex: 1;
+  min-width: 0;
+  font-size: 11px;
+  background-color: var(--color-dark);
+  color: var(--color-secondary);
+  border: none;
+  border-radius: 3px;
+  padding: 2px 4px;
+  word-wrap: break-word;
+}
+.input[name="name"]{
+  width: 20%;
+}
+.input[name="content"]{
+  width: 30%;
+}
+
+.select {
+  font-size: 11px;
+  background-color: var(--color-dark);
+  color: var(--color-secondary);
+  border: none;
+  border-radius: 3px;
+  padding: 2px;
+}
+
+.addBtn {
+  background: none;
+  border: none;
+  color: var(--color-primary);
+  cursor: pointer;
+  font-size: 11px;
+  text-align: left;
+}
+
+.addBtn:hover {
+  color: var(--color-hyperlink);
+}
+
+.removeBtn {
+  background: none;
+  border: none;
+  color: var(--color-danger );
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 12px;
+  padding: 0 2px;
+}
