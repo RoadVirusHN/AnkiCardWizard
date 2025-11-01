@@ -4,6 +4,7 @@ import HistoryPage from "../components/pages/History/HistoryPage";
 import ConfigPage from "../components/pages/Config/ConfigPage";
 import CustomPage from "../components/pages/Custom/CustomPage";
 import Popup from "../components/pages/Popup/Popup";
+import AddCustomCard from "../components/pages/AddCustomCard/AddCustomCard";
 
 const router = createHashRouter([
   {
@@ -29,6 +30,10 @@ const router = createHashRouter([
       {
         path: "config",
         element: <ConfigPage/>
+      },
+      {
+        path: "add-custom-card",
+        element: <AddCustomCard/>
       }
     ]
   }

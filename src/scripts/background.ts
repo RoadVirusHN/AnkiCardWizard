@@ -3,11 +3,9 @@ const STORAGE_KEY = 'anki-card-wizard-global-var-store';
 chrome.runtime.onInstalled.addListener(() => {
   console.log('Extension installed!');
 });
-let popupWindowId : number | null = null;
+let popupWindowId: number | null = null;
 
-chrome.action.onClicked.addListener(async (tab) => {
-  console.log(tab);
-  console.log(popupWindowId); 
+chrome.action.onClicked.addListener(async () => {
   if (popupWindowId !== null) {
     try {
       const existingWindow = await chrome.windows.get(popupWindowId);
@@ -54,9 +52,28 @@ chrome.action.onClicked.addListener(async (tab) => {
     chrome.windows.create({ url, type: 'popup', width: 480, height: 320 });
   }
 });
+let popupModalWindowId: number | null = null;
+chrome.runtime.onMessage.addListener(async (message) => {
+  console.log(message);
+  switch (message.type) {
+    case 'OPEN_ADD_CUSTOM_CARD_MODAL':
+      if (popupModalWindowId !== null) {
+        chrome.windows.update(popupModalWindowId, { focused: true });
+      } else {
+        const url = chrome.runtime.getURL('index.html#/add-custom-card');
+        const opened = await chrome.windows.create({ url, type: 'popup', width: 480, height: 320 });
+        popupModalWindowId = opened?.id ?? null;
+        break;
+      }
+  }
+});
 
 chrome.windows.onRemoved.addListener((windowId) => {
   if (windowId === popupWindowId) {
     popupWindowId = null;
+    if (popupModalWindowId !== null) {
+      chrome.windows.remove(popupModalWindowId);
+      popupModalWindowId = null;
+    }
   }
 });
