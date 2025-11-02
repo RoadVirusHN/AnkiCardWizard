@@ -1,11 +1,13 @@
 console.log('✅ Background script loaded');
-const STORAGE_KEY = 'anki-card-wizard-global-var-store';
+//const STORAGE_KEY = 'anki-card-wizard-global-var-store';
 chrome.runtime.onInstalled.addListener(() => {
   console.log('Extension installed!');
 });
-let popupWindowId: number | null = null;
 
+//let popupWindowId: number | null = null;
 chrome.action.onClicked.addListener(async () => {
+  
+  /*
   if (popupWindowId !== null) {
     try {
       const existingWindow = await chrome.windows.get(popupWindowId);
@@ -51,7 +53,9 @@ chrome.action.onClicked.addListener(async () => {
     const url = chrome.runtime.getURL('index.html');
     chrome.windows.create({ url, type: 'popup', width: 480, height: 320 });
   }
+  */
 });
+
 let popupModalWindowId: number | null = null;
 chrome.runtime.onMessage.addListener(async (message) => {
   console.log(message);
@@ -72,15 +76,25 @@ chrome.runtime.onMessage.addListener(async (message) => {
         popupModalWindowId = null;
       }
       break;
+    case 'REQUEST_CUSTOM_CARDS_FROM_BACKGROUND':
+      {
+        const response = await chrome.storage.local.get('anki-card-wizard-custom-cards');
+        const customCards = response['anki-card-wizard-custom-cards'] || [];
+        chrome.runtime.sendMessage({
+          type: 'RESPONSE_CUSTOM_CARDS_FROM_BACKGROUND',
+          customCards,
+        });
+      }
+      break;
   }
 });
 
-chrome.windows.onRemoved.addListener((windowId) => {
-  if (windowId === popupWindowId) {
-    popupWindowId = null;
-    if (popupModalWindowId !== null) {
-      chrome.windows.remove(popupModalWindowId);
-      popupModalWindowId = null;
-    }
-  }
-});
+// chrome.windows.onRemoved.addListener((windowId) => {
+//   if (windowId === popupWindowId) {
+//     popupWindowId = null;
+//     if (popupModalWindowId !== null) {
+//       chrome.windows.remove(popupModalWindowId);
+//       popupModalWindowId = null;
+//     }
+//   }
+// });

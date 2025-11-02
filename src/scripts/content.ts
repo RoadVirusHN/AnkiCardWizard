@@ -5,17 +5,18 @@ import { CardFieldDataType, CardFieldSelectorType, CustomCard } from '@/front/ut
 console.log('✅ Content script loaded');
 let customCards: CustomCard[] = [];
 window.onload = () => {
-  console.log('Content script window.onload fired');
+  chrome.runtime.sendMessage({ type: 'REQUEST_CUSTOM_CARDS_FROM_BACKGROUND' });
+  console.log('Content script window.onload fired', customCards);
   const res = getExtractedFromPage(customCards);
   console.log('Extracted data on window.onload:', res);
   chrome.runtime.sendMessage({
     type: 'SEND_DETECTED_CARDS',
-    extracteds: res,
+    data: res,
     URL: window.location.href,
   });
 };
 
-console.log('Current url is ', window.location.href);
+//TODO : refactoring it!
 const getExtractedFromPage = (customCards: CustomCard[]): IdxedExtracted[] => {
   const res = customCards
     .filter((card) => {
@@ -113,6 +114,7 @@ const getExtractedFromPage = (customCards: CustomCard[]): IdxedExtracted[] => {
   return res;
 };
 chrome.runtime.onMessage.addListener((message) => {
+  console.log("Message received from content.js :", message)
   if (message.type === 'REQUEST_DETECTED_CARDS') {
     console.log('Received EXTRACT_DATA_REQUEST message');
     // 여기서 데이터 추출 로직을 수행
@@ -124,6 +126,9 @@ chrome.runtime.onMessage.addListener((message) => {
       data: extractedData,
       url: window.location.href,
     });
-    console.log('Sent EXTRACTED_DATA_RESPONSE message', extractedData);
+    console.log('SEND_EXTRACTED_DATA message', extractedData);
+  } else if (message.type === 'RESPONSE_CUSTOM_CARDS_FROM_BACKGROUND') {
+    customCards = message.customCards;
+    console.log('Custom cards received from background:', customCards);
   }
 });

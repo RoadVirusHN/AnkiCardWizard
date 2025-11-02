@@ -1,33 +1,116 @@
-.detectedCardContainer{
-    display: flex;
-    flex-direction: row;
-    align-items: left;
-    justify-content: space-around;
-    height: 50px;
-    width: 100%;
+.pageContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px;
+  background-color: var(--color-light);
+  min-height: 50vh;
+  color: var(--color-primary);
+  box-sizing: border-box;
+  overflow-y: auto;
 }
-.detectedCardContainer .detectedCardContent{
-    font-size: 16px;
-    font-weight: 500;
-    color: var(--color-primary);
-    background-color: var(--color-dark);
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--color-dark);
+  padding: 4px 6px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.25);
 }
-.redetectCard{
-  position: absolute;
-  right: 20px;
-  top: 30px;
-  user-select: none;
+
+.url {
+  flex: 1;
+  font-size: 10px;
+  color: var(--color-secondary);
+  word-break: break-all;
+  padding-right: 6px;
+}
+
+.headerButtons {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.redetectCard {
+  font-size: 12px;
+  background-color: var(--color-dark);
+  color: var(--color-primary);
+  padding: 4px 8px;
+  border-radius: 6px;
   cursor: pointer;
+  user-select: none;
+  transition: background-color 0.2s;
+}
+.redetectCard:hover {
+  background-color: var(--color-primary);
+  color: var(--color-light);
+}
+
+/* 카드 리스트 */
+.cardsWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 40px;
+}
+
+.noCard {
+  text-align: center;
+  color: var(--color-secondary);
   font-size: 14px;
+  margin-top: 20px;
+}
+
+/* 각 카드 */
+.detectedCardContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--color-dark);
+  padding: 2px 4px;
+  border-radius: 12px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+.detectedCardContent {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 15px;
   color: var(--color-primary);
 }
 
-.url{
-  position: absolute;
-  right: 20px;
-  top: 10px;
-  user-select: none;
-  cursor: pointer;
+.detectedCardContent div {
+  font-weight: 600;
+}
+
+.detectedCardContent p,
+.detectedCardContent span {
+  margin: 0;
   font-size: 14px;
+  color: var(--color-secondary);
+}
+
+.detectedCardContent .detectedCardFields {
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+}
+/* ⨁ 추가 버튼 */
+.addCardButton {
+  font-size: 20px;
+  font-weight: bold;
   color: var(--color-primary);
+  cursor: pointer;
+  user-select: none;
+  padding: 6px;
+  border-radius: 6px;
+  transition: background-color 0.2s;
+}
+.addCardButton:hover {
+  background-color: var(--color-primary);
+  color: var(--color-light);
 }

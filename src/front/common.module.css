@@ -22,7 +22,7 @@ body {
 }
 .popup {
   text-align: center;
-  width: 100%;
+  width: 480px;
   height: 278px;
   display: flex;
   flex-direction: row;

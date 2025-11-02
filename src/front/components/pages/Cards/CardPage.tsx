@@ -23,29 +23,57 @@ const CardPage: React.FC = () => {
   const {customCards} = useCustomCard();
   const [extracteds, setExtracteds] = useState<IdxedExtracted[]>([]);
   const [url, setUrl] = useState<string>(''); 
-  const requestExtracteds = () =>{
-    chrome.runtime.sendMessage({type: 'SEARCH_DETECTED_CARDS', customCards});
-  }
+  const requestExtracteds = async () => {
+    console.log('Requesting detected cards from content script');
+    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+    if (!tab.id) {
+      console.warn('No active tab found');
+      return;
+    }
+    chrome.tabs.sendMessage(tab.id, {
+      type: 'REQUEST_DETECTED_CARDS',
+      customCards,
+    });
+  };
+  
   useEffect(()=>{
     chrome.runtime.onMessage.addListener((message)=>{
-      if (message.type === 'URL_CHANGED') {
-        chrome.runtime.sendMessage({type: 'SEARCH_DETECTED_CARDS', customCards});
-      } else if (message.type === 'CARDS_DETECTED_UPDATE_REQUEST') {
-        setExtracteds(message.extracteds);
+      if (message.type === 'SEND_DETECTED_CARDS'){
+        console.log("Received detected cards from content script:", message.data);
+        setExtracteds(message.data);
         setUrl(message.URL);
       }
     });
-
+  },[]);
+  useEffect(()=>{
     if (customCards.length > 0) {
-      chrome.runtime.sendMessage({type: 'SEND_DETECTED_CARDS', customCards});
+      requestExtracteds();
     }
   },[customCards])
   return (
-    <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '8px'}}>
-      <span className={cardPageStyles.url}> {url} </span>
-      {extracteds.map(({customCardIndex, extracted}, idx)=><DetectedCard key={idx} customCard={customCards[customCardIndex]} extracted={extracted}/>)}
-      <span className={cardPageStyles.redetectCard} onClick={requestExtracteds}> ↺ </span>
-      <Footer/>
+    <div className={cardPageStyles.pageContainer}>
+      <div className={cardPageStyles.header}>
+        <span className={cardPageStyles.url}>{url}</span>
+        <div className={cardPageStyles.headerButtons}>
+          <span className={cardPageStyles.redetectCard} onClick={requestExtracteds}>↺ 다시 감지</span>
+        </div>
+      </div>
+
+      <div className={cardPageStyles.cardsWrapper}>
+        {extracteds && extracteds.length > 0 ? (
+          extracteds.map(({ customCardIndex, extracted }, idx) => (
+            <DetectedCard 
+              key={idx}
+              customCard={customCards[customCardIndex]}
+              extracted={extracted}
+            />
+          ))
+        ) : (
+          <div className={cardPageStyles.noCard}>감지된 카드가 없습니다.</div>
+        )}
+      </div>
+
+      <Footer />
     </div>
   );
 };

@@ -77,13 +77,16 @@ const DetectedCard = ({customCard, extracted}:{customCard: CustomCard, extracted
     addToAnki();
   }
 
-  return (<div className={cardPageStyles.detectedCardContainer}>  
-    <div className={cardPageStyles.detectedCardContent}>
-      card : <h3>{customCard.cardName}</h3>
-      front : <p>{extracted.Front['front']}</p>      
-      back : <p>{extracted.Back['back']}</p>      
-    </div>
-    <div onClick={AddCard} style={{cursor: 'pointer', userSelect: "none"}}>⨁</div>
-  </div>);
+  return (  
+    <div className={cardPageStyles.detectedCardContainer}>
+      <div className={cardPageStyles.detectedCardContent}>
+        <div>{customCard.cardName}</div>
+        <div className={cardPageStyles.detectedCardFields}>
+          <span><b>Front:</b>  {extracted.Front['front']}</span>
+          <span><b>Back:</b>  {extracted.Back['back']}</span>
+        </div>
+      </div>
+      <div className={cardPageStyles.addCardButton} onClick={addToAnki}>⨁</div>
+    </div>);
 };
 export default DetectedCard;
