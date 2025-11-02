@@ -1,0 +1,24 @@
+.detectedCardContainer{
+    display: flex;
+    flex-direction: row;
+    align-items: left;
+    justify-content: space-around;
+    height: 50px;
+    width: 100%;
+}
+.detectedCardContainer .detectedCardContent{
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--color-primary);
+    background-color: var(--color-dark);
+}
+.redetectCard{
+  position: absolute;
+  right: 20px;
+  top: 10px;
+  user-select: none;
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--color-primary);
+
+}
