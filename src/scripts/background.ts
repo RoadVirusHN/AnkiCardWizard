@@ -4,6 +4,9 @@ chrome.runtime.onInstalled.addListener(() => {
   console.log('Extension installed!');
 });
 // TODO : change window -> side panel app
+chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: true }).catch((error) => {
+  console.error('Error setting side panel behavior:', error);
+});
 
 let popupModalWindowId: number | null = null;
 chrome.runtime.onMessage.addListener(async (message) => {
