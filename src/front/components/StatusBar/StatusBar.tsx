@@ -4,7 +4,9 @@ import statusBarStyle from "./statusBar.module.css";
 const StatusBar= ({}) => {
   return (
     <footer className={statusBarStyle.footer}>
-      <><DeckInput/><AnkiStatus/></>
+      <><DeckInput/>
+      {/* <AnkiStatus/> */}
+      </>
     </footer>);
 };
 export default StatusBar;

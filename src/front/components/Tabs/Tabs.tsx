@@ -1,12 +1,13 @@
 import { NavLink, useLocation } from "react-router";
 import tabsStyle from "./tabs.module.css";
-import AnkiIcon from "@/public/Icon/Icon-Anki.svg";
 import AddCardIcon from "@/public/Icon/Icon-AddCard.svg";
 import HistoryIcon from "@/public/Icon/Icon-History.svg";
 import CardTypeIcon from "@/public/Icon/Icon-CardType.svg";
 import ConfigIcon from "@/public/Icon/Icon-Config.svg";
 import { useEffect } from "react";
 import useGlobalVarStore, { Tab } from "@/front/utils/useGlobalVarStore";
+import DetectTab from "./DetectTab/DetectTab";
+import commonStyle from "@/front/common.module.css";
 
 const Tabs = ({}) => {
   const location = useLocation();
@@ -28,11 +29,8 @@ const Tabs = ({}) => {
     }
   }, [location]);
   return (
-  <nav className={tabsStyle.tabs}>
-    <NavLink className={`${tabsStyle.tab} ${currentTab==Tab.CARD? tabsStyle.selected : ''}`} to={'/card'}>
-      <AnkiIcon/>
-      <p>Detect</p>
-    </NavLink>
+  <nav className={`${tabsStyle.tabs} ${commonStyle["no-select"]}`}>
+    <DetectTab/>
     <NavLink className={`${tabsStyle.tab} ${currentTab==Tab.HISTORY? tabsStyle.selected : ''}`} to={'/AddCard'}>
       <AddCardIcon/>
       <p>Add</p>
