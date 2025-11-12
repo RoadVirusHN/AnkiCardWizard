@@ -1,5 +1,10 @@
-import { Extracted, IdxedExtracted } from '@/front/pages/Detect/DetectPage';
-import { CardFieldDataType, CardFieldSelectorType, CustomCard } from '@/front/utils/useCustomCard';
+import { Extracted, ExtractedMap } from '@/front/pages/Detect/DetectPage';
+import {
+  CardField,
+  CardFieldDataType,
+  CardFieldSelectorType,
+  CustomCard,
+} from '@/front/utils/useCustomCard';
 
 //TODO : Make Message Types Constant Enum
 console.log('✅ Content script loaded');
@@ -16,106 +21,80 @@ window.onload = () => {
   });
 };
 
-//TODO : refactoring it!
-const getExtractedFromPage = (customCards: CustomCard[]): IdxedExtracted[] => {
-  const res = customCards
-    .filter((card) => {
-      if (card.urlPatterns.length === 0) return false;
-      else if (
-        card.urlPatterns.some((pattern) => {
-          // use wildcard to match urlPattern
-          const regex = new RegExp(
-            '^' +
-              pattern
-                .split('*')
-                .map((s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
-                .join('.*') +
-              '$'
-          );
-          return regex.test(window.location.href);
-        })
-      ) {
-        return true;
-      }
+const checkUrlMatched = (customCard: CustomCard): boolean => {
+  customCard = customCard || ['*'];
+  return (
+    // use wildcard to match urlPattern
+    customCard.urlPatterns.some((pattern) => {
+      pattern = '^' + pattern + '$';
+      const regex = new RegExp(
+        pattern
+          .split('*')
+          .map((s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
+          .join('.*')
+      );
+      return regex.test(window.location.href);
     })
-    .map((card) => {
+  );
+};
+const extractFields = (root: Element, record: Record<string, string>) => (field: CardField) => {
+  try {
+    let element: Element | null = null;
+    if (field.selectorType === CardFieldSelectorType.CSSSelector) {
+      element = root.querySelector(field.content);
+    }
+
+    if (element) {
+      switch (field.dataType) {
+        case CardFieldDataType.TEXT:
+          record[field.name] = element.textContent || '';
+          break;
+        case CardFieldDataType.IMAGE:
+          if (element instanceof HTMLImageElement) {
+            record[field.name] = element.src;
+          } else {
+            record[field.name] = (element as HTMLElement).getAttribute('src') || '';
+          }
+          break;
+        case CardFieldDataType.AUDIO:
+          record[field.name] = (element as HTMLAudioElement).src || '';
+          break;
+        default:
+          record[field.name] = element.textContent || '';
+      }
+    } else {
+      record[field.name] = 'Content does not exist : ' + field.content;
+    }
+  } catch (e) {
+    console.warn(`Failed to extract field ${field.name}`, e);
+  }
+};
+
+//TODO : refactoring it!
+const getExtractedFromPage = (customCards: CustomCard[]): ExtractedMap => {
+  const res: ExtractedMap = {};
+  customCards.filter(checkUrlMatched).forEach((card, idx) => {
+    const extracteds: Extracted[] = [];
+    let roots = Array.from(document.querySelectorAll(card.rootTag));
+    if (roots.length === 0) roots = Array.from(document.querySelectorAll('body'));
+    roots.forEach((root) => {
       const extracted: Extracted = {
         Front: {},
         Back: {},
       };
-      
       // Front 필드 추출
-      card.Front.fields.forEach((field) => {
-        try {
-          let element: Element | null = null;
-          if (field.selectorType === CardFieldSelectorType.CSSSelector) {
-            element = document.querySelector(field.content);
-          }
-
-          if (element) {
-            switch (field.dataType) {
-              case CardFieldDataType.TEXT:
-                extracted.Front[field.name] = element.textContent || '';
-                break;
-              case CardFieldDataType.IMAGE:
-                if (element instanceof HTMLImageElement) {
-                  extracted.Front[field.name] = element.src;
-                } else {
-                  extracted.Front[field.name] = (element as HTMLElement).getAttribute('src') || '';
-                }
-                break;
-              case CardFieldDataType.AUDIO:
-                extracted.Front[field.name] = (element as HTMLAudioElement).src || '';
-                break;
-              default:
-                extracted.Front[field.name] = element.textContent || '';
-            }
-          } else {
-            extracted.Front[field.name] = 'Content does not exist : ' + field.content;
-          }
-        } catch (e) {
-          console.warn(`Failed to extract front field ${field.name}`, e);
-        }
-      });
+      //TODO : strict mode : if there is no field info founded, discard it.
+      card.Front.fields.forEach(extractFields(root, extracted.Front));
       // Back 필드 추출
-      card.Back.fields.forEach((field) => {
-        try {
-          let element: Element | null = null;
-          if (field.selectorType === CardFieldSelectorType.CSSSelector) {
-            element = document.querySelector(field.content);
-          }
-
-          if (element) {
-            switch (field.dataType) {
-              case CardFieldDataType.TEXT:
-                extracted.Back[field.name] = element.textContent || '';
-                break;
-              case CardFieldDataType.IMAGE:
-                if (element instanceof HTMLImageElement) {
-                  extracted.Back[field.name] = element.src;
-                } else {
-                  extracted.Back[field.name] = (element as HTMLElement).getAttribute('src') || '';
-                }
-                break;
-              case CardFieldDataType.AUDIO:
-                extracted.Back[field.name] = (element as HTMLAudioElement).src || '';
-                break;
-              default:
-                extracted.Back[field.name] = element.textContent || '';
-            }
-          } else {
-            extracted.Back[field.name] = 'Content does not exist : ' + field.content;
-          }
-        } catch (e) {
-          console.warn(`Failed to extract back field ${field.name}`, e);
-        }
-      });
-      return { cardName: card.cardName, extracted };
+      card.Back.fields.forEach(extractFields(root, extracted.Back));
+      extracteds.push(extracted);
     });
+    res[idx] = extracteds;
+  });
   return res;
 };
 chrome.runtime.onMessage.addListener((message) => {
-  console.log("Message received from content.js :", message)
+  console.log('Message received from content.js :', message);
   if (message.type === 'REQUEST_DETECTED_CARDS') {
     console.log('Received EXTRACT_DATA_REQUEST message');
     // 여기서 데이터 추출 로직을 수행

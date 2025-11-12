@@ -139,7 +139,7 @@ const ModifyCustomCard = () => {
           <input
             name="rootTag"
             placeholder="root Css Selector (comma separated)"
-            defaultValue={isEditMode && idx !== undefined ? (customCards[idx]?.rootTag || "document") : "document"}
+            defaultValue={isEditMode && idx !== undefined ? (customCards[idx]?.rootTag || "") : ""}
             className={styles.inputSmall}
           />
         </div>

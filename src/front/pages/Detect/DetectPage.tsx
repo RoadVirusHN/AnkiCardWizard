@@ -1,5 +1,5 @@
 import detectPageStyle from '@/front/pages/Detect/detectPage.module.css';
-import { useEffect, useState } from 'react';
+import { JSX, useEffect, useState } from 'react';
 import useCustomCard from '@/front/utils/useCustomCard';
 import DetectedCard from './DetectedCard/DetectedCard';
 import DeckInput from '@/front/components/StatusBar/DeckInput/DeckInput';
@@ -7,13 +7,13 @@ import InfoIcon from '@/public/Icon/Icon-Info.svg';
 
 //TODO : Apply SCSS for css.
 //TODO : MAKE Interfaces&Types FILE
+//TODO : change cards to key value pair
 export interface Extracted{
   Front : Record<string, string>;
   Back : Record<string, string>;
 }
-export interface IdxedExtracted{
-  cardName: string,
-  extracted: Extracted
+export interface ExtractedMap{
+  [idx: number]: Extracted[];
 };
 
 // REQUEST_DETECTED_CARDS : content script 에게 현재 페이지에서 추출된 카드 데이터를 요청
@@ -23,7 +23,7 @@ export interface IdxedExtracted{
 
 const DetectPage: React.FC = () => {
   const {customCards} = useCustomCard();
-  const [extracteds, setExtracteds] = useState<IdxedExtracted[]>([]);
+  const [extractedMaps, setExtractedMaps] = useState<ExtractedMap>({});
   const [url, setUrl] = useState<string>(''); 
   const [isPending, setIsPending] = useState(false);
   let pendingId : NodeJS.Timeout;
@@ -49,7 +49,7 @@ const DetectPage: React.FC = () => {
     chrome.runtime.onMessage.addListener((message)=>{
       if (message.type === 'SEND_DETECTED_CARDS'){
         console.log("Received detected cards from content script:", message.data);
-        setExtracteds(message.data);
+        setExtractedMaps(message.data);
         setUrl(message.URL);
         setIsPending(false);
         clearInterval(pendingId);
@@ -76,15 +76,22 @@ const DetectPage: React.FC = () => {
       </div>
 
       <div className={detectPageStyle.cardsWrapper}>
-        {extracteds && extracteds.length > 0 ? (
-          extracteds.map(({ cardName, extracted }, idx) => (
-            customCards.find(card=>card.cardName===cardName) &&
-            <DetectedCard 
-              key={idx}
-              customCard={customCards.find(card=>card.cardName===cardName)!}
-              extracted={extracted}
-            />
-          ))
+        {extractedMaps && Object.keys(extractedMaps).length > 0 ? (
+          Object.keys(extractedMaps).flatMap((key) => {
+            const numberKey = Number(key);
+            const cardInfos = extractedMaps[numberKey];
+            const cards :JSX.Element[] = [];
+            cardInfos.forEach((extracted, idx)=>{
+              cards.push(
+                <DetectedCard 
+                key={key + "-" + idx}
+                customCard={customCards[numberKey]}
+                extracted={extracted}
+                />
+              );
+            })
+            return cards;
+          })
         ) : (
           <div className={detectPageStyle.noCard}>감지된 카드가 없습니다.</div>
         )}
