@@ -7,6 +7,7 @@ import {
 } from '@/front/utils/useCustomCard';
 
 //TODO : Make Message Types Constant Enum
+//TODO : Delayed search for Delayed Content delivery
 console.log('✅ Content script loaded');
 let customCards: CustomCard[] = [];
 window.onload = () => {
