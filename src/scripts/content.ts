@@ -10,17 +10,12 @@ import {
 //TODO : Delayed search for Delayed Content delivery
 console.log('✅ Content script loaded');
 let customCards: CustomCard[] = [];
-window.onload = () => {
-  chrome.runtime.sendMessage({ type: 'REQUEST_CUSTOM_CARDS_FROM_BACKGROUND' });
+window.onload = async () => {
+  const response = await chrome.storage.local.get('anki-card-wizard-custom-cards');
+  customCards = response['anki-card-wizard-custom-cards'] || [];
+  // chrome.runtime.sendMessage({ type: 'REQUEST_CUSTOM_CARDS_FROM_BACKGROUND' });
   console.log('Content script window.onload fired', customCards);
-  const [res, cnt] = getExtractedFromPage(customCards);
-  console.log('Extracted data on window.onload:', res);
-  chrome.runtime.sendMessage({
-    type: 'SEND_DETECTED_CARDS',
-    cnt,
-    data: res,
-    URL: window.location.href,
-  });
+  sendDetectedCards(customCards);
 };
 
 const checkUrlMatched = (customCard: CustomCard): boolean => {
@@ -96,23 +91,20 @@ const getExtractedFromPage = (customCards: CustomCard[]): [ExtractedMap, number]
   });
   return [res, cnt];
 };
+const sendDetectedCards = (customCards: CustomCard[]) => {
+  const [extractedData, cnt] = getExtractedFromPage(customCards);
+  // 추출된 데이터를 백그라운드 스크립트로 전송
+  chrome.runtime.sendMessage({
+    type: 'SEND_DETECTED_CARDS',
+    cnt,
+    data: extractedData,
+    url: window.location.href,
+  });
+};
 chrome.runtime.onMessage.addListener((message) => {
   console.log('Message received from content.js :', message);
   if (message.type === 'REQUEST_DETECTED_CARDS') {
     console.log('Received EXTRACT_DATA_REQUEST message');
-    // 여기서 데이터 추출 로직을 수행
-    customCards = message.customCards;
-    const [extractedData, cnt] = getExtractedFromPage(customCards);
-    // 추출된 데이터를 백그라운드 스크립트로 전송
-    chrome.runtime.sendMessage({
-      type: 'SEND_DETECTED_CARDS',
-      cnt,
-      data: extractedData,
-      url: window.location.href,
-    });
-    console.log('SEND_EXTRACTED_DATA message', extractedData);
-  } else if (message.type === 'RESPONSE_CUSTOM_CARDS_FROM_BACKGROUND') {
-    customCards = message.customCards;
-    console.log('Custom cards received from background:', customCards);
+    sendDetectedCards(message.customCards);
   }
 });
