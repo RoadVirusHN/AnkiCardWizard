@@ -2,7 +2,6 @@ import useCustomCard from "@/front/utils/useTemplates";
 import commonStyles from "@/front/common.module.css";
 import customPageStyles from "./customPage.module.css";
 import { useState } from "react";
-import CustomCardFooter from "../../CustomCardFooter/CustomCardFooter";
 const CustomPage: React.FC = () => {
   const {templates: customCards, removeTemplate: removeCustomCard} = useCustomCard();
   const [curIdx, setCurIdx] =  useState<number|null>(customCards.length>0?0:null);
@@ -68,7 +67,6 @@ const CustomPage: React.FC = () => {
             </>
           }
         </div>
-      <CustomCardFooter onFlip={onFlip}/>
     </div>
   );
 };
