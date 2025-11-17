@@ -1,8 +1,8 @@
 import commonStyles from "@/front/common.module.css";
-import useCustomCard from "@/front/utils/useTemplates";
+import useTemplates from "@/front/utils/useTemplates";
 import { Form, useParams } from "react-router";
 import { useEffect, useRef } from "react";
-import CardFieldInput, { CardFieldInputRef } from "./CardFieldInput/CardFieldInput";
+import TemplateFieldInput, { TemplateFieldInputRef } from "./TemplateFieldInput/TemplateFieldInput";
 import modifyTemplateStyle from "./modifyTemplate.module.css";
 import type { TemplateField as TemplateField } from "@/front/utils/useTemplates";
 import Editor, { OnMount, loader } from "@monaco-editor/react";
@@ -12,11 +12,11 @@ const ModifyTemplate = () => {
   const { index } = useParams();
   const isEditMode = index !== undefined;
   const idx = isEditMode ? parseInt(index) : undefined;
-  const { customCards, addCustomCard, modifyCustomCard } = useCustomCard();
+  const { templates: customCards, addTemplate: addCustomCard, modifyTemplate: modifyCustomCard } = useTemplates();
 
   const form = useRef<HTMLFormElement>(null);
-  const frontRef = useRef<CardFieldInputRef>(null);
-  const backRef = useRef<CardFieldInputRef>(null);
+  const frontRef = useRef<TemplateFieldInputRef>(null);
+  const backRef = useRef<TemplateFieldInputRef>(null);
   const frontEditorRef = useRef<editor.IStandaloneCodeEditor>(null);
   const backEditorRef = useRef<editor.IStandaloneCodeEditor>(null);
 
@@ -34,7 +34,6 @@ const ModifyTemplate = () => {
           {
             name: "front",
             content: "h1",
-            selectorType: "cssSelector",
             dataType: "text",
             locked: true,
           } as TemplateField & { locked?: boolean },
@@ -46,7 +45,6 @@ const ModifyTemplate = () => {
           {
             name: "back",
             content: "h2",
-            selectorType: "cssSelector",
             dataType: "text",
             locked: true,
           } as TemplateField & { locked?: boolean },
@@ -71,7 +69,7 @@ const ModifyTemplate = () => {
 
   const submitHandler = () => {
     const formData = new FormData(form.current!);
-    const cardName = (formData.get("cardName") as string) || "";
+    const templateName = (formData.get("cardName") as string) || "";
     const description = (formData.get("description") as string) || "";
     const urlPatternsRaw = (formData.get("urlPatterns") as string) || "";
     const tagsRaw = (formData.get("tags") as string) || "";
@@ -93,7 +91,7 @@ const ModifyTemplate = () => {
       .filter(Boolean);
     // TODO : rootTag 기본값 Body 
     const newCard = {
-      cardName,
+      templateName,
       description,
       modelName: "Basic",
       rootTag,
@@ -122,7 +120,7 @@ const ModifyTemplate = () => {
           <input
             name="cardName"
             placeholder="Card Name"
-            defaultValue={isEditMode && idx !== undefined ? customCards[idx]?.cardName : ""}
+            defaultValue={isEditMode && idx !== undefined ? customCards[idx]?.templateName : ""}
             required
             className={modifyTemplateStyle.inputMain}
           />
@@ -167,7 +165,7 @@ const ModifyTemplate = () => {
               onMount={handleFrontEditorMount}
             />
             <div className={modifyTemplateStyle.scrollArea}>
-              <CardFieldInput ref={frontRef} />
+              <TemplateFieldInput ref={frontRef} />
             </div>
           </div>
 
@@ -182,7 +180,7 @@ const ModifyTemplate = () => {
               onMount={handleBackEditorMount}
             />
             <div className={modifyTemplateStyle.scrollArea}>
-              <CardFieldInput ref={backRef} />
+              <TemplateFieldInput ref={backRef} />
             </div>
           </div>
         </div>

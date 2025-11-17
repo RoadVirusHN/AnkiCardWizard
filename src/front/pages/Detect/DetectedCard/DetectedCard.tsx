@@ -1,10 +1,10 @@
 import useAnkiConnectionStore from "@/front/utils/useAnkiConnectionStore";
-import { CardFieldDataType, CustomCard } from "@/front/utils/useTemplates";
+import { TemplateFieldDataType, Template } from "@/front/utils/useTemplates";
 import useGlobalVarStore from "@/front/utils/useGlobalVarStore";
 import detectPageStyle from "@/front/pages/Detect/detectPage.module.css";
 import { Extracted } from "../DetectPage";
 
-const DetectedCard = ({customCard, extracted}:{customCard: CustomCard, extracted: Extracted}) => {
+const DetectedCard = ({customCard, extracted}:{customCard: Template, extracted: Extracted}) => {
   const {fetchAnki} = useAnkiConnectionStore();
   const {currentDeck} = useGlobalVarStore();
   const addToAnki = () => {
@@ -13,11 +13,11 @@ const DetectedCard = ({customCard, extracted}:{customCard: CustomCard, extracted
         const fieldInfo = customCard.Front.fields.find(f=>f.name === fieldName);
         if (fieldInfo) {
           switch (fieldInfo.dataType) {
-            case CardFieldDataType.IMAGE:
+            case TemplateFieldDataType.IMAGE:
               return `<img src="${extracted.Front[fieldName] || ''}" />`;
-            case CardFieldDataType.AUDIO:
+            case TemplateFieldDataType.AUDIO:
               return `[sound:${extracted.Front[fieldName] || ''}]`;
-            case CardFieldDataType.TEXT:
+            case TemplateFieldDataType.TEXT:
               return extracted.Front[fieldName] || '';
             default:
               return extracted.Front[fieldName] || '';
@@ -30,11 +30,11 @@ const DetectedCard = ({customCard, extracted}:{customCard: CustomCard, extracted
         const fieldInfo = customCard.Back.fields.find(f=>f.name === fieldName);
         if (fieldInfo) {
           switch (fieldInfo.dataType) {
-            case CardFieldDataType.IMAGE:
+            case TemplateFieldDataType.IMAGE:
               return `<img src="${extracted.Back[fieldName] || ''}" />`;
-            case CardFieldDataType.AUDIO:
+            case TemplateFieldDataType.AUDIO:
               return `[sound:${extracted.Back[fieldName] || ''}]`;
-            case CardFieldDataType.TEXT:
+            case TemplateFieldDataType.TEXT:
               return extracted.Back[fieldName] || '';
             default:
               return extracted.Back[fieldName] || '';
@@ -77,7 +77,7 @@ const DetectedCard = ({customCard, extracted}:{customCard: CustomCard, extracted
   return (  
     <div className={detectPageStyle.detectedCardContainer}>
       <div className={detectPageStyle.detectedCardContent}>
-        <div>{customCard.cardName}</div>
+        <div>{customCard.templateName}</div>
         <div className={detectPageStyle.detectedCardFields}>
           <span><b>Front:</b>  {extracted.Front['front']}</span>
           <span><b>Back:</b>  {extracted.Back['back']}</span>

@@ -1,23 +1,23 @@
 import { useState, forwardRef, useImperativeHandle } from "react";
-import { CardFieldDataType, TemplateFieldSelectorType, type TemplateField } from "@/front/utils/useTemplates";
-import styles from "./cardFieldInput.module.css";
+import { TemplateFieldDataType, type TemplateField } from "@/front/utils/useTemplates";
+import templateFieldStyle from "./templateFieldInput.module.css";
 
 /**
  * 외부에 노출되는 ref 메서드들
  */
-export interface CardFieldInputRef {
+export interface TemplateFieldInputRef {
   getFields: () => TemplateField[]; // locked 속성 제거된 배열 반환
   clearFields: () => void;
   setDefaultFields: (fields: (TemplateField & { locked?: boolean })[], lock?: boolean) => void;
 }
 
-interface CardFieldInputProps {
+interface TemplateFieldInputProps {
   defaultValue?: (TemplateField & { locked?: boolean })[];
 }
 
 type InternalField = TemplateField & { locked?: boolean };
 
-const CardFieldInput = forwardRef<CardFieldInputRef, CardFieldInputProps>(
+const TemplateFieldInput = forwardRef<TemplateFieldInputRef, TemplateFieldInputProps>(
   ({ defaultValue = [] }, ref) => {
     const [fields, setFields] = useState<InternalField[]>(() =>
       (defaultValue || []).map((f) => ({ ...f }))
@@ -37,7 +37,7 @@ const CardFieldInput = forwardRef<CardFieldInputRef, CardFieldInputProps>(
     const addField = () => {
       setFields((prev) => [
         ...prev,
-        { name: "", content: "", selectorType: TemplateFieldSelectorType.CSSSelector, dataType: CardFieldDataType.TEXT, locked: false },
+        { name: "", content: "", dataType: TemplateFieldDataType.TEXT, locked: false },
       ]);
     };
 
@@ -52,34 +52,25 @@ const CardFieldInput = forwardRef<CardFieldInputRef, CardFieldInputProps>(
     };
 
     return (
-      <div className={styles.container}>
+      <div className={templateFieldStyle.container}>
         {fields.map((field, i) => (
-          <div key={i} className={styles.fieldRow}>
+          <div key={i} className={templateFieldStyle.fieldRow}>
             <input
               type="text"
-              className={`${styles.input} ${styles.name}`}
+              className={`${templateFieldStyle.input} ${templateFieldStyle.name}`}
               placeholder="name"
               value={field.name}
               onChange={(e) => updateField(i, "name", e.target.value)}
             />
             <input
               type="text"
-              className={`${styles.input} ${styles.content}`}
+              className={`${templateFieldStyle.input} ${templateFieldStyle.content}`}
               placeholder="content"
               value={field.content}
               onChange={(e) => updateField(i, "content", e.target.value)}
             />
             <select
-              className={`${styles.select} ${styles.selector}`}
-              value={field.selectorType}
-              onChange={(e) => updateField(i, "selectorType", e.target.value)}
-            >
-              <option value="literal">Literal</option>
-              <option value="cssSelector">CSS</option>
-              <option value="url">URL</option>
-            </select>
-            <select
-              className={`${styles.select} ${styles.datatype}`}
+              className={`${templateFieldStyle.select} ${templateFieldStyle.datatype}`}
               value={field.dataType}
               onChange={(e) => updateField(i, "dataType", e.target.value)}
             >
@@ -92,7 +83,7 @@ const CardFieldInput = forwardRef<CardFieldInputRef, CardFieldInputProps>(
             {!field.locked && (
               <button
                 type="button"
-                className={styles.removeBtn}
+                className={templateFieldStyle.removeBtn}
                 onClick={() => removeField(i)}
                 title="Remove field"
               >
@@ -101,15 +92,15 @@ const CardFieldInput = forwardRef<CardFieldInputRef, CardFieldInputProps>(
             )}
 
             {field.locked && (
-              <div className={styles.lockBadge} title="Required">
+              <div className={templateFieldStyle.lockBadge} title="Required">
                 🔒
               </div>
             )}
           </div>
         ))}
 
-        <div className={styles.controls}>
-          <button type="button" onClick={addField} className={styles.addBtn}>
+        <div className={templateFieldStyle.controls}>
+          <button type="button" onClick={addField} className={templateFieldStyle.addBtn}>
             + Add Field
           </button>
         </div>
@@ -118,4 +109,4 @@ const CardFieldInput = forwardRef<CardFieldInputRef, CardFieldInputProps>(
   }
 );
 
-export default CardFieldInput;
+export default TemplateFieldInput;

@@ -22,7 +22,7 @@ export interface ExtractedMap{
 // - extracteds : 감지된 카드 데이터 배열, url : 현재 페이지 URL
 
 const DetectPage: React.FC = () => {
-  const {customCards} = useCustomCard();
+  const {templates: customCards} = useCustomCard();
   const [extractedMaps, setExtractedMaps] = useState<ExtractedMap>({});
   const [url, setUrl] = useState<string>(''); 
   const [isPending, setIsPending] = useState(false);

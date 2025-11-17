@@ -1,15 +1,14 @@
 import { Extracted, ExtractedMap } from '@/front/pages/Detect/DetectPage';
 import {
   TemplateField,
-  CardFieldDataType,
-  TemplateFieldSelectorType,
-  CustomCard,
+  TemplateFieldDataType,
+  Template,
 } from '@/front/utils/useTemplates';
 
 //TODO : Make Message Types Constant Enum
 //TODO : Delayed search for Delayed Content delivery
 console.log('✅ Content script loaded');
-let customCards: CustomCard[] = [];
+let customCards: Template[] = [];
 window.onload = async () => {
   const response = await chrome.storage.local.get('anki-card-wizard-custom-cards');
   customCards = response['anki-card-wizard-custom-cards'] || [];
@@ -18,7 +17,7 @@ window.onload = async () => {
   sendDetectedCards(customCards);
 };
 
-const checkUrlMatched = (customCard: CustomCard): boolean => {
+const checkUrlMatched = (customCard: Template): boolean => {
   customCard.urlPatterns = customCard.urlPatterns || ['body'];
   return (
     // use wildcard to match urlPattern
@@ -36,23 +35,21 @@ const checkUrlMatched = (customCard: CustomCard): boolean => {
 const extractFields = (root: Element, record: Record<string, string>) => (field: TemplateField) => {
   try {
     let element: Element | null = null;
-    if (field.selectorType === TemplateFieldSelectorType.CSSSelector) {
-      element = root.querySelector(field.content);
-    }
+    element = root.querySelector(field.content);
 
     if (element) {
       switch (field.dataType) {
-        case CardFieldDataType.TEXT:
+        case TemplateFieldDataType.TEXT:
           record[field.name] = element.textContent || '';
           break;
-        case CardFieldDataType.IMAGE:
+        case TemplateFieldDataType.IMAGE:
           if (element instanceof HTMLImageElement) {
             record[field.name] = element.src;
           } else {
             record[field.name] = (element as HTMLElement).getAttribute('src') || '';
           }
           break;
-        case CardFieldDataType.AUDIO:
+        case TemplateFieldDataType.AUDIO:
           record[field.name] = (element as HTMLAudioElement).src || '';
           break;
         default:
@@ -66,7 +63,7 @@ const extractFields = (root: Element, record: Record<string, string>) => (field:
   }
 };
 
-const getExtractedFromPage = (customCards: CustomCard[]): [ExtractedMap, number] => {
+const getExtractedFromPage = (customCards: Template[]): [ExtractedMap, number] => {
   const res: ExtractedMap = {};
   let cnt = 0;
   customCards.filter(checkUrlMatched).forEach((card, idx) => {
@@ -90,7 +87,7 @@ const getExtractedFromPage = (customCards: CustomCard[]): [ExtractedMap, number]
   });
   return [res, cnt];
 };
-const sendDetectedCards = (customCards: CustomCard[]) => {
+const sendDetectedCards = (customCards: Template[]) => {
   const [extractedData, cnt] = getExtractedFromPage(customCards);
   // 추출된 데이터를 백그라운드 스크립트로 전송
   chrome.runtime.sendMessage({

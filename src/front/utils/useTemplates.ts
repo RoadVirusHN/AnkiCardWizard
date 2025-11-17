@@ -1,27 +1,20 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-export enum CardFieldDataType {
+export enum TemplateFieldDataType {
   TEXT = 'text',
   AUDIO = 'audio',
   IMAGE = 'image',
 }
 
-export enum TemplateFieldSelectorType {
-  LITERAL = 'literal',
-  CSSSelector = 'cssSelector',
-  URL = 'url',
-}
-
 export interface TemplateField {
   name: string;
   content: string;
-  selectorType: TemplateFieldSelectorType;
-  dataType: CardFieldDataType;
+  dataType: TemplateFieldDataType;
 }
 
-export interface CustomCard {
-  cardName: string;
+export interface Template {
+  templateName: string;
   description: string;
   modelName: string;
   urlPatterns: string[];
@@ -42,28 +35,28 @@ export interface CustomCard {
     fields: string[];
   };
 }
-interface CustomCardState {
-  customCards: CustomCard[];
-  addCustomCard: (card: CustomCard) => void;
-  removeCustomCard: (index: number) => void;
-  modifyCustomCard: (index: number, card: CustomCard) => void;
+interface TemplateState {
+  templates: Template[];
+  addTemplate: (card: Template) => void;
+  removeTemplate: (index: number) => void;
+  modifyTemplate: (index: number, card: Template) => void;
 }
 
-const useCustomCard = create<CustomCardState>()(
+const useTemplate = create<TemplateState>()(
   persist(
     (set) => ({
-      customCards: [],
-      addCustomCard: (card: CustomCard) => {
-        set((state) => ({ customCards: [...state.customCards, card] }));
+      templates: [],
+      addTemplate: (template: Template) => {
+        set((state) => ({ templates: [...state.templates, template] }));
       },
-      removeCustomCard: (index: number) => {
+      removeTemplate: (index: number) => {
         set((state) => ({
-          customCards: state.customCards.filter((_, i) => i !== index),
+          templates: state.templates.filter((_, i) => i !== index),
         }));
       },
-      modifyCustomCard: (index: number, card: CustomCard) => {
+      modifyTemplate: (index: number, template: Template) => {
         set((state) => ({
-          customCards: state.customCards.map((c, i) => (i === index ? card : c)),
+          templates: state.templates.map((c, i) => (i === index ? template : c)),
         }));
       }
     }),
@@ -78,4 +71,4 @@ const useCustomCard = create<CustomCardState>()(
   )
 );
 
-export default useCustomCard;
+export default useTemplate;
