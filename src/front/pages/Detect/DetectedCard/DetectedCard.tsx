@@ -4,45 +4,30 @@ import useGlobalVarStore from "@/front/utils/useGlobalVarStore";
 import detectPageStyle from "@/front/pages/Detect/detectPage.module.css";
 import { Extracted } from "../DetectPage";
 
+const buildCard = (key: 'Front' | 'Back', customCard: Template, extracted: Extracted) =>
+  customCard[key].html.replaceAll(/\{\{(.*?)\}\}/g, 
+    (_, fieldName) => {
+      const fieldInfo = customCard[key].fields.find(f=>f.name === fieldName);
+      if (fieldInfo) {
+        switch (fieldInfo.dataType) {
+          case TemplateFieldDataType.IMAGE:
+            return `<img src="${extracted[key][fieldName] || ''}" />`;
+          case TemplateFieldDataType.AUDIO:
+            return `[sound:${extracted[key][fieldName] || ''}]`;
+          default:
+            return extracted[key][fieldName] || '';
+        }
+      }
+      return ''; // Ensure a string is always returned
+    }
+  );
+
 const DetectedCard = ({customCard, extracted}:{customCard: Template, extracted: Extracted}) => {
   const {fetchAnki} = useAnkiConnectionStore();
   const {currentDeck} = useGlobalVarStore();
   const addToAnki = () => {
-    const buildedFront = customCard.Front.html.replaceAll(/\{\{(.*?)\}\}/g, 
-      (_, fieldName) => {
-        const fieldInfo = customCard.Front.fields.find(f=>f.name === fieldName);
-        if (fieldInfo) {
-          switch (fieldInfo.dataType) {
-            case TemplateFieldDataType.IMAGE:
-              return `<img src="${extracted.Front[fieldName] || ''}" />`;
-            case TemplateFieldDataType.AUDIO:
-              return `[sound:${extracted.Front[fieldName] || ''}]`;
-            case TemplateFieldDataType.TEXT:
-              return extracted.Front[fieldName] || '';
-            default:
-              return extracted.Front[fieldName] || '';
-          }
-        }
-        return ''; // Ensure a string is always returned
-      });
-    const buildedBack = customCard.Back.html.replaceAll(/\{\{(.*?)\}\}/g, 
-      (_, fieldName) => {
-        const fieldInfo = customCard.Back.fields.find(f=>f.name === fieldName);
-        if (fieldInfo) {
-          switch (fieldInfo.dataType) {
-            case TemplateFieldDataType.IMAGE:
-              return `<img src="${extracted.Back[fieldName] || ''}" />`;
-            case TemplateFieldDataType.AUDIO:
-              return `[sound:${extracted.Back[fieldName] || ''}]`;
-            case TemplateFieldDataType.TEXT:
-              return extracted.Back[fieldName] || '';
-            default:
-              return extracted.Back[fieldName] || '';
-          }
-        }
-        return '';
-      }
-    );
+    const buildedFront = buildCard("Front",customCard,extracted);
+    const buildedBack = buildCard("Back", customCard, extracted);
 
     fetchAnki<{noteIds: number[]}>({
       action: 'addNote',
