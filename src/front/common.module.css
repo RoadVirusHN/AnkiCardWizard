@@ -9,29 +9,6 @@
   --color-off: #61758a;
   --color-hyperlink: #81b1e1;
 }
-body {
-  font-family: sans-serif;
-  background: var(--color-light);
-  height: 100vh;
-  margin: 0;
-}
-body > .root {
-  height: 100%;
-}
-.container{
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  height: 100%;
-}
-.main {
-  text-align: center;
-  height: 100%;
-}
-.main-content {
-  position: relative;
-  overflow: auto;
-}
 
 .no-select {
   -webkit-user-select: none; /* Safari */

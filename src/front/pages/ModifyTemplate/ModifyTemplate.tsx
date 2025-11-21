@@ -9,6 +9,7 @@ import Editor, { OnMount, loader } from "@monaco-editor/react";
 import {editor} from 'monaco-editor';
 import SimpleButton from "@/front/components/SimpleButton/SimpleButton";
 import ReturnIcon from "@/public/Icon/Icon-Return.svg";
+import SaveIcon from "@/public/Icon/Icon-Save.svg";
 
 const ModifyTemplate = () => {
   const { index } = useParams();
@@ -195,10 +196,8 @@ const ModifyTemplate = () => {
       </Form>
 
       <div className={modifyTemplateStyle.submitRow}>
-        <button type="button" onClick={submitHandler} className={modifyTemplateStyle.submitBtn}>
-          {isEditMode ? "Modify Card" : "Add Card"}
-        </button>
-        <SimpleButton svg={ReturnIcon} text="Cancle" onClick={()=>navigate('/templates')}/>
+        <SimpleButton Svg={ReturnIcon} onClick={()=>navigate('/templates')}/>
+        <SimpleButton Svg={SaveIcon} onClick={submitHandler} overridedStyle={{backgroundColor: 'var(--color-warning)'}}/>
       </div>
     </div>
   );

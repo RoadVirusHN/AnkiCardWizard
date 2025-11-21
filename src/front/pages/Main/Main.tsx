@@ -1,13 +1,13 @@
-import commonStyle from '@/front/common.module.css';
 import Tabs from '@/front/components/Tabs/Tabs';
+import mainStyle from "./main.module.css";
 import { Outlet } from 'react-router';
 
 const Popup: React.FC = () => {
  
   return (
-    <div className={commonStyle.main}>
+    <div className={mainStyle.main}>
       <Tabs/>
-      <div className={commonStyle["main-content"]}>
+      <div className={mainStyle["main-content"]}>
         <Outlet/>
       </div>
     </div>
