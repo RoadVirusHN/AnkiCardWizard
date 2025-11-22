@@ -42,7 +42,7 @@ export interface ExtractedMap{
 // - extracteds : 감지된 카드 데이터 배열, url : 현재 페이지 URL
 
 const DetectPage: React.FC = () => {
-  const {templates: customCards} = useCustomCard();
+  const {templates} = useCustomCard();
   const [extractedMaps, setExtractedMaps] = useState<ExtractedMap>({});
   const [url, setUrl] = useState<string>(''); 
   const [isPending, setIsPending] = useState(false);
@@ -61,17 +61,17 @@ const DetectPage: React.FC = () => {
     setIsPending(true);
     chrome.tabs.sendMessage(tab.id, {
       type: 'REQUEST_DETECTED_CARDS',
-      customCards,
+      customCards: templates,
     });
     pendingId = setInterval(()=>{
       setIsPending(false);
     },5000);
   };
 
-  const toggleSelected = (id:string)=>()=>{
+  const checkAdd = (id:string)=>(val:boolean)=>{
     const newSelected = new Set(selected);
-    if (newSelected.has(id)) newSelected.delete(id);
-    else newSelected.add(id);
+    if (val) newSelected.add(id);
+    else newSelected.delete(id);
     setSelected(newSelected);
   }
 
@@ -96,13 +96,23 @@ const DetectPage: React.FC = () => {
           });
   }
   const addSelected = ()=>{    
-    fetchAnki({action: "addNotes",params: { notes : selected.keys().map((i)=>notes[i])}});
+    fetchAnki({action: "addNotes",params: { notes : selected.keys().map((i)=>notes[i])}})
+    .then((res) => {
+      if (res.error) {
+        console.error('Error adding note to Anki:', res.error);
+        alert('Failed to add note to Anki: ' + res.error);
+      } else {
+        console.log('Note added to Anki with ID:', res.result);
+        alert('Note added to Anki successfully!');
+      }
+    });
   }
   
   useEffect(()=>{
     chrome.runtime.onMessage.addListener((message)=>{
       if (message.type === 'SEND_DETECTED_CARDS'){
         console.log("Received detected cards from content script:", message.data);
+        //TODO: filter duplicated one in history or target deck.
         const em = message.data as ExtractedMap;
         setUrl(message.URL);
         setIsPending(false);
@@ -112,7 +122,7 @@ const DetectPage: React.FC = () => {
           const cardInfos = em[numberKey];
           cardInfos.forEach((extracted, idx)=>{
             const id = key + "-" + idx;
-            newNotes[id] = (getNote(customCards[numberKey],extracted));
+            newNotes[id] = (getNote(templates[numberKey],extracted));
           });
         });
         setNotes(newNotes);
@@ -123,10 +133,10 @@ const DetectPage: React.FC = () => {
     return ()=>clearInterval(pendingId);
   },[]);
   useEffect(()=>{
-    if (customCards.length > 0) {
+    if (templates.length > 0) {
       requestExtracteds();
     }
-  },[customCards]);
+  },[templates]);
   return (
     <div className={detectPageStyle.pageContainer}>
 
@@ -153,7 +163,8 @@ const DetectPage: React.FC = () => {
                 key={id}
                 note={notes[id]}
                 extracted={extracted}
-                toggleSelected={toggleSelected(id)}
+                template={templates[numberKey]}
+                checkAdd={checkAdd(id)}
                 onChange={(newNote : Note)=>{
                   const newNotes = {} as typeof notes;
                   Object.keys(notes).forEach((key)=>{
