@@ -63,6 +63,10 @@ interface TemplateState {
   addTemplate: (card: Template) => void;
   removeTemplate: (index: number) => void;
   modifyTemplate: (index: number, card: Template) => void;
+  notes: { [idx: string]: Note };
+  addNote: (idx: string, note: Note) => void;
+  removeNote: (idx: string) => void;
+  updateNote: (idx: string, updates: { [key: string]: unknown }) => void;
 }
 
 const useTemplate = create<TemplateState>()(
@@ -80,6 +84,30 @@ const useTemplate = create<TemplateState>()(
       modifyTemplate: (index: number, template: Template) => {
         set((state) => ({
           templates: state.templates.map((c, i) => (i === index ? template : c)),
+        }));
+      },
+      notes: {},
+      addNote: (idx, note) => {
+        set((state) => ({
+          notes: { ...state.notes, [idx]: note },
+        }));
+      },
+      removeNote: (idx) => {
+        set((state) => {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          const { [idx]: _deleted, ...rest } = state.notes;
+          return { notes: rest };
+        });
+      },
+      updateNote: (idx, updates) => {
+        set((state) => ({
+          notes: {
+            ...state.notes,
+            [idx]: {
+              ...state.notes[idx],
+              ...updates,
+            },
+          },
         }));
       },
     }),
