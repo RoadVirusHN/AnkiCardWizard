@@ -6,6 +6,7 @@ import Main from "../pages/Main/Main";
 import DetectPage from "../pages/Detect/DetectPage";
 import AddPage from "../pages/Add/AddPage";
 import TemplatesPage from "../pages/Templates/TemplatesPage";
+import PreviewCard from "../pages/PreviewCard/PreviewCard";
 
 const router = createHashRouter([
   {
@@ -37,8 +38,12 @@ const router = createHashRouter([
         element: <ConfigPage/>
       },
       {
-        path: "modify",
+        path: "modify/:index?",
         element: <ModifyTemplate/>
+      },
+      {
+        path: "previewCard/:index",
+        element: <PreviewCard/>
       }
     ]
   }
