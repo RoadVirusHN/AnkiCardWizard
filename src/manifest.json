@@ -3,12 +3,6 @@
     "name": "Anki Card Wizard",
     "version": "1.0",
     "description": "Add Anki card from your web page.",
-    "content_scripts": [
-      {
-        "js": ["content.js"],
-        "matches": ["<all_urls>"]
-      }
-    ],
     "background": {
       "service_worker": "background.js"
     },

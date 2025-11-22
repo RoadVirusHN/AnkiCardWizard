@@ -12,6 +12,10 @@ loader.config({
     vs: './vs', 
   },
 });
+
+document.addEventListener("DOMContentLoaded", ()=>{
+  chrome.runtime.sendMessage({type: "INJECT_CONTENT_SCRIPT"});
+});
 const container = document.getElementById('root');
 if (container) ReactDOM.createRoot(container).render(
   <React.StrictMode>

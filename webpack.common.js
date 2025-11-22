@@ -4,8 +4,8 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
   entry: {
-    background: "./src/scripts/background.ts",
-    content: "./src/scripts/content.ts",
+    background: "./src/scripts/background/background.ts",
+    content: "./src/scripts/content/content.ts",
     root: "./src/front/root.tsx",
   },
   output: {
