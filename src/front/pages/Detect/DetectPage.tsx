@@ -8,6 +8,8 @@ import SimpleButton from '@/front/components/SimpleButton/SimpleButton';
 import useAnkiConnectionStore from '@/front/utils/useAnkiConnectionStore';
 import useGlobalVarStore from '@/front/utils/useGlobalVarStore';
 import useTemplate from '@/front/utils/useTemplates';
+import { useLocation, useNavigate } from 'react-router';
+import { MessageType } from '@/scripts/background/messages';
 
 const buildCard = (key: 'Front' | 'Back', customCard: Template, extracted: Extracted) =>
   customCard[key].html.replaceAll(/\{\{(.*?)\}\}/g, 
@@ -108,9 +110,7 @@ const DetectPage: React.FC = () => {
       }
     });
   }
-  
-  useEffect(()=>{
-    chrome.runtime.onMessage.addListener((message)=>{
+  const messageListener = (message : any) => {
       if (message.type === 'SEND_DETECTED_CARDS'){
         console.log("Received detected cards from content script:", message.data);
         //TODO: filter duplicated one in history or target deck.
@@ -130,8 +130,13 @@ const DetectPage: React.FC = () => {
         setExtractedMaps(em);
         clearInterval(pendingId);
       }
-    });
-    return ()=>clearInterval(pendingId);
+    } 
+  useEffect(()=>{
+    chrome.runtime.onMessage.addListener(messageListener);
+    return ()=>{
+      clearInterval(pendingId)
+      chrome.runtime.onMessage.removeListener(messageListener)
+    };
   },[]);
   useEffect(()=>{
     if (templates.length > 0) {
