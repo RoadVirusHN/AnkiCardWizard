@@ -38,6 +38,10 @@
   background-color: var(--color-primary);
   color: var(--color-light);
 }
+.templateName {
+  font-weight: bold;
+  color: var(--color-hyperlink);
+}
 
 /* 카드 리스트 */
 .cardsWrapper {

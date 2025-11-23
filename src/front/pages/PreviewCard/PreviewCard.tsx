@@ -45,6 +45,9 @@ const PreviewCard = ({}) => {
         </div>) 
         : (
           <section className={previewCardStyle.previewPage}>
+            <div className={previewCardStyle.badges}>
+              {notes[idx].tags.map((tag)=><span className={commonStyle.badge}>{tag}</span>)}
+            </div>
             <h3>front preview</h3>
             <div className={previewCardStyle.previewWrapper}>
               <div 

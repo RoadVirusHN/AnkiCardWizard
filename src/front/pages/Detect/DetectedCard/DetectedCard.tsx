@@ -1,4 +1,4 @@
-import { Note, Template } from "@/front/utils/useTemplates";
+import useTemplate, { Note, Template } from "@/front/utils/useTemplates";
 import detectPageStyle from "@/front/pages/Detect/detectPage.module.css";
 import commonStyle from "@/front/common.module.css";
 import { Extracted } from "../DetectPage";
@@ -15,11 +15,15 @@ interface DetectedCardProps {
 
 const DetectedCard = ({idx, extracted, template, checkAdd}:DetectedCardProps) => {
    const navigate = useNavigate();
+   const {notes} = useTemplate();
    return (  
     <article className={detectPageStyle.detectedCardContainer} onClick={()=>{navigate(`previewCard/${idx}`)}}>
       <input type="checkbox" onChange={e=>{checkAdd(e.target.checked)}} onClick={e=>e.stopPropagation()}/>
       <div className={detectPageStyle.detectedCardContent}>
-        <div className={commonStyle.badge} style={{paddingLeft: '2px', paddingRight: '2px'}}>{template.templateName}</div>
+        <div>
+          <span className={detectPageStyle.templateName} >{template.templateName}</span>
+          {notes[idx].tags.map((tag)=><span className={commonStyle.badge}>{tag}</span>)}
+        </div>
         <h3 className={detectPageStyle.front}>{extracted.Front['front']}</h3>
         <p className={detectPageStyle.back}>{extracted.Back['back']}</p>
       </div>
