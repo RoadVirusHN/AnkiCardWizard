@@ -68,6 +68,10 @@ interface TemplateState {
   removeNote: (idx: string) => void;
   updateNote: (idx: string, updates: { [key: string]: unknown }) => void;
   setNotes: (newNotes: { [idx: string]: Note }) => void;
+  tags: { [name: string]: { color: string } };
+  addTag : (name: string, color: string) => void;
+  removeTag : (name: string) => void;
+  updateTag : (name: string, color: string) => void;
 }
 
 const useTemplate = create<TemplateState>()(
@@ -114,6 +118,28 @@ const useTemplate = create<TemplateState>()(
       setNotes: (newNotes) => {
         set(() => ({
           notes: newNotes,
+        }));
+      },
+      tags: {},
+      addTag: (name, color) => {
+        set((state) => ({
+          tags: { ...state.tags, [name]: { color } },
+        }));
+      },
+      removeTag: (name) => {
+        set((state) => {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          const { [name]: _deleted, ...rest } = state.tags;
+          return { tags: rest };
+        });
+      },
+
+      updateTag: (name, color) => {
+        set((state) => ({
+          tags: {
+            ...state.tags,
+            [name]: { color },
+          },
         }));
       },
     }),
