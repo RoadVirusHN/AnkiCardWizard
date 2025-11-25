@@ -1,7 +1,7 @@
-import useTemplate, { Note, Template } from "@/front/utils/useTemplates";
+import useTemplate, { Extracted, Note, Template } from "@/front/utils/useTemplates";
 import detectPageStyle from "@/front/pages/Detect/detectPage.module.css";
 import commonStyle from "@/front/common.module.css";
-import { Extracted } from "../DetectPage";
+
 import DelIcon from "@/public/Icon/Icon-Dump.svg";
 import { useNavigate } from "react-router";
 
@@ -17,7 +17,7 @@ const DetectedCard = ({idx, extracted, template, checkAdd}:DetectedCardProps) =>
    const navigate = useNavigate();
    const {notes} = useTemplate();
    return (  
-    <article className={detectPageStyle.detectedCardContainer} onClick={()=>{navigate(`previewCard/${idx}`)}}>
+    <article className={detectPageStyle.detectedCardContainer} onClick={()=>{navigate(`/previewCard/${idx}`)}}>
       <input type="checkbox" onChange={e=>{checkAdd(e.target.checked)}} onClick={e=>e.stopPropagation()}/>
       <div className={detectPageStyle.detectedCardContent}>
         <div>

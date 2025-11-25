@@ -1,6 +1,14 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
+//TODO : change cards to key value pair
+export interface Extracted{
+  Front : Record<string, string>;
+  Back : Record<string, string>;
+};
+export interface ExtractedMap{
+  [idx: number]: Extracted[];
+};
 export enum TemplateFieldDataType {
   TEXT = 'text',
   AUDIO = 'audio',
@@ -72,6 +80,8 @@ interface TemplateState {
   addTag : (name: string, color: string) => void;
   removeTag : (name: string) => void;
   updateTag : (name: string, color: string) => void;
+  extractedMaps: ExtractedMap;
+  setExtractedMaps: (newMaps: ExtractedMap) => void;
 }
 
 const useTemplate = create<TemplateState>()(
@@ -133,13 +143,18 @@ const useTemplate = create<TemplateState>()(
           return { tags: rest };
         });
       },
-
       updateTag: (name, color) => {
         set((state) => ({
           tags: {
             ...state.tags,
             [name]: { color },
           },
+        }));
+      },
+      extractedMaps: {},
+      setExtractedMaps: (newMaps) => {
+        set(() => ({
+          extractedMaps: newMaps,
         }));
       },
     }),

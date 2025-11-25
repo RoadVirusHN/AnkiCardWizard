@@ -1,6 +1,6 @@
 import detectPageStyle from '@/front/pages/Detect/detectPage.module.css';
 import { JSX, useEffect, useState } from 'react';
-import useCustomCard, { Note, Template, TemplateFieldDataType } from '@/front/utils/useTemplates';
+import useCustomCard, { Extracted, ExtractedMap, Note, Template, TemplateFieldDataType } from '@/front/utils/useTemplates';
 import DetectedCard from './DetectedCard/DetectedCard';
 import DeckInput from '@/front/components/StatusBar/DeckInput/DeckInput';
 import AddIcon from '@/public/Icon/Icon-Add.svg';
@@ -30,14 +30,6 @@ const buildCard = (key: 'Front' | 'Back', customCard: Template, extracted: Extra
   );
 //TODO : Apply SCSS for css.
 //TODO : MAKE Interfaces&Types FILE
-//TODO : change cards to key value pair
-export interface Extracted{
-  Front : Record<string, string>;
-  Back : Record<string, string>;
-}
-export interface ExtractedMap{
-  [idx: number]: Extracted[];
-};
 
 // REQUEST_DETECTED_CARDS : content script 에게 현재 페이지에서 추출된 카드 데이터를 요청
 // - customCards : 사용자가 정의한 카드 템플릿들
@@ -46,13 +38,12 @@ export interface ExtractedMap{
 // TODO : IT'S DIRTY!!!!!!!!!!!
 const DetectPage: React.FC = () => {
   const {templates} = useCustomCard();
-  const [extractedMaps, setExtractedMaps] = useState<ExtractedMap>({});
   const [url, setUrl] = useState<string>(''); 
   const [isPending, setIsPending] = useState(false);
   const [selected, setSelected] = useState(new Set<string>());
   const {fetchAnki} = useAnkiConnectionStore();
   const {currentDeck} = useGlobalVarStore();
-  const {notes, setNotes} = useTemplate();
+  const {notes, extractedMaps, setNotes, setExtractedMaps} = useTemplate();
 
   let pendingId : NodeJS.Timeout;
   const requestExtracteds = async () => {
@@ -138,11 +129,6 @@ const DetectPage: React.FC = () => {
       chrome.runtime.onMessage.removeListener(messageListener)
     };
   },[]);
-  useEffect(()=>{
-    if (templates.length > 0) {
-      requestExtracteds();
-    }
-  },[templates]);
   return (
     <div className={detectPageStyle.pageContainer}>
 
@@ -150,7 +136,7 @@ const DetectPage: React.FC = () => {
         <DeckInput/> 
         <div className={detectPageStyle.headerButtons}>
           <button disabled={isPending} className={detectPageStyle.redetectCard} onClick={requestExtracteds}>
-            {isPending ? 'Scanning...': '↺ Rescan'}
+            {isPending ? 'Scanning...': '↺ Scan'}
           </button>
         </div>
         <SimpleButton Svg={AddIcon} onClick={addSelected} text={selected.size > 0 ? `+ ${selected.size}` :'Add'}/>

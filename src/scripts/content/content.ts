@@ -1,22 +1,24 @@
-import { Extracted, ExtractedMap } from '@/front/pages/Detect/DetectPage';
 import {
   TemplateField,
   TemplateFieldDataType,
   Template,
+  ExtractedMap,
+  Extracted,
 } from '@/front/utils/useTemplates';
-import { STORAGE_KEY } from '../background/constants';
+import { MessageType } from '../background/messages';
+// import { STORAGE_KEY } from '../background/constants';
 
 //TODO : Make Message Types Constant Enum
 //TODO : Delayed search for Delayed Content delivery
 console.log('✅ Content script loaded');
-let customCards: Template[] = [];
-window.onload = async () => {
-  const response = await chrome.storage.local.get(STORAGE_KEY);
-  customCards = response['customCards'] || [];
-  // chrome.runtime.sendMessage({ type: 'REQUEST_CUSTOM_CARDS_FROM_BACKGROUND' });
-  console.log('Content script window.onload fired', customCards);
-  sendDetectedCards(customCards);
-};
+// let customCards: Template[] = [];
+// window.onload = async () => {
+//   const response = await chrome.storage.local.get(STORAGE_KEY);
+//   customCards = response['customCards'] || [];
+//   // chrome.runtime.sendMessage({ type: 'REQUEST_CUSTOM_CARDS_FROM_BACKGROUND' });
+//   console.log('Content script window.onload fired', customCards);
+//   sendDetectedCards(customCards);
+// };
 
 const checkUrlMatched = (customCard: Template): boolean => {
   customCard.urlPatterns = customCard.urlPatterns || ['body'];
@@ -24,10 +26,12 @@ const checkUrlMatched = (customCard: Template): boolean => {
     // use wildcard to match urlPattern
     customCard.urlPatterns.some((pattern) => {
       const regex = new RegExp(
-        '^' + pattern
-          .split('*')
-          .map((s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
-          .join('.*') + '$'
+        '^' +
+          pattern
+            .split('*')
+            .map((s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
+            .join('.*') +
+          '$'
       );
       return regex.test(window.location.href);
     })
@@ -92,7 +96,7 @@ const sendDetectedCards = (customCards: Template[]) => {
   const [extractedData, cnt] = getExtractedFromPage(customCards);
   // 추출된 데이터를 백그라운드 스크립트로 전송
   chrome.runtime.sendMessage({
-    type: 'SEND_DETECTED_CARDS',
+    type: MessageType.SEND_DETECTED_CARDS,
     cnt,
     data: extractedData,
     url: window.location.href,
@@ -100,7 +104,7 @@ const sendDetectedCards = (customCards: Template[]) => {
 };
 chrome.runtime.onMessage.addListener((message) => {
   console.log('Message received from content.js :', message);
-  if (message.type === 'REQUEST_DETECTED_CARDS') {
+  if (message.type === MessageType.REQUEST_DETECTED_CARDS) {
     console.log('Received EXTRACT_DATA_REQUEST message');
     sendDetectedCards(message.customCards);
   }

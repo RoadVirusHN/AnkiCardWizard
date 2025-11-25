@@ -6,7 +6,7 @@ import useAnkiConnectionStore from "@/front/utils/useAnkiConnectionStore";
 import { useEffect } from "react";
 import TooltipWrapper, { TooltipDirection } from "../../TooltipWrapper/TooltipWrapper";
 import commonStyle from "@/front/common.module.css";
-import { ExtractedMap } from "@/front/pages/Detect/DetectPage";
+import { MessageType } from "@/scripts/background/messages";
 
 const DetectTab = ({}) => {
   const {currentTab, currentDetected, setCurrentDetected} = useGlobalVarStore();
@@ -17,7 +17,7 @@ const DetectTab = ({}) => {
       const id = setInterval(()=> checkConnection(), 5000);
 
       chrome.runtime.onMessage.addListener((message)=>{
-        if (message.type === 'SEND_DETECTED_CARDS'){     
+        if (message.type === MessageType.SEND_DETECTED_CARDS){     
           console.log(message.cnt);     
           setCurrentDetected(message.cnt);
         }
