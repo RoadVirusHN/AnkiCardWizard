@@ -16,6 +16,7 @@ const PreviewCard = ({}) => {
   const [isChanged, setIsChanged] = useState(false);
   const {notes, templates, updateNote} = useTemplate();
   const idx = index ?? '0-0';
+  const [curNote, setCurNote] = useState(notes[idx]);
   const templateIdx = Number(idx.split('-')[0]);
   const navigate = useNavigate();
   return (<div>
@@ -26,8 +27,16 @@ const PreviewCard = ({}) => {
       </div>
       <div className={commonStyle.toggle}>
         <div className={previewCardStyle.modBtns} style={{visibility: isChanged ? "visible" : "hidden"}}>
-          <CancleIcon/>
-          <SaveIcon/>
+          <CancleIcon  onClick={()=>{
+            setCurNote(notes[idx]);
+            setIsChanged(false);
+            }} style={{'cursor': 'pointer'}}/>
+          <SaveIcon  onClick={()=>{
+            console.log(isChanged);
+            updateNote(idx,{...curNote});
+            setIsChanged(false);
+            console.log(isChanged);
+            }} style={{'cursor': 'pointer'}}/>
         </div>
         <PreviewIcon />
         <label className={commonStyle.switch}>
@@ -40,35 +49,37 @@ const PreviewCard = ({}) => {
       </div>
     </div>
     {
-      isModifying ? 
-        (<div>
-
-        </div>) 
-        : (
-          <section className={previewCardStyle.previewPage}>
-            <Tags givenTags={notes[idx].tags} isModifying={true} 
-            onAddTag={(tag)=>{
-              updateNote(idx, {tags: [...notes[idx].tags, tag]});
-            }} 
-            onRemoveTag={(tag)=>{
-              updateNote(idx, {tags: notes[idx].tags.filter(t=>t!==tag)});
-            }}/>
-            <h3>front preview</h3>
-            <div className={previewCardStyle.previewWrapper}>
-              <div 
-              style={{ transform: 'scale(0.85)', width: '100%' }}
-              dangerouslySetInnerHTML={{__html: notes[idx].fields.Front}} 
-              />
-            </div>            
-            <h3>back preview</h3>
-            <div className={previewCardStyle.previewWrapper}>
-              <div 
-              style={{ transform: 'scale(0.85)', width: '100%' }}
-              dangerouslySetInnerHTML={{__html: notes[idx].fields.Back}} 
-              />
-            </div>
-          </section>
-        )
+      <section className={previewCardStyle.previewPage}>
+        <h2 style={{margin: '0'}}> {curNote.modelName}</h2>
+        <Tags givenTags={curNote.tags} isModifying={isModifying} 
+        onAddTag={(tag)=>{
+          setCurNote({...curNote, tags: [...curNote.tags, tag]});
+          setIsChanged(true);
+        }} 
+        onRemoveTag={(tag)=>{
+          setCurNote({...curNote, tags: curNote.tags.filter(t=>t!==tag)});
+          setIsChanged(true);
+        }}/>
+        <h3>front preview</h3>
+        <div className={previewCardStyle.previewWrapper}>
+          <div 
+          style={{ transform: 'scale(0.85)', width: '100%' }}
+          dangerouslySetInnerHTML={{__html: curNote.fields.Front}} 
+          />
+        </div>            
+        <h3>back preview</h3>
+        {
+          isModifying ? 
+          (<></>)
+          :
+          (<div className={previewCardStyle.previewWrapper}>
+          <div 
+          style={{ transform: 'scale(0.85)', width: '100%' }}
+          dangerouslySetInnerHTML={{__html: curNote.fields.Back}} 
+          />
+          </div>)
+        }
+      </section>      
     }
   </div>);
 };

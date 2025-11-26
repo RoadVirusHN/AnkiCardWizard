@@ -1,6 +1,4 @@
-import { useEffect, useState } from "react";
 import tagsStyle from "./tags.module.css";
-import SimpleButton from "../SimpleButton/SimpleButton";
 import useTemplate from "@/front/utils/useTemplates";
 import { getComplementaryColor, getRandomColor } from "@/front/utils/functions";
 
@@ -37,7 +35,8 @@ const Tags = ({givenTags, isModifying, onRemoveTag, onAddTag}:TagsProps) => {
       {givenTags.map((tag)=>{
         let tagColor = tags[tag] ? tags[tag].color : getRandomColor();
         if (tags[tag]===undefined) addTag(tag, tagColor);
-        return (<span className={tagsStyle.tag} style={{backgroundColor: tags[tag].color, color: getComplementaryColor(tags[tag].color)}}>{tag} 
+        // TODO: Make Tag Component
+        return (<span key={tag} className={tagsStyle.tag} style={{backgroundColor: tags[tag].color, color: getComplementaryColor(tags[tag].color)}}>{tag} 
         {isModifying ? <span style={{cursor: 'pointer'}} onClick={(e)=>deleteTag(e,tag)}> ⨂</span> : ''}
         </span>);
       }
