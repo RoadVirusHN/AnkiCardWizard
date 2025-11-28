@@ -6,6 +6,7 @@ import DelIcon from "@/public/Icon/Icon-Dump.svg";
 import { useNavigate } from "react-router";
 import { getComplementaryColor } from "@/front/utils/functions";
 import useGlobalVarStore from "@/front/utils/useGlobalVarStore";
+import Tags from "@/front/components/Tags/Tags";
 
 
 interface DetectedCardProps {
@@ -24,8 +25,8 @@ const DetectedCard = ({idx, extracted, template, checkAdd}:DetectedCardProps) =>
       <input type="checkbox" onChange={e=>{checkAdd(e.target.checked)}} onClick={e=>e.stopPropagation()}/>
       <div className={detectPageStyle.detectedCardContent}>
         <div>
-          <span className={detectPageStyle.templateName} >{template.templateName}</span>
-          {notes[idx].tags.map((tag)=><span className={commonStyle.badge} style={{backgroundColor: tags[tag].color, color: getComplementaryColor(tags[tag].color)}}>{tag}</span>)}
+        <span className={detectPageStyle.templateName} >{template.templateName}</span>
+        <Tags givenTags={notes[idx].tags} isModifying={false} onAddTag={()=>{}}  onRemoveTag={()=>{}}/>
         </div>
         {/* TODO : change Front value when card front html value changed? */}
         {/* TODO : Modifyied! flag when modifyied */}
