@@ -25,14 +25,23 @@ const checkUrlMatched = (customCard: Template): boolean => {
   return (
     // use wildcard to match urlPattern
     customCard.urlPatterns.some((pattern) => {
-      const regex = new RegExp(
-        '^' +
-          pattern
-            .split('*')
-            .map((s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
-            .join('.*') +
-          '$'
-      );
+      const patternHost = pattern
+        .replace(/^https?:\/\/(www\.)?/, '')
+        .split('/')[0];
+
+      // 2. 입력된 패턴의 호스트 부분만 사용하여 정규식의 기반을 만듭니다.
+      //    '*'는 '.*'로, 다른 특수문자는 이스케이프 처리합니다.
+      const regexString =
+        '^https?://(www\\.)?' + // 시작 부분에 선택적 https:// 또는 http:// 및 www.
+        patternHost
+          .split('*')
+          .map((s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
+          .join('.*') +
+        '($|/.*)'; // 끝 부분 또는 / 이하의 모든 문자열 허용
+
+      const regex = new RegExp(regexString);
+
+      // 3. 현재 URL에 대해 정규식 테스트
       return regex.test(window.location.href);
     })
   );

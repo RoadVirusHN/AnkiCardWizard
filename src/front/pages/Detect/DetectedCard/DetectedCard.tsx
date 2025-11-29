@@ -18,15 +18,15 @@ interface DetectedCardProps {
 
 const DetectedCard = ({idx, extracted, template, checkAdd}:DetectedCardProps) => {
    const navigate = useNavigate();
-   const {notes, tags, removeNote} = useTemplate();
+   const {notes, removeNote} = useTemplate();
    const {setCurrentDetected, currentDetected} = useGlobalVarStore();
    return (  
     <article className={detectPageStyle.detectedCardContainer} onClick={()=>{navigate(`/previewCard/${idx}`)}}>
       <input type="checkbox" onChange={e=>{checkAdd(e.target.checked)}} onClick={e=>e.stopPropagation()}/>
       <div className={detectPageStyle.detectedCardContent}>
-        <div>
-        <span className={detectPageStyle.templateName} >{template.templateName}</span>
-        <Tags givenTags={notes[idx].tags} isModifying={false} onAddTag={()=>{}}  onRemoveTag={()=>{}}/>
+        <div style={{display: 'flex'}}>
+          <span className={detectPageStyle.templateName} >{template.templateName}</span>
+          <Tags givenTags={notes[idx].tags} isModifying={false} onAddTag={()=>{}}  onRemoveTag={()=>{}}/>
         </div>
         {/* TODO : change Front value when card front html value changed? */}
         {/* TODO : Modifyied! flag when modifyied */}

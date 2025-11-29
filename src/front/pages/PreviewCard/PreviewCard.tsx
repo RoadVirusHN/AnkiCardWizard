@@ -51,16 +51,18 @@ const PreviewCard = ({}) => {
     </div>
     {
       <section className={previewCardStyle.previewPage}>
-        <h2 style={{margin: '0'}}> {curNote.modelName}</h2>
-        <Tags givenTags={curNote.tags} isModifying={isModifying} 
-        onAddTag={(tag)=>{
-          setCurNote({...curNote, tags: [...curNote.tags, tag]});
-          setIsChanged(true);
-        }} 
-        onRemoveTag={(tag)=>{
-          setCurNote({...curNote, tags: curNote.tags.filter(t=>t!==tag)});
-          setIsChanged(true);
-        }}/>
+        <div style={{display: 'flex', margin: '5px'}}>
+          <h2 style={{margin: '0'}}> {curNote.modelName}</h2>
+          <Tags givenTags={curNote.tags} isModifying={isModifying} 
+          onAddTag={(tag)=>{
+            setCurNote({...curNote, tags: [...curNote.tags, tag]});
+            setIsChanged(true);
+          }} 
+          onRemoveTag={(tag)=>{
+            setCurNote({...curNote, tags: curNote.tags.filter(t=>t!==tag)});
+            setIsChanged(true);
+          }}/>
+        </div>
         <h3>front preview</h3>
         {
           isModifying ?
@@ -76,10 +78,10 @@ const PreviewCard = ({}) => {
             />) :
           <div className={previewCardStyle.previewWrapper}>
             <div 
-            style={{ transform: 'scale(0.85)', width: '100%' }}
+            style={{ transform: 'scale(0.85)', width: '100%', minHeight: '20%' }}
             dangerouslySetInnerHTML={{__html: curNote.fields.Front}} 
             />
-          </div>            
+          </div>
         }
         <h3>back preview</h3>
         {
