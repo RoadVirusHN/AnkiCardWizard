@@ -8,6 +8,7 @@ import SimpleButton from '@/front/components/SimpleButton/SimpleButton';
 import useAnkiConnectionStore from '@/front/utils/useAnkiConnectionStore';
 import useGlobalVarStore from '@/front/utils/useGlobalVarStore';
 import useTemplate from '@/front/utils/useTemplates';
+import { MessageType } from '@/scripts/background/messages';
 
 const buildCard = (key: 'Front' | 'Back', customCard: Template, extracted: Extracted) =>
   customCard[key].html.replaceAll(/\{\{(.*?)\}\}/g, 
@@ -52,7 +53,7 @@ const DetectPage: React.FC = () => {
     }
     setIsPending(true);
     chrome.tabs.sendMessage(tab.id, {
-      type: 'REQUEST_DETECTED_CARDS',
+      type: MessageType.REQUEST_DETECTED_CARDS,
       customCards: templates,
     });
     pendingId = setInterval(()=>{
@@ -74,6 +75,7 @@ const DetectPage: React.FC = () => {
     return ({
             deckName: currentDeck || 'Default',
             modelName: customCard.modelName || 'Basic',
+            templateName: customCard.templateName,
             fields: {
               Front: buildedFront || 'Something Wrong with Front',
               Back:  buildedBack || 'Something Wrong with Back',
@@ -87,9 +89,10 @@ const DetectPage: React.FC = () => {
             tags: customCard.tags || [],
           });
   }
-  const addSelected = ()=>{    
-    fetchAnki({action: "addNotes",params: { notes : selected.keys().map((i)=>notes[i])}})
+  const addSelected = ()=>{   
+    fetchAnki({action: "addNotes",params: { notes : [...selected.keys()].map((i)=>notes[i])}})
     .then((res) => {
+      console.log(res);
       if (res.error) {
         console.error('Error adding note to Anki:', res.error);
         alert('Failed to add note to Anki: ' + res.error);

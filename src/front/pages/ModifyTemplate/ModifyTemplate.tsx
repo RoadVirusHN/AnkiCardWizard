@@ -8,6 +8,8 @@ import SimpleButton from "@/front/components/SimpleButton/SimpleButton";
 import ReturnIcon from "@/public/Icon/Icon-Return.svg";
 import SaveIcon from "@/public/Icon/Icon-Save.svg";
 import TemplateSideEditor from "./TemplateSideEditor/TemplateSideEditor";
+import { InspectionMode } from "@/scripts/content/tagExtraction";
+import { MessageType } from "@/scripts/background/messages";
 // 탭 상수
 const TAB = { SETTINGS: "settings", FRONT: "front", BACK: "back" } as const;
 type TabType = typeof TAB[keyof typeof TAB];
@@ -54,17 +56,23 @@ const ModifyTemplate = () => {
       alert("Card Name is required.");
       return;
     }
-    if (isEditMode && idx !== undefined) modifyTemplate(idx, templateData);
+    if (isEditMode && idx !== undefined) modifyTemplate(templates[idx].templateName, templateData);
     else addTemplate(templateData);
     navigate("/templates");
   };
 
   // 픽커(추출) 기능 모의 함수
-  const handlePickElement = (callback: (selector: string) => void) => {
-    // 실제 구현: Content Script로 메시지를 보내 사용자가 요소를 클릭하게 함
-    console.log("Start element picker...");
-    // 예시: 2초 뒤 임의의 선택자 입력
-    setTimeout(() => callback("div.extracted > span"), 500); 
+  const handlePickElement = async (callback: (selector: string) => void) => {
+    console.log("Entering inspect mode for element picking...");
+    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+    if (!tab.id) {
+      console.warn('No active tab found!');
+      return;
+    }
+    chrome.tabs.sendMessage(tab.id, {
+      type: MessageType.ENTER_INSPECT_MODE,
+      mode: InspectionMode.TAG_EXTRACTION
+    });
   };
 
 return (

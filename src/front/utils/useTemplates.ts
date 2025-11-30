@@ -30,6 +30,7 @@ export interface TemplateMeta {
   url?: string;
 }
 export interface Note {
+  templateName: string;
   deckName: string;
   modelName: string;
   fields: {
@@ -69,8 +70,8 @@ export interface Template {
 interface TemplateState {
   templates: Template[];
   addTemplate: (card: Template) => void;
-  removeTemplate: (index: number) => void;
-  modifyTemplate: (index: number, card: Template) => void;
+  removeTemplate: (name: string) => void;
+  modifyTemplate: (name: string, card: Template) => void;
   notes: { [idx: string]: Note };
   addNote: (idx: string, note: Note) => void;
   removeNote: (idx: string) => void;
@@ -91,14 +92,24 @@ const useTemplate = create<TemplateState>()(
       addTemplate: (template: Template) => {
         set((state) => ({ templates: [...state.templates, template] }));
       },
-      removeTemplate: (index: number) => {
-        set((state) => ({
-          templates: state.templates.filter((_, i) => i !== index),
-        }));
+      removeTemplate: (name: string) => {
+        set((state) => {
+          const newNotes = {} as { [idx: string]: Note };
+          Object.keys(state.notes).forEach((idx) => {
+            const note = state.notes[idx];
+            if (note.templateName !== name) {
+              newNotes[idx] = note;
+            }
+          });
+          return {
+            templates: state.templates.filter((info) => info.templateName !== name),
+            notes: newNotes
+          };
+        });
       },
-      modifyTemplate: (index: number, template: Template) => {
+      modifyTemplate: (name: string, template: Template) => {
         set((state) => ({
-          templates: state.templates.map((c, i) => (i === index ? template : c)),
+          templates: state.templates.map((c) => (c.templateName === name ? template : c)),
         }));
       },
       notes: {},

@@ -118,10 +118,12 @@ chrome.runtime.onMessage.addListener((message) => {
     console.log('Received EXTRACT_DATA_REQUEST message');
     sendDetectedCards(message.customCards);
   } else if (message.type === MessageType.ENTER_INSPECT_MODE) {
-    console.log("request OverlayMode");
-    activateInspectionMode();
+    console.log("request OverlayMode" + message.mode);
+    activateInspectionMode(message.mode);
   } else if (message.type === MessageType.EXIT_INSPECT_MODE) {
     console.log("request unset OverlayMode");
     deactivateInspectionMode();
+  } else {
+    console.log("wtf");
   }
 });

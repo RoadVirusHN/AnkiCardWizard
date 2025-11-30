@@ -28,7 +28,7 @@ const CustomPage: React.FC = () => {
           {card.templateName} 
           <span style={{cursor: "pointer"}} onClick={()=>{
             if (confirm(`정말 "${card.templateName}" 카드를 삭제하시겠습니까?`)){
-              removeCustomCard(index)
+             // removeCustomCard(index)
             }
           }}> -</span>
         </div>)}

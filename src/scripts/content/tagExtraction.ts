@@ -279,6 +279,7 @@ const showTooltip = (text: string, x: number, y: number) => {
     setTimeout(() => {
       if (infoElement) infoElement.style.display = 'none';
     }, 2000);
+    deactivateInspectionMode(); // 작업 후 모드 비활성화
   }
 };
 
