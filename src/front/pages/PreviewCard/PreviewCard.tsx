@@ -8,11 +8,12 @@ import CancleIcon from "@/public/Icon/Icon-Reset.svg";
 import SaveIcon from "@/public/Icon/Icon-Save.svg";
 import CodeIcon from "@/public/Icon/Icon-Code.svg";
 import ExtractIcon from "@/public/Icon/Icon-Code.svg"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Tags from "@/front/components/Tags/Tags";
 import { Editor } from "@monaco-editor/react";
 import SimpleButton from "@/front/components/SimpleButton/SimpleButton";
 import { MessageType } from "@/scripts/background/messages";
+import { InspectionMode } from "@/scripts/content/tagExtraction";
 
 const PreviewCard = ({}) => {
   const {index} = useParams();
@@ -21,8 +22,22 @@ const PreviewCard = ({}) => {
   const {notes, templates, updateNote} = useTemplate();
   const idx = index ?? '0-0';
   const [curNote, setCurNote] = useState(notes[idx]);
+  const [curFocusedInput, setCurFocusedInput] = useState<HTMLTextAreaElement|null>(null);
   const templateIdx = Number(idx.split('-')[0]);
   const navigate = useNavigate();
+  useEffect(()=>{
+    chrome.runtime.onMessage.addListener((message) => {
+      if (message.type === MessageType.SEND_INSPECT_DATA){
+        if (curFocusedInput) {
+          const startPos = curFocusedInput.selectionStart || 0;
+          const endPos = curFocusedInput.selectionEnd || 0;
+          curFocusedInput.value = curFocusedInput.value.substring(0, startPos) + message.data + curFocusedInput.value.substring(endPos);
+          curFocusedInput.selectionEnd = startPos + message.data.length;
+          curFocusedInput.focus();
+        }
+      }
+    });
+  },[])
   return (<div>
     <div className={previewCardStyle.header}>
       <div style={{display: 'flex', gap: '10px', alignItems: 'center'}}>
@@ -71,7 +86,8 @@ const PreviewCard = ({}) => {
             return;
           }
           chrome.tabs.sendMessage(tab.id, {
-            type: MessageType.ENTER_OVERLAY_MODE
+            type: MessageType.ENTER_INSPECT_MODE,
+            mode: InspectionMode.TEXT_EXTRACTION
           });
         }}/> : ''}</h3>
         {
@@ -84,6 +100,14 @@ const PreviewCard = ({}) => {
             onChange={(value)=>{
               setCurNote({...curNote, fields: {...curNote.fields, Front: value || ''}}); 
               setIsChanged(true);
+            }}
+            onMount={(editor)=>{
+              editor.onDidFocusEditorText(()=>{
+                setCurFocusedInput(editor.getDomNode() ? null: editor.getDomNode()!.querySelector('textarea'));
+              });
+              editor.onDidBlurEditorText(()=>{
+                setCurFocusedInput(null);
+              });
             }}
             />) :
           <div className={previewCardStyle.previewWrapper}>
@@ -104,6 +128,14 @@ const PreviewCard = ({}) => {
             onChange={(value)=>{
               setCurNote({...curNote, fields: {...curNote.fields, Back: value || ''}}); 
               setIsChanged(true);
+            }}
+            onMount={(editor)=>{
+              editor.onDidFocusEditorText(()=>{
+                setCurFocusedInput(editor.getDomNode() ? null: editor.getDomNode()!.querySelector('textarea'));
+              });
+              editor.onDidBlurEditorText(()=>{
+                setCurFocusedInput(null);
+              });
             }}
             />)
           :
