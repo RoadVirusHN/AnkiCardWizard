@@ -53,7 +53,7 @@ const DetectPage: React.FC = () => {
     }
     setIsPending(true);
     chrome.tabs.sendMessage(tab.id, {
-      type: MessageType.REQUEST_DETECTED_CARDS,
+      type: MessageType.REQUEST_DETECTED_CARDS_FROM_PANEL,
       customCards: templates,
     });
     pendingId = setInterval(()=>{
