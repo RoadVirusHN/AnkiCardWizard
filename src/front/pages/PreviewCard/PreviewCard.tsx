@@ -80,16 +80,11 @@ const PreviewCard = ({}) => {
             setIsChanged(true);
           }}/>
         </div>
-        <h3>front preview{isModifying ? <SimpleButton Svg={ExtractIcon} onClick={async ()=>{
-          const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-          if (!tab.id) {
-            console.warn('No active tab found!');
-            return;
-          }
-          chrome.tabs.sendMessage(tab.id, {
-            type: MessageType.ENTER_INSPECT_MODE,
-            mode: InspectionMode.TEXT_EXTRACTION
-          });
+        <h3>front preview{isModifying ? <SimpleButton Svg={ExtractIcon} onClick={()=>{
+          chrome.runtime.sendMessage({
+            type: MessageType.ENTER_INSPECT_MODE_FROM_PANEL,
+            data: InspectionMode.TEXT_EXTRACTION
+          },(response) => {alert(response)});
         }}/> : ''}</h3>
         {
           isModifying ?

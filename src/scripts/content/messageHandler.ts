@@ -1,14 +1,9 @@
 import { Template } from "@/front/utils/useTemplates";
-import { Message } from "../background/messageHandler";
+import { Message, MessageType } from "../background/messageHandler";
 import { getExtractedFromPage } from "./content";
+import { activateInspectionMode, InspectionMode } from "./tagExtraction";
 
 
-enum MessageType {
-  SEND_DETECTED_CARDS = 'SEND_DETECTED_CARDS',
-  REQUEST_DETECTED_CARDS_TO_CONTENT = 'REQUEST_DETECTED_CARDS_TO_CONTENT',
-  ENTER_INSPECT_MODE = 'ENTER_INSPECT_MODE',
-  EXIT_INSPECT_MODE = 'EXIT_INSPECT_MODE',
-  SEND_INSPECT_DATA = 'SEND_INSPECT_DATA',}
 
 export const messageHandler = async (
   message: Message,
@@ -21,6 +16,9 @@ export const messageHandler = async (
       console.log('Received REQUEST_DETECTED_CARDS_TO_CONTENT message');
       sendResponse(getExtractedFromPage(message.data as Template[]));
       break;
+    case MessageType.ENTER_INSPECT_MODE_TO_CONTENT:
+      console.log("Enter inspect mode requested: " + (message.data));
+      activateInspectionMode(message.data as InspectionMode);
   }
   return isAsync;
 };
