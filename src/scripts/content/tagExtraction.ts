@@ -368,7 +368,7 @@ export const activateInspectionMode = (mode: InspectionMode = InspectionMode.TEX
   document.addEventListener('mouseover', handleMouseOver, true);
   document.addEventListener('mouseout', handleMouseOut, true);
   document.addEventListener('mousedown', handleMouseDown, true);
-  
+  document.addEventListener('scroll', handleMouseOut, true);
 };
 
 export const deactivateInspectionMode = () => {
@@ -381,4 +381,5 @@ export const deactivateInspectionMode = () => {
   document.removeEventListener('mouseover', handleMouseOver, true);
   document.removeEventListener('mouseout', handleMouseOut, true);
   document.removeEventListener('mousedown', handleMouseDown, true);
+  document.removeEventListener('scroll', handleMouseOut, true);
 };
