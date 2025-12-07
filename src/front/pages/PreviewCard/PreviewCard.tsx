@@ -26,7 +26,7 @@ const PreviewCard = ({}) => {
   const [curText, setCurText] = useState('');
   const templateIdx = Number(idx.split('-')[0]);
   const navigate = useNavigate();
-  let panelPort : chrome.runtime.Port|null = null;
+  const [panelPort, setPanelPort] = useState<chrome.runtime.Port|null>();
   return (<div>
     <div className={previewCardStyle.header}>
       <div style={{display: 'flex', gap: '10px', alignItems: 'center'}}>
@@ -70,20 +70,32 @@ const PreviewCard = ({}) => {
         </div>
         {curText}
         <SimpleButton text="cancle" onClick={()=>{
-          if (panelPort!=null)  panelPort.disconnect();
+          console.log(panelPort);
+          if (panelPort!=null)  {
+            console.log("cancle inspection mode");
+            panelPort.disconnect();
+          }
         }}/>
         <h3>front preview{isModifying ? <SimpleButton Svg={ExtractIcon} onClick={async ()=>{
-          if (panelPort!=null)  panelPort.disconnect();
-          const [tab] = await chrome.tabs.query({ active: true, lastFocusedWindow: true });
-          const tabId = tab.id;
-          panelPort = chrome.runtime.connect({ name: PortNames.ENTER_TEXT_INSPECTION_MODE_FROM_PANEL });
-          panelPort.postMessage({type:MessageType.SET_INSPECTION_TAB_ID, tabId });
-          panelPort.onMessage.addListener((msg)=>{
-            let data = msg.data as string;
-            data = data.trim();
-            setCurText(msg.data);
-            console.log('Received extracted text:', data);
-          });
+          if (panelPort!=null)  {
+            console.log("disconnect previous port");
+            panelPort.disconnect();
+          }
+          const newPort = chrome.runtime.connect({ name: PortNames.ENTER_TEXT_INSPECTION_MODE_FROM_PANEL })
+          setPanelPort(newPort);
+          if (newPort){
+            const [tab] = await chrome.tabs.query({ active: true, lastFocusedWindow: true });
+            const tabId = tab.id;
+            newPort.postMessage({type:MessageType.SET_INSPECTION_TAB_ID, tabId });
+            console.log("send postMessage to backgorund in newPort");
+            newPort.onMessage.addListener((msg)=>{
+              console.log("panel get response" , msg);
+              let data = msg.data as string;
+              data = data.trim();
+              setCurText(msg.data);
+              console.log('Received extracted text:', data);
+            });
+          }
         }}/> : ''}</h3>
         {
           isModifying ?
