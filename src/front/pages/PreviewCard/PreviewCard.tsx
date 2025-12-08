@@ -8,13 +8,13 @@ import CancleIcon from "@/public/Icon/Icon-Reset.svg";
 import SaveIcon from "@/public/Icon/Icon-Save.svg";
 import CodeIcon from "@/public/Icon/Icon-Code.svg";
 import ExtractIcon from "@/public/Icon/Icon-Code.svg"
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Tags from "@/front/common/Tags/Tags";
 import { Editor } from "@monaco-editor/react";
 import SimpleButton from "@/front/common/SimpleButton/SimpleButton";
-import { InspectionMode } from "@/scripts/content/tagExtraction";
 import { MessageType } from "@/scripts/background/messageHandler";
 import { PortNames } from "@/scripts/background/connectHandler";
+import InspectionButton from "@/front/common/InspectionButton/InspectionButton";
 
 const PreviewCard = ({}) => {
   const {index} = useParams();
@@ -26,7 +26,6 @@ const PreviewCard = ({}) => {
   const [curText, setCurText] = useState('');
   const templateIdx = Number(idx.split('-')[0]);
   const navigate = useNavigate();
-  const [panelPort, setPanelPort] = useState<chrome.runtime.Port|null>();
   return (<div>
     <div className={previewCardStyle.header}>
       <div style={{display: 'flex', gap: '10px', alignItems: 'center'}}>
@@ -69,34 +68,8 @@ const PreviewCard = ({}) => {
           }}/>
         </div>
         {curText}
-        <SimpleButton text="cancle" onClick={()=>{
-          console.log(panelPort);
-          if (panelPort!=null)  {
-            console.log("cancle inspection mode");
-            panelPort.disconnect();
-          }
-        }}/>
-        <h3>front preview{isModifying ? <SimpleButton Svg={ExtractIcon} onClick={async ()=>{
-          if (panelPort!=null)  {
-            console.log("disconnect previous port");
-            panelPort.disconnect();
-          }
-          const newPort = chrome.runtime.connect({ name: PortNames.ENTER_TEXT_INSPECTION_MODE_FROM_PANEL })
-          setPanelPort(newPort);
-          if (newPort){
-            const [tab] = await chrome.tabs.query({ active: true, lastFocusedWindow: true });
-            const tabId = tab.id;
-            newPort.postMessage({type:MessageType.SET_INSPECTION_TAB_ID, tabId });
-            console.log("send postMessage to backgorund in newPort");
-            newPort.onMessage.addListener((msg)=>{
-              console.log("panel get response" , msg);
-              let data = msg.data as string;
-              data = data.trim();
-              setCurText(msg.data);
-              console.log('Received extracted text:', data);
-            });
-          }
-        }}/> : ''}</h3>
+
+        <h3>front preview{isModifying ? <InspectionButton setResult={setCurText}/> : ''}</h3>
         {
           isModifying ?
           (<Editor
