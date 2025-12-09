@@ -1,0 +1,14 @@
+.previewWrapper{
+  border-style: solid;
+  border-radius: 12px;
+  border-width: 1px;
+  border-color: var(--color-secondary);
+  width: 100%;  
+  height: fit-content;
+  margin: auto;
+}
+.previewWrapper .preview{
+  transform: scale(0.85);
+  width: 100%;
+  min-height: 20%; 
+}

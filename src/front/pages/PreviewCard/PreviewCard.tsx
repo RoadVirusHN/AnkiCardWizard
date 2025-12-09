@@ -7,14 +7,11 @@ import PreviewIcon from "@/public/Icon/Icon-Preview.svg";
 import CancleIcon from "@/public/Icon/Icon-Reset.svg";
 import SaveIcon from "@/public/Icon/Icon-Save.svg";
 import CodeIcon from "@/public/Icon/Icon-Code.svg";
-import ExtractIcon from "@/public/Icon/Icon-Code.svg"
 import { useState } from "react";
 import Tags from "@/front/common/Tags/Tags";
 import { Editor } from "@monaco-editor/react";
-import SimpleButton from "@/front/common/SimpleButton/SimpleButton";
-import { MessageType } from "@/scripts/background/messageHandler";
-import { PortNames } from "@/scripts/background/connectHandler";
 import InspectionButton from "@/front/common/InspectionButton/InspectionButton";
+import Preview from "@/front/common/Preview/Preview";
 
 const PreviewCard = ({}) => {
   const {index} = useParams();
@@ -88,12 +85,7 @@ const PreviewCard = ({}) => {
               });
             }}
             />) :
-          <div className={previewCardStyle.previewWrapper}>
-            <div 
-            style={{ transform: 'scale(0.85)', width: '100%', minHeight: '20%' }}
-            dangerouslySetInnerHTML={{__html: curNote.fields.Front}} 
-            />
-          </div>
+            <Preview html={curNote.fields.Front}/>
         }
         <h3>back preview</h3>
         {
@@ -114,13 +106,7 @@ const PreviewCard = ({}) => {
               });
             }}
             />)
-          :
-          (<div className={previewCardStyle.previewWrapper}>
-          <div 
-          style={{ transform: 'scale(0.85)', width: '100%' }}
-          dangerouslySetInnerHTML={{__html: curNote.fields.Back}} 
-          />
-          </div>)
+          : <Preview html={curNote.fields.Back}/>
         }
       </section>      
     }
