@@ -24,12 +24,3 @@
   align-items: center;
   cursor: pointer;
 }
-.previewWrapper{
-  border-style: solid;
-  border-radius: 12px;
-  border-width: 1px;
-  border-color: var(--color-secondary);
-  width: 100%;  
-  height: fit-content;
-  margin: auto;
-}
