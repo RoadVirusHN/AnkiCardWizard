@@ -85,12 +85,45 @@ interface TemplateState {
   setExtractedMaps: (newMaps: ExtractedMap) => void;
 }
 
+enum TEMPLATE_CODE {
+  OK='OK',
+  INVALID_TEMPLATE_NAME='INVALID_TEMPLATE_NAME',
+  DUPLICATE_TEMPLATE_NAME='DUPLICATE_TEMPLATE_NAME',
+  INVALID_AUTHOR_NAME='INVALID_AUTHOR_NAME',
+  INVALID_MODEL_NAME='INVALID_MODEL_NAME',
+  INVALID_ROOT_TAG='INVALID_ROOT_TAG',
+
+}
+
+
+const isTemplateValid = (template: Template, curTemplates: Template[]): TEMPLATE_CODE => {
+  if (!template.templateName || template.templateName.trim() === '') {
+    return TEMPLATE_CODE.INVALID_TEMPLATE_NAME;
+  }
+  if (curTemplates.filter((t) => t.templateName === template.templateName).length > 0) {
+    return TEMPLATE_CODE.DUPLICATE_TEMPLATE_NAME;
+  }
+  if (!template.meta.author || template.meta.author.trim() === '') {
+    return TEMPLATE_CODE.INVALID_AUTHOR_NAME;
+  }
+  if (!template.modelName || template.modelName.trim() === '') {
+    return TEMPLATE_CODE.INVALID_MODEL_NAME;
+  }
+  if (!template.rootTag || template.rootTag.trim() === '') {
+    return TEMPLATE_CODE.INVALID_ROOT_TAG;
+  }
+  return TEMPLATE_CODE.OK;
+};
+
 const useTemplate = create<TemplateState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       templates: [],
       addTemplate: (template: Template) => {
-        set((state) => ({ templates: [...state.templates, template] }));
+        const code = isTemplateValid(template, get().templates);
+        if (code === TEMPLATE_CODE.OK)
+          set((state) => ({ templates: [...state.templates, template] }));
+        return code;
       },
       removeTemplate: (name: string) => {
         set((state) => {
@@ -108,9 +141,12 @@ const useTemplate = create<TemplateState>()(
         });
       },
       modifyTemplate: (name: string, template: Template) => {
-        set((state) => ({
-          templates: state.templates.map((c) => (c.templateName === name ? template : c)),
-        }));
+        const code = isTemplateValid(template, get().templates);
+        if (code === TEMPLATE_CODE.OK)
+          set((state) => ({
+            templates: state.templates.map((c) => (c.templateName === name ? template : c)),
+          }));
+        return code;
       },
       notes: {},
       addNote: (idx, note) => {
