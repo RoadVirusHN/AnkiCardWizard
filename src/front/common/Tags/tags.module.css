@@ -4,23 +4,39 @@
   -ms-overflow-style: none;
   scrollbar-width: none;     
   overflow-y: hidden;
+  display: flex;
 }
 .tag{
-  border-radius: 8px;
-  padding: 2px 4px 2px 4px;
+  border-radius: 45%;
+  padding: 0px 4px;
   margin: 4px;
+  line-height: 2;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  display: inline-block;
+  min-width: 25px;
 }
 
 .tagInput{
+  min-width: 3em;
   border: none;
-  min-width: 5em;
   font-size: small;
-  max-width: 10em;
+  max-width: 8em;
   field-sizing: content;
 }
+.tagInput:focus{
+  outline: none;
+}
+.emptyTag{
+  display: inline-block;
+  border: 2px dashed gray;
+  background-color: transparent;
+}
 .tagAdder{
-  
+  text-align: center; 
+  cursor: pointer;
+  line-height: 2;
+  margin: 0px 4px;
+  border-radius: 45%;
 }
