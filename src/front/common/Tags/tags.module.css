@@ -1,16 +1,18 @@
 .tags{
-  margin: 5px;
+  margin: 2px;
   overflow-x: scroll;
   -ms-overflow-style: none;
   scrollbar-width: none;     
   overflow-y: hidden;
   display: flex;
+  font-size: small;
 }
 .tag{
-  border-radius: 45%;
-  padding: 0px 4px;
-  margin: 4px;
-  line-height: 2;
+  border-radius: 15%;
+  border-color: var(--color-primary);
+  padding: 2px 3px;
+  margin: 2px;
+  line-height: 1;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -19,10 +21,12 @@
 }
 
 .tagInput{
-  min-width: 3em;
+  min-width: 25px;
   border: none;
-  font-size: small;
   max-width: 8em;
+  padding: 2px 3px;
+  margin: 2px;
+  line-height: 1;
   field-sizing: content;
 }
 .tagInput:focus{
@@ -36,7 +40,7 @@
 .tagAdder{
   text-align: center; 
   cursor: pointer;
-  line-height: 2;
-  margin: 0px 4px;
-  border-radius: 45%;
+  line-height: 1;
+  margin: 0px 3px;
+  border-radius: 15%;
 }

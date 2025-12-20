@@ -36,6 +36,7 @@
     "@types/react-dom": "^19.2.3",
     "@typescript-eslint/eslint-plugin": "^8.46.2",
     "@typescript-eslint/parser": "^8.46.2",
+    "baseline-browser-mapping": "^2.9.11",
     "copy-webpack-plugin": "^13.0.1",
     "css-loader": "^5.0.0",
     "del-webpack-plugin": "^2.1.0",
