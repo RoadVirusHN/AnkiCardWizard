@@ -15,6 +15,9 @@ const Tabs = ({}) => {
   const {currentTab, setCurrentTab} = useGlobalVarStore();
   useEffect(() => {
     switch (location.pathname) {
+      case '/detect':
+        if (currentTab !== Tab.DETECT) setCurrentTab(Tab.DETECT);
+        break;
       case '/add':
         if (currentTab !== Tab.ADD) setCurrentTab(Tab.ADD);
         break;
@@ -31,7 +34,8 @@ const Tabs = ({}) => {
         if (currentTab !== Tab.CONFIG) setCurrentTab(Tab.TEMPLATES);
         break;
       default:
-        if (currentTab !== Tab.DETECT) setCurrentTab(Tab.DETECT);
+        if (location.pathname.match('/templates')!==null) setCurrentTab(Tab.TEMPLATES);
+        // TODO: error handling for unknown path can be added here
         break;
     }
   }, [location]);
