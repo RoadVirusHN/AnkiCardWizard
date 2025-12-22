@@ -1,5 +1,6 @@
 import tagsStyle from "./tags.module.css";
 import useTemplate from "@/front/utils/useTemplates";
+import AddIcon from "@/public/Icon/Icon-Add.svg";
 import { getComplementaryColor, getRandomColor } from "@/front/utils/functions";
 
 
@@ -40,11 +41,10 @@ const Tags = ({givenTags, isModifying, onRemoveTag, onAddTag}:TagsProps) => {
         </span>);
       }
     )}
-    {isModifying ? <><span className={`${tagsStyle.tag} ${tagsStyle.emptyTag}` }>
+    {isModifying ? <>
     <input id="tagInput" className={tagsStyle.tagInput} type='text' placeholder="New Tag" 
     onKeyDown={(e)=>{if (e.key==='Enter') insertTag()}}/> 
-    </span> 
-    <span className={tagsStyle.tagAdder} onClick={insertTag}> ⨁</span></>
+    <AddIcon className={tagsStyle.tagAdder} onClick={insertTag}/></>
     : null}
   </div>);
 };
