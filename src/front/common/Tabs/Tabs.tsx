@@ -1,7 +1,6 @@
 import { NavLink, useLocation } from "react-router";
 import tabsStyle from "./tabs.module.css";
 import AddCardIcon from "@/public/Icon/Icon-AddCard.svg";
-import HistoryIcon from "@/public/Icon/Icon-History.svg";
 import CardTypeIcon from "@/public/Icon/Icon-CardType.svg";
 import ConfigIcon from "@/public/Icon/Icon-Config.svg";
 import { useEffect } from "react";
@@ -20,9 +19,6 @@ const Tabs = ({}) => {
         break;
       case '/add':
         if (currentTab !== Tab.ADD) setCurrentTab(Tab.ADD);
-        break;
-      case '/history':
-        if (currentTab !== Tab.HISTORY) setCurrentTab(Tab.HISTORY);
         break;
       case '/templates':
         if (currentTab !== Tab.TEMPLATES) setCurrentTab(Tab.TEMPLATES);
@@ -49,16 +45,6 @@ const Tabs = ({}) => {
       to={'/add'}>
       <AddCardIcon style={{filter: "grayscale(100%)"}}/>
       <p>Add</p>
-      </NavLink>
-    </TooltipWrapper>
-    <TooltipWrapper text="Comming soon!" tooltipDirection={TooltipDirection.BOTTOM} styles={{flex: '1'}}>
-      <NavLink 
-      onClick={(e)=>e.preventDefault()}
-      className={`${tabsStyle.tab} ${currentTab==Tab.HISTORY? tabsStyle.selected : ''}`} 
-      to={'/history'}
-      >
-        <HistoryIcon style={{fill: "gray"}}/>
-        <p>History</p> 
       </NavLink>
     </TooltipWrapper>
     <NavLink 

@@ -26,10 +26,6 @@ const router = createHashRouter([
         element: <AddPage/>
       },
       {
-        path: "history",
-        element: <HistoryPage/> 
-      },
-      {
         path: "templates",
         element: <TemplatesPage/>
       },
