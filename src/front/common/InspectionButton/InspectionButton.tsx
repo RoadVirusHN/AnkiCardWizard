@@ -6,18 +6,23 @@ import { MessageType } from "@/scripts/background/messageHandler";
 import { InspectionMode } from "@/scripts/content/tagExtraction";
 import inspectionButtonStyle from "./InspectionButton.module.css";
 
+
 const InspectionButton = ({setResult, mode=InspectionMode.TAG_EXTRACTION}:{setResult: Dispatch<SetStateAction<string>>, mode?: InspectionMode}) => {
   const [panelPort, setPanelPort] = useState<chrome.runtime.Port|null>();
   return <>
     <div className={inspectionButtonStyle.overlay} style={{display:panelPort ? 'flex':'none'}} 
     onClick={()=>{
-      console.log(panelPort);
       if (panelPort!=null)  {
         console.log("cancle inspection mode");
         panelPort.disconnect();
         setPanelPort(null);
       }
-    }}>overlay</div>
+    }}>  
+      <h3>You are in "Inspection Mode"</h3>
+      <span><span style={{fontSize:'xx-large'}}>☜</span> Click a Tag in your page to copy data at the clipboard.</span>
+      <span>Click here to Cancle.</span>
+    
+     </div>
     <SimpleButton Svg={ExtractIcon} onClick={async ()=>{
       if (panelPort!=null)  {
         console.log("disconnect previous port");
@@ -31,8 +36,7 @@ const InspectionButton = ({setResult, mode=InspectionMode.TAG_EXTRACTION}:{setRe
         newPort.postMessage({type:MessageType.SET_INSPECTION_TAB_ID, tabId });
         newPort.onMessage.addListener((msg)=>{
           let data = msg.data as string;
-          data = data.trim();
-          setResult(msg.data);
+          setResult(data.trim());
         });
       }
     }}/> 
