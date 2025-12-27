@@ -7,23 +7,29 @@ import { InspectionMode } from "@/scripts/content/tagExtraction";
 import inspectionButtonStyle from "./InspectionButton.module.css";
 
 
-const InspectionButton = ({setResult, mode=InspectionMode.TAG_EXTRACTION}:{setResult: Dispatch<SetStateAction<string>>, mode?: InspectionMode}) => {
+const InspectionButton = ({setResult, mode=InspectionMode.TAG_EXTRACTION}:{setResult: (text:string)=>void, mode?: InspectionMode}) => {
   const [panelPort, setPanelPort] = useState<chrome.runtime.Port|null>();
   return <>
     <div className={inspectionButtonStyle.overlay} style={{display:panelPort ? 'flex':'none'}} 
     onClick={()=>{
-      if (panelPort!=null)  {
+      if (panelPort!=null) {
         console.log("cancle inspection mode");
         panelPort.disconnect();
         setPanelPort(null);
       }
     }}>  
-      <h3>You are in "Inspection Mode"</h3>
-      <span><span style={{fontSize:'xx-large'}}>☜</span> Click a Tag in your page to copy data at the clipboard.</span>
-      <span>Click here to Cancle.</span>
-    
+      <div className={inspectionButtonStyle['left-pointer']}></div>
+      <div className={inspectionButtonStyle['instruction-box']}>
+        <h3>Your in "Inspection Mode"</h3>
+        <ol>
+            <li>Hover over the tag</li>
+            <li>Click to copy into your clipboard.</li>
+            <li>Paste the text where you want!</li>
+        </ol>
+        <h4>* Click here to exit mode.</h4>
+      </div>
      </div>
-    <SimpleButton Svg={ExtractIcon} onClick={async ()=>{
+    <SimpleButton src={ExtractIcon} onClick={async ()=>{
       if (panelPort!=null)  {
         console.log("disconnect previous port");
         panelPort.disconnect();
@@ -38,21 +44,15 @@ const InspectionButton = ({setResult, mode=InspectionMode.TAG_EXTRACTION}:{setRe
           let data = msg.data as string;
           setResult(data.trim());
           newPort.disconnect();
+          setPanelPort(null);
         });
         newPort.onDisconnect.addListener(()=>{
+          // 탭이 닫히거나 에러 등으로 포트가 끊어졌을 때 처리
           console.log("inspection mode disconnected");
           setPanelPort(null);
         });
       }
     }}/> 
-    <SimpleButton text="cancle" onClick={()=>{
-      console.log(panelPort);
-      if (panelPort!=null)  {
-        console.log("cancle inspection mode");
-        panelPort.disconnect();
-        setPanelPort(null);
-      }
-    }}/>
   </> ;
 };
 export default InspectionButton;

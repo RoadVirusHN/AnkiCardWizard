@@ -44,7 +44,7 @@ const Tags = ({givenTags, isModifying, onRemoveTag, onAddTag}:TagsProps) => {
     {isModifying ? <>
     <input id="tagInput" className={tagsStyle.tagInput} type='text' placeholder="New Tag" 
     onKeyDown={(e)=>{if (e.key==='Enter') insertTag()}}/> 
-    <AddIcon className={tagsStyle.tagAdder} onClick={insertTag}/></>
+    <img src={AddIcon} className={tagsStyle.tagAdder} onClick={insertTag}/></>
     : null}
   </div>);
 };

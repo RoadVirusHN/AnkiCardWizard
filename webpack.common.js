@@ -28,15 +28,7 @@ module.exports = {
         test: /\.tsx?$/,
         exclude: /node_modules/,
         use: {
-          //loader: "babel-loader",
           loader: "ts-loader",
-          /*options: {
-            presets: [
-              "@babel/preset-env",   // ESNext → ES5
-              "@babel/preset-typescript",
-              "@babel/preset-react", // JSX 지원
-            ],
-          },*/
           options: {
             transpileOnly: false
           }
@@ -50,12 +42,12 @@ module.exports = {
         test: /\.css$/,
          use: ['style-loader','css-loader' ],
       },
+      // {
+      //   test: /\.svg$/,
+      //   use : ['@svgr/webpack'],
+      // },
       {
-        test: /\.svg$/,
-        use : ['@svgr/webpack'],
-      },
-      {
-        test: /\.(png|jpe?g|gif|webp)$/i,
+        test: /\.(png|jpe?g|gif|webp|svg)$/i,
         type: 'asset/resource',
         generator: {
           filename: 'public/[name][hash][ext][query]',

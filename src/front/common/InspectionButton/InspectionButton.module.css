@@ -6,11 +6,18 @@
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
   z-index: 1000;
 }
-.overlay span,h3{
-  color: aliceblue;
+
+.left-pointer{
+  max-width: 200px;
+  background-image: url('~@/public/Icon/Icon-Down.svg');
+  background-repeat: repeat-y;
+  background-size: contain;
+}
+.instruction-box{
+  width: 100%;
+  list-style-position: inside;
 }

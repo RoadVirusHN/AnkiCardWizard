@@ -11,12 +11,13 @@ const TemplateDetail = ({template, idx}:{template: Template, idx: number}) => {
     <h2>{template.templateName}</h2>
     {template.meta.description}
     {template.tags}
-    <DumpSvg onClick={()=>{
+    <img src={DumpSvg} 
+    onClick={()=>{
       if (confirm(`정말 "${template.templateName}" 카드를 삭제하시겠습니까?`)){
         removeTemplate(template.templateName);
       }
     }}/>
-    <ModifySvg onClick={()=>{
+    <img src={ModifySvg} onClick={()=>{
       navigate(`/templates/modify/${idx}`);
     }}/>
   </div>);

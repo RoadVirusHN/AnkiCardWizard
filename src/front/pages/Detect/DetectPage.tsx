@@ -122,7 +122,7 @@ const DetectPage: React.FC = () => {
             {isPending ? 'Scanning...': '↺ Scan'}
           </button>
         </div>
-        <SimpleButton Svg={AddIcon} onClick={addSelected} text={selected.size > 0 ? `+ ${selected.size}` :'Add'}/>
+        <SimpleButton src={AddIcon} onClick={addSelected} text={selected.size > 0 ? `+ ${selected.size}` :'Add'}/>
       </div>
 
       <div className={detectPageStyle.cardsWrapper}>

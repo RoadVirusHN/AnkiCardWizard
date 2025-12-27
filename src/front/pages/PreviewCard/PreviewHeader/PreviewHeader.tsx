@@ -17,27 +17,27 @@ const PreviewHeader = () => {
   const navigate = useNavigate();
   return (<div className={previewCardStyle.header}>
     <div style={{display: 'flex', gap: '10px', alignItems: 'center'}}>
-      <ReturnIcon onClick={()=>{navigate('/')}} style={{'cursor': 'pointer'}}/> 
+      <img src={ReturnIcon} onClick={()=>{navigate('/')}} style={{'cursor': 'pointer'}}/> 
       <h2>{templates[templateIdx].templateName}</h2>
     </div>
     <div className={commonStyle.toggle}>
       <div className={previewCardStyle.modBtns} style={{visibility: isChanged ? "visible" : "hidden"}}>
-        <CancleIcon  onClick={()=>{
+        <img src={CancleIcon}  onClick={()=>{
           setContextValue({...contextValue, curNote: notes[idx],isChanged:false});
           }} style={{'cursor': 'pointer', margin:'5px'}}/>
-        <SaveIcon  onClick={()=>{
+        <img src={SaveIcon}  onClick={()=>{
           updateNote(idx,{...curNote});
           setContextValue({...contextValue,isChanged:false});
           }} style={{'cursor': 'pointer', margin: '5px'}}/>
       </div>
-      <PreviewIcon />
+      <img src={PreviewIcon} />
       <label className={commonStyle.switch}>
         <input type="checkbox" onChange={(e)=>{
           setContextValue({...contextValue,isModifying:e.target.checked});
         }}/>
         <span className={commonStyle.slider} title={isModifying ? "Modify" : "Preview"}/>
       </label>
-      <CodeIcon />
+      <img src={CodeIcon} />
     </div>
   </div>);
 };

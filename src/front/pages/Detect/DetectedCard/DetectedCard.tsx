@@ -35,7 +35,7 @@ const DetectedCard = ({idx, extracted, template, checkAdd}:DetectedCardProps) =>
       </div>
       {/* TODO : Add Del function - make Hash of card and ban it. */}
       <div className={detectPageStyle.delButton}>
-        <DelIcon onClick={(e)=>{
+        <img src={DelIcon} onClick={(e)=>{
           e.stopPropagation();
           removeNote(idx);
           setCurrentDetected(currentDetected - 1); // TODO : make change when notes changed.

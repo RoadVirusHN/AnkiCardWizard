@@ -43,14 +43,14 @@ const Tabs = ({}) => {
       onClick={(e)=>e.preventDefault()}
       className={`${tabsStyle.tab} ${currentTab==Tab.ADD? tabsStyle.selected : ''}`} 
       to={'/add'}>
-      <AddCardIcon style={{filter: "grayscale(100%)"}}/>
+      <img src={AddCardIcon} style={{filter: "grayscale(100%)"}}/>
       <p>Add</p>
       </NavLink>
     </TooltipWrapper>
     <NavLink 
     className={`${tabsStyle.tab} ${currentTab==Tab.TEMPLATES? tabsStyle.selected : ''}`} 
     to={'/templates'}>
-      <CardTypeIcon/>
+      <img src={CardTypeIcon}/>
       <p>Templates</p>
     </NavLink>    
     <TooltipWrapper text="Comming soon!" tooltipDirection={TooltipDirection.BOTTOM_LEFT} styles={{flex: '1'}}>
@@ -58,7 +58,7 @@ const Tabs = ({}) => {
       onClick={(e)=>e.preventDefault()}
       className={`${tabsStyle.tab} ${currentTab==Tab.CONFIG? tabsStyle.selected : ''}`} 
       to={'/config'}>
-        <ConfigIcon style={{fill: "gray"}}/>
+        <img src={ConfigIcon} style={{fill: "gray"}}/>
         <p>Config</p>
       </NavLink>
     </TooltipWrapper>

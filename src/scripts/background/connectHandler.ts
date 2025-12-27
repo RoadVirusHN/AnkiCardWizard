@@ -41,6 +41,7 @@ export const connectHandler = (port: chrome.runtime.Port) => {
       port.onDisconnect.addListener(() => {
         console.log("panel request port disconnection");
         // TODO : Add Common Disconnect Handler to execute both handler
+        // port.onDisconnect는 오직 반대편에서 disconnect를 호출했을 때만 실행된다.
         const tabId = portTabMap.get(port);
         if (tabId !== undefined) {
           contentScriptPorts[tabId].disconnect();

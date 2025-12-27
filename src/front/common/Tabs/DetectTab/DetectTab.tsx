@@ -21,7 +21,7 @@ const DetectTab = ({}) => {
   <NavLink className={`${tabsStyle.tab} ${currentTab==Tab.DETECT ? tabsStyle.selected : ''}`} to={'/detect'}>
       <div style={{display:'flex', alignItems: 'end', gap: '5px'}}>
         <span className={commonStyle.badge}>{currentDetected}</span>
-        <AnkiIcon className={`${tabsStyle["anki-logo"]} ` + (isPending ? `${tabsStyle.spinning}`:'')}/>
+        <img src={AnkiIcon} className={`${tabsStyle["anki-logo"]} ` + (isPending ? `${tabsStyle.spinning}`:'')}/>
         <TooltipWrapper 
         classes={[tabsStyle.tooltip]}
         text={`${isPending ? 'connecting..':(isConnected ? 'refresh?' : 'Anki disconnected')}`} 

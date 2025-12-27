@@ -16,6 +16,7 @@ const PreviewCard = ({}) => {
   const [contextValue, setContextValue] = useState({isChanged: false, isModifying : false,curNote: notes[idx], idx});
   const {curNote, isModifying, isChanged} = contextValue; 
   const [curText, setCurText] = useState('');
+  const setResult = (text:string) => {setCurText(text);};
   return (<div>
     <PreviewContext.Provider value={{contextValue,setContextValue}}>
       <PreviewHeader/>
@@ -38,7 +39,7 @@ const PreviewCard = ({}) => {
         </div>
         {curText}
 
-        <h3>front preview{isModifying ? <InspectionButton setResult={setCurText}/> : ''}</h3>
+        <h3>front preview{isModifying ? <InspectionButton setResult={setResult}/> : ''}</h3>
         {
           isModifying ?
           (<Editor
@@ -84,20 +85,6 @@ const PreviewCard = ({}) => {
         }
       </section>      
     }
-        <h3>back preview</h3>
-        <h3>back preview</h3>
-        <h3>back preview</h3>
-        <h3>back preview</h3>
-        <h3>back preview</h3>
-        <h3>back preview</h3>
-        <h3>back preview</h3>
-        <h3>back preview</h3>
-        <h3>back preview</h3>
-        <h3>back preview</h3>
-        <h3>back preview</h3>
-        <h3>back preview</h3>
-        <h3>back preview</h3>
-        <h3>back preview</h3>
   </div>);
 };
 export default PreviewCard;

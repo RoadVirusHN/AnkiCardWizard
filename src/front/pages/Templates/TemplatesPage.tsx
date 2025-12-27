@@ -7,7 +7,7 @@ const TemplatesPage = ({}) => {
   const {templates} = useTemplate();  
   const navigate = useNavigate();
   return (<div>
-    <AddIcon onClick={()=>{
+    <img src={AddIcon} onClick={()=>{
       navigate("/modify");
     }}
     style={{cursor: "pointer"}}/>  

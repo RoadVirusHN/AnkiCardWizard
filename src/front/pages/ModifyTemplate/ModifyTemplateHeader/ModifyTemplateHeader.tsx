@@ -14,12 +14,12 @@ const ModifyTemplateHeader = ({title, isChanged, onSave, onCancle}: Props) => {
   const navigate = useNavigate();
   return (<div className={modifyTemplateStyle.header}>
     <div className={modifyTemplateStyle.headerLeft}>
-      <ReturnIcon onClick={() => navigate("/templates")} />
+      <img src={ReturnIcon} onClick={() => navigate("/templates")} />
       <span className={modifyTemplateStyle.title}>{title}</span>
     </div>
     <div className={previewCardStyle.modBtns} style={{visibility: isChanged ? "visible" : "hidden"}}>
-      <CancleIcon  onClick={onCancle} style={{'cursor': 'pointer', margin:'5px'}}/>
-      <SaveIcon  onClick={onSave} style={{'cursor': 'pointer', margin: '5px'}}/>
+      <img src={CancleIcon}  onClick={onCancle} style={{'cursor': 'pointer', margin:'5px'}}/>
+      <img src={SaveIcon}  onClick={onSave} style={{'cursor': 'pointer', margin: '5px'}}/>
     </div>
   </div>);
 };
