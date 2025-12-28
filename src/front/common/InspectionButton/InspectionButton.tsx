@@ -5,7 +5,7 @@ import { PortNames } from "@/scripts/background/connectHandler";
 import { MessageType } from "@/scripts/background/messageHandler";
 import { InspectionMode } from "@/scripts/content/tagExtraction";
 import inspectionButtonStyle from "./InspectionButton.module.css";
-
+// import leftArrowIcon from "@/public/Icon/Icon-LeftArrow.svg";
 
 const InspectionButton = ({setResult, mode=InspectionMode.TAG_EXTRACTION}:{setResult: (text:string)=>void, mode?: InspectionMode}) => {
   const [panelPort, setPanelPort] = useState<chrome.runtime.Port|null>();
@@ -18,7 +18,9 @@ const InspectionButton = ({setResult, mode=InspectionMode.TAG_EXTRACTION}:{setRe
         setPanelPort(null);
       }
     }}>  
-      <div className={inspectionButtonStyle['left-pointer']}></div>
+      <div className={inspectionButtonStyle.pointers}>
+        {Array.from({length: 10}).map((_, i)=> (<span key={i} className={inspectionButtonStyle['left-pointer']}>◀</span>))}
+      </div>
       <div className={inspectionButtonStyle['instruction-box']}>
         <h3>Your in "Inspection Mode"</h3>
         <ol>
