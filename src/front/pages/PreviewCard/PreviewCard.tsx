@@ -9,6 +9,7 @@ import Preview from "@/front/common/Preview/Preview";
 import PreviewHeader from "./PreviewHeader/PreviewHeader";
 import { PreviewContext } from "./PreviewContext";
 import { InspectionMode } from "@/scripts/content/tagExtraction";
+import ModelInput from "@/front/common/Inputs/ModelInput/ModelInput";
 
 const PreviewCard = ({}) => {
   const {index} = useParams();
@@ -24,7 +25,11 @@ const PreviewCard = ({}) => {
     </PreviewContext.Provider>
     {
       <section className={previewCardStyle.previewPage}>
-        <h2 style={{margin: '0'}}> {curNote.modelName}</h2>
+        <ModelInput setModel={(modelName:string)=>setContextValue({
+          ...contextValue,
+          curNote: {...curNote, modelName},
+          isChanged:true
+        })} defaultModel={curNote.modelName}/>
         <Tags givenTags={curNote.tags} isModifying={isModifying} 
         onAddTag={(tag)=>{
           setContextValue({...contextValue,

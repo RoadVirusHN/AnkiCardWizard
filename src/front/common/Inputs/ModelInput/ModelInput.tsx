@@ -1,8 +1,7 @@
 import useAnkiConnectionStore from "@/front/utils/useAnkiConnectionStore";
-import DecksIcon from "@/public/Icon/Icon-Decks.svg";
-import statusBarStyle from "../statusBar.module.css";
+import modelInputStyle from "./modeInput.module.css";
 import useGlobalVarStore from "@/front/utils/useGlobalVarStore";
-const ModelInput = ({setModel}:{setModel: (model:string)=>void}) => {
+const ModelInput = ({setModel, defaultModel}:{setModel: (model:string)=>void, defaultModel: string}) => {
   const {models} = useAnkiConnectionStore();
   
   const onChangeModel = (model:string) => {
@@ -10,12 +9,17 @@ const ModelInput = ({setModel}:{setModel: (model:string)=>void}) => {
     setModel(model);
   }
   return (
-    <div className={statusBarStyle.deckSelector}>
-      <label htmlFor="deck-select">
-         <img src={DecksIcon} />
+    <div className={modelInputStyle.modelInputContainer}>
+      <label htmlFor="model-select">
+        Model 
       </label>
-      <select id="deck-select" name="deck-select" style={{height: '20px', width: '180px'}} onChange={(e)=>{onChangeModel(e.currentTarget.value)}} value={currentDeck??''}>
-        {models.length>0? models.map((model) => <option key={model} value={model}>{model}</option>) : <option value=''>Check Anki Connection!</option>}
+      <select id="model-select" name="model-select" style={{height: '20px', width: '180px'}} onChange={(e)=>{onChangeModel(e.currentTarget.value)}} value={defaultModel&&models.find(v=>v==defaultModel)!==defaultModel ? defaultModel:models[0]??''}>
+        {models.length>0? models.map((model) => <option key={model} value={model}>{model}</option>) : (
+          <> 
+            defaultModel && <option key={defaultModel} value={defaultModel}>{defaultModel}</option>
+            <option value=''>Check Anki Connection!</option>
+          </>
+          )}
       </select>
     </div>
   );
