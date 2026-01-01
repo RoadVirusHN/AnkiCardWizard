@@ -24,12 +24,14 @@ const PreviewCard = ({}) => {
       <PreviewHeader/>
     </PreviewContext.Provider>
     {
-      <section className={previewCardStyle.previewPage}>
-        <ModelInput setModel={(modelName:string)=>setContextValue({
-          ...contextValue,
-          curNote: {...curNote, modelName},
-          isChanged:true
-        })} defaultModel={curNote.modelName}/>
+      <section className={previewCardStyle.previewPage}>{
+        isModifying ? 
+          (<ModelInput setModel={(modelName:string)=>setContextValue({
+            ...contextValue,
+            curNote: {...curNote, modelName},
+            isChanged:true
+          })} defaultModel={curNote.modelName}/>) : 'Model :' + curNote.modelName
+      }
         <Tags givenTags={curNote.tags} isModifying={isModifying} 
         onAddTag={(tag)=>{
           setContextValue({...contextValue,
