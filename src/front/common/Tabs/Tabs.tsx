@@ -38,12 +38,15 @@ const Tabs = ({}) => {
   return (
   <nav className={`${tabsStyle.tabs} ${commonStyle["no-select"]}`}>
     <DetectTab/>
-    <NavLink 
-    className={`${tabsStyle.tab} ${currentTab==Tab.ADD? tabsStyle.selected : ''}`} 
-    to={'/add'}>
-    <img src={AddCardIcon} style={{filter: "grayscale(100%)"}}/>
-    <p>Add</p>
-    </NavLink>
+    <TooltipWrapper text="Comming soon!" tooltipDirection={TooltipDirection.BOTTOM} styles={{flex: '1'}}>
+      <NavLink 
+      onClick={(e)=>e.preventDefault()}
+      className={`${tabsStyle.tab} ${currentTab==Tab.ADD? tabsStyle.selected : ''}`} 
+      to={'/add'}>
+      <img src={AddCardIcon} style={{filter: "grayscale(100%)"}}/>
+      <p>Add</p>
+      </NavLink>
+    </TooltipWrapper>
     <NavLink 
     className={`${tabsStyle.tab} ${currentTab==Tab.TEMPLATES? tabsStyle.selected : ''}`} 
     to={'/templates'}>
