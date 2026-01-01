@@ -19,6 +19,7 @@ const PreviewCard = ({}) => {
   const {curNote, isModifying, isChanged} = contextValue; 
   const [curText, setCurText] = useState('');
   const setResult = (text:string) => {setCurText(text);};
+  console.log(curNote);
   return (<div>
     <PreviewContext.Provider value={{contextValue,setContextValue}}>
       <PreviewHeader/>
