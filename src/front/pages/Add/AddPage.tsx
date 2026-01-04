@@ -1,6 +1,6 @@
-import ReturnIcon from "@/public/Icon/Icon-Return.svg";
 import PreviewIcon from "@/public/Icon/Icon-Preview.svg";
 import AddIcon from "@/public/Icon/Icon-Add.svg";
+import CancleIcon from "@/public/Icon/Icon-Reset.svg";
 import SaveIcon from "@/public/Icon/Icon-Save.svg";
 import CodeIcon from "@/public/Icon/Icon-Code.svg";
 import addPageStyle from "./addPage.module.css";
@@ -9,70 +9,42 @@ import InspectionButton from "@/front/common/InspectionButton/InspectionButton";
 import Preview from "@/front/common/Preview/Preview";
 import { Editor } from "@monaco-editor/react";
 import Tags from "@/front/common/Tags/Tags";
-import { useNavigate } from "react-router";
 import useAnkiConnectionStore from "@/front/utils/useAnkiConnectionStore";
 import ModelInput from "@/front/common/Inputs/ModelInput/ModelInput";
 import { useState } from "react";
 import useGlobalVarStore from "@/front/utils/useGlobalVarStore";
 import { InspectionMode } from "@/scripts/content/tagExtraction";
+import SimpleButton from "@/front/common/SimpleButton/SimpleButton";
+
 const AddPage = ({}) => {
   // TODO : templates 혹은 default template를 이용해서 카드를 추가하는 기능
   // 사용자가 기본값을 변경했으면 나갈때 경고창을 띄우는 기능
   const {models, fetchAnki} = useAnkiConnectionStore();
   const {currentAddingNote, setCurrentAddingNote} = useGlobalVarStore();
-  const [curNote, setCurNote] = useState({
-        templateName: '',
-        deckName: '',
-        modelName: '',
-        fields: {
-          Front: '',
-          Back: '',
-        },
-        tags: [],
-   });
-  const [curModel, setCurModel] = useState(models[0] || '');
+  const [curNote, setCurNote] = useState(currentAddingNote);
   const [isChanged, setIsChanged] = useState(false);
   const [isModifying, setIsModifying] = useState(true);
-  const navigate = useNavigate();
   return <div>
-    <div className={addPageStyle.header}>
-      <div style={{display: 'flex', gap: '10px', alignItems: 'center'}}>
-        <img src={ReturnIcon} onClick={()=>{navigate('/')}} style={{'cursor': 'pointer'}}/> 
-        <ModelInput defaultModel={models[0]} setModel={setCurModel}/>
-      </div>
+    <div className={addPageStyle.header}>     
+      <ModelInput defaultModel={models[0]} setModel={(model:string)=>{
+        setCurNote({...curNote, modelName: model});
+      }}/>
       <div className={commonStyle.toggle}>
         <div className={addPageStyle.modBtns} style={{visibility: isChanged ? "visible" : "hidden"}}>
+          <img src={CancleIcon}  onClick={()=>{
+            setIsChanged(false);
+            setCurNote(currentAddingNote);
+          }} style={{'cursor': 'pointer', margin:'5px'}}/>
           <img src={SaveIcon}  onClick={()=>{
             setIsChanged(false);
             setCurrentAddingNote(curNote);
           }} style={{'cursor': 'pointer', margin: '5px'}}/>
-          <img src={AddIcon}  onClick={()=>{
-            const req = {
-              action: 'addNote',
-              params: {
-                note: curNote,
-              },
-            };
-            fetchAnki(req).then((res)=>{
-                setIsChanged(false);
-                setCurNote({
-                  templateName: '',
-                  deckName: '',
-                  modelName: curModel,
-                  fields: {
-                    Front: '',
-                    Back: '',
-                  },
-                  tags: [],
-                });
-              });
-            }} style={{'cursor': 'pointer', margin:'5px'}}/>
         </div>
         <img src={PreviewIcon} />
         <label className={commonStyle.switch}>
           <input type="checkbox" onChange={(e)=>{
             setIsModifying(e.target.checked);
-          }}/>
+          }} checked={isModifying}/>
           <span className={commonStyle.slider} title={isModifying ? "Modify" : "Preview"}/>
         </label>
         <img src={CodeIcon} />
@@ -130,6 +102,22 @@ const AddPage = ({}) => {
           }
         </section>      
       }
+      <SimpleButton src={AddIcon} 
+        onClick={()=>{
+          const req = {
+            action: 'addNote',
+            params: {
+              note: curNote,
+            },
+          };
+          fetchAnki(req).then((res)=>{
+            setIsChanged(false);
+            setCurNote(currentAddingNote);
+              alert(res.error ? `Error: ${res.error}` : 'Note added successfully!');
+            });
+          }}
+        text="Add Card"
+      />
   </div>;
 };
 export default AddPage;
