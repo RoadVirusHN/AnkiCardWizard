@@ -1,11 +1,13 @@
 import Tabs from '@/front/common/Tabs/Tabs';
 import mainStyle from "./main.module.css";
 import { Outlet } from 'react-router';
+import PathUpdater from '@/front/utils/PathUpdater';
 
 const Popup: React.FC = () => {
  
   return (
     <div className={mainStyle.main}>
+      <PathUpdater/>
       <Tabs/>
       <div className={mainStyle["main-content"]}>
         <Outlet/>

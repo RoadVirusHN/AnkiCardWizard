@@ -11,11 +11,13 @@ export enum Tab {
 }
 
 interface GlobalVarState {
+  currentUrl: string;
   currentTab: Tab;
   currentDeck: string;
   isAddingCard: boolean;
   currentDetected: number;
   currentAddingNote: Note;
+  setCurrentUrl: (url: string) => void;
   setCurrentTab: (tab: Tab) => void;
   setCurrentDeck: (deck: string) => void;
   setCurrentDetected: (cnt: number) => void;
@@ -26,6 +28,7 @@ interface GlobalVarState {
 const useGlobalVarStore = create<GlobalVarState>()(
   persist(
     (set) => ({
+      currentUrl: '/',
       currentTab: Tab.DETECT,
       currentDeck: '',
       isAddingCard: false,
@@ -39,6 +42,9 @@ const useGlobalVarStore = create<GlobalVarState>()(
           Back: '',
         },
         tags: [],
+      },
+      setCurrentUrl: (url: string) => {
+        set({ currentUrl: url });
       },
       setCurrentTab: (tab: Tab) => {
         set({ currentTab: tab });

@@ -14,7 +14,7 @@ const Tabs = ({}) => {
   const {currentTab, setCurrentTab} = useGlobalVarStore();
   useEffect(() => {
     switch (location.pathname) {
-      case '/detect':
+      case '/detect': case '/':
         if (currentTab !== Tab.DETECT) setCurrentTab(Tab.DETECT);
         break;
       case '/add':

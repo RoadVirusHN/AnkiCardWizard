@@ -1,4 +1,4 @@
-import { createHashRouter } from "react-router";
+import { createHashRouter, createMemoryRouter } from "react-router";
 import HistoryPage from "../pages/History/HistoryPage";
 import ConfigPage from "../pages/Config/ConfigPage";
 import ModifyTemplate from "../pages/ModifyTemplate/ModifyTemplate";
@@ -8,7 +8,7 @@ import AddPage from "../pages/Add/AddPage";
 import TemplatesPage from "../pages/Templates/TemplatesPage";
 import PreviewCard from '../pages/PreviewCard/PreviewCard';
 
-const router = createHashRouter([
+const router = (currentUrl: string)=> createMemoryRouter([
   {
     path: '/',
     element: <Main/>,
@@ -34,7 +34,7 @@ const router = createHashRouter([
         element: <ConfigPage/>
       },
       {
-        path: "/templates/modify/:index?",
+        path: "templates/modify/:index?",
         element: <ModifyTemplate/>
       },
       {
@@ -43,6 +43,6 @@ const router = createHashRouter([
       }
     ]
   }
-]);
+], {initialEntries: [currentUrl]});
 
 export default router;
