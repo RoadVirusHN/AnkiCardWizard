@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 
 const ConfigPage: React.FC = () => {
- 
+  // locale, theme, font, about, javascript, default Anki Connect url, 
   return (
     <div>
       
