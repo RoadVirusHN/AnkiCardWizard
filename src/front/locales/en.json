@@ -1,0 +1,6 @@
+{
+  "test": "test",
+  "nested": {
+    "example": "This is an example of a nested translation."
+  }
+}

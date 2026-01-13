@@ -11,6 +11,7 @@
       // "sourceMap": true, //  디버깅용 매핑 파일 생성, webpack에서 생성해주므로 생략
       "jsx": "react-jsx",
       "baseUrl": "./src",
+      "resolveJsonModule": true,
       "paths": {
         "@/*": ["*"]
       },
