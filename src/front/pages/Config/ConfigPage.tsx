@@ -1,13 +1,19 @@
 import commonStyle from '@/front/common.module.css';
 import configPageStyle from "./configPage.module.css";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 
 const ConfigPage: React.FC = () => {
   // locale, theme, font, about, javascript, default Anki Connect url, 
+  const [t, i18n] = useTranslation();
+  useEffect(() => {
+    i18n.changeLanguage('ko');
+  },[i18n]);
+
   return (
     <div>
-      
+      {t('test')}
 
     </div>
   );
