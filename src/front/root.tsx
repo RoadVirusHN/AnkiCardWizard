@@ -4,7 +4,6 @@ import ReactDOM from "react-dom/client";
 import * as monaco from 'monaco-editor';
 import { loader } from '@monaco-editor/react';
 import App from "./App";
-import "./locales/i18n";
 
 // // Webpack이 복사한 로컬 경로(dist/vs)를 명시적으로 지정
 loader.config({monaco});

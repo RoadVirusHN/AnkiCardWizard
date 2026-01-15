@@ -8,13 +8,13 @@ const config = {
     en: { translation: enTranslations },
     ko: { translation: koTranslations },
   },
-  lng: 'en',
+  // lng: useConfigure.getState().language, // set Language in App.tsx
   fallbackLng: 'en',
   interpolation: {
     escapeValue: false,
   },
 };
-
+console.log(config);
 i18n.use(initReactI18next).init(config);
 
 export default i18n;
