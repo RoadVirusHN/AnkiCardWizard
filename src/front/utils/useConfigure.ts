@@ -9,6 +9,7 @@ export enum Language {
 // WARN : less than 8kb per item in chrome.storage.sync, maximum 100kb total.
 interface ConfigureState {
   language: Language;
+  //colors: 
   setLanguage: (lang: Language) => void;
 }
 

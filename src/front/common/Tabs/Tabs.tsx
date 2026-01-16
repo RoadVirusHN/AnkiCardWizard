@@ -8,10 +8,12 @@ import useGlobalVarStore, { Tab } from "@/front/utils/useGlobalVarStore";
 import DetectTab from "./DetectTab/DetectTab";
 import commonStyle from "@/front/common.module.css";
 import TooltipWrapper, { TooltipDirection } from "../TooltipWrapper/TooltipWrapper";
+import { useTranslation } from "react-i18next";
 
 const Tabs = ({}) => {
   const location = useLocation();
   const {currentTab, setCurrentTab} = useGlobalVarStore();
+  const [t] = useTranslation();
   useEffect(() => {
     switch (location.pathname) {
       case '/detect': case '/':
@@ -38,23 +40,23 @@ const Tabs = ({}) => {
   return (
   <nav className={`${tabsStyle.tabs} ${commonStyle["no-select"]}`}>
     <DetectTab/>
-      <NavLink 
-      className={`${tabsStyle.tab} ${currentTab==Tab.ADD? tabsStyle.selected : ''}`} 
-      to={'/add'}>
+    <NavLink 
+    className={`${tabsStyle.tab} ${currentTab==Tab.ADD? tabsStyle.selected : ''}`} 
+    to={'/add'}>
       <img src={AddCardIcon} style={{filter: "grayscale(100%)"}}/>
-      <p>Add</p>
+      <p>{t('tabs.add')}</p>
       </NavLink>
     <NavLink 
     className={`${tabsStyle.tab} ${currentTab==Tab.TEMPLATES? tabsStyle.selected : ''}`} 
     to={'/templates'}>
       <img src={CardTypeIcon}/>
-      <p>Templates</p>
+      <p>{t('tabs.templates')}</p>
     </NavLink>    
     <NavLink 
     className={`${tabsStyle.tab} ${currentTab==Tab.CONFIG? tabsStyle.selected : ''}`} 
     to={'/config'}>
       <img src={ConfigIcon} style={{fill: "gray"}}/>
-      <p>Config</p>
+      <p>{t('tabs.config')}</p>
     </NavLink>
   </nav>
   );

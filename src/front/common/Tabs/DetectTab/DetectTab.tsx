@@ -6,10 +6,12 @@ import useAnkiConnectionStore from "@/front/utils/useAnkiConnectionStore";
 import { useEffect } from "react";
 import TooltipWrapper, { TooltipDirection } from "../../TooltipWrapper/TooltipWrapper";
 import commonStyle from "@/front/common.module.css";
+import { useTranslation } from "react-i18next";
 
 const DetectTab = ({}) => {
   const {currentTab, currentDetected } = useGlobalVarStore();
   const {isConnected, isPending, checkConnection} = useAnkiConnectionStore();
+  const [t] = useTranslation();
   useEffect(()=>{
       if (isConnected) return;
       checkConnection();
@@ -31,7 +33,7 @@ const DetectTab = ({}) => {
           <span onClick={checkConnection} style={{cursor: 'pointer', color:isPending ? 'gray' : (isConnected ? 'greenyellow' : 'red')}}>●</span>
         </TooltipWrapper>
       </div>
-      <p>Detect</p>
+      <p>{t('tabs.detect')}</p>
   </NavLink>);
 };
 export default DetectTab;

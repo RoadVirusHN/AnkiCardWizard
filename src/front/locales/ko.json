@@ -1,5 +1,11 @@
 {
   "test": "테스트",
+  "tabs": {
+    "detect": "감지",
+    "add": "추가",
+    "templates": "템플릿",
+    "config": "설정"
+  },
   "nested": {
     "example": "이것은 중첩된 번역의 예입니다."
   }
