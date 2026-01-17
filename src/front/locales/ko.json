@@ -6,6 +6,23 @@
     "templates": "템플릿",
     "config": "설정"
   },
+  "common":{
+    "model": "모델",
+    "templates": "템플릿",
+    "deck": "덱",
+    "tags": "태그",
+    "empty": "없음"
+  },
+  "component": {
+    "ModelInput":{
+      "Anki Connection Error" : "Anki 연결 오류"
+    }    
+  },
+  "pages":{
+    "ConfigPage": {
+      "Locale": "언어 설정" 
+    }
+  },
   "nested": {
     "example": "이것은 중첩된 번역의 예입니다."
   }

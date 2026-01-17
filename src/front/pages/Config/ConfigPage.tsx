@@ -12,8 +12,7 @@ const ConfigPage: React.FC = () => {
   const [locale, setLocale] = useState(language);
   return (
     <div>
-      {t('test')}
-      <label htmlFor='locale-select'>Locale</label>
+      <label htmlFor='locale-select'>{t('pages.ConfigPage.Locale')}</label>
       <select name='locale' id='locale-select' onChange={(e)=>{
         const selectedLocale = e.target.value as Language;
         setLocale(selectedLocale);

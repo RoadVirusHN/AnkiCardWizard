@@ -6,6 +6,23 @@
     "templates": "Templates",
     "config": "Config"
   },
+  "common":{
+    "model": "Model",
+    "templates": "Templates",
+    "deck": "Deck",
+    "tags": "Tags",
+    "empty": "Empty"
+  },
+  "component": {
+    "ModelInput":{
+      "Anki Connection Error" : "Anki Connection Error"
+    }    
+  },
+  "pages":{
+    "ConfigPage": {
+      "Locale": "Locale" 
+    }
+  },
   "nested": {
     "example": "This is an example of a nested translation."
   }
