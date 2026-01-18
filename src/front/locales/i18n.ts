@@ -12,9 +12,12 @@ const config = {
   fallbackLng: 'en',
   interpolation: {
     escapeValue: false,
+    nsSeparator: false,  // 콜론(:)을 구분자로 쓰지 않음
   },
 };
-console.log(config);
+// json rules
+// no special characters in keys.(just delete them)
+// compress spaces to single space.
 i18n.use(initReactI18next).init(config);
 
 export default i18n;

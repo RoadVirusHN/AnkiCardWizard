@@ -8,7 +8,7 @@ const TemplatesPage = ({}) => {
   const navigate = useNavigate();
   return (<div>
     <img src={AddIcon} onClick={()=>{
-      navigate("/modify");
+      navigate("/templates/modify");
     }}
     style={{cursor: "pointer"}}/>  
     {templates.map((template,idx)=>

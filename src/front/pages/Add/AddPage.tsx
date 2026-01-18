@@ -121,7 +121,7 @@ const AddPage = ({}) => {
           fetchAnki(req).then((res)=>{
             setIsChanged(false);
             setCurNote(currentAddingNote);
-              alert(res.error ? `Error: ${res.error}` : 'Note added successfully!');
+            alert(res.error ? `Error: ${res.error}` : 'Note added successfully!');
             });
           }}
         text="Add Card"

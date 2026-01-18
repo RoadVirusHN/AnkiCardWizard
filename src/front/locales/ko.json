@@ -16,7 +16,20 @@
   "component": {
     "ModelInput":{
       "Anki Connection Error" : "Anki 연결 오류"
-    }    
+    },
+    "InspectionButton": {
+      "Text Extraction Mode": "텍스트 추출 모드",
+      "Hover over the text": "텍스트 위에 마우스를 올리세요",
+      "Click to copy into your clipboard": "클릭하여 클립보드에 복사하세요.",
+      "Paste the text where you want!": "원하는 곳에 텍스트를 붙여넣으세요!",
+      "Tag Inspection Mode": "태그 검사 모드",
+      "Hover over the tag": "태그 위에 마우스를 올리세요",
+      "Click to pop up the menu": "클릭하여 메뉴를 팝업하세요",
+      "Extract text copy the text Content": "\"텍스트 추출\" : 텍스트 내용을 복사합니다.",
+      "Extract Selector copy the CSS Selector": "\"CSS Selector 추출\" : CSS 선택자를 복사합니다.",
+      "Select Children change taget tag to a child": "\"자식 태그 선택\" : 선택 자식 태그 대상으로 새 메뉴 팝업",
+      "Click here to exit mode": "모드 종료하려면 여기를 클릭하세요."
+    }
   },
   "pages":{
     "ConfigPage": {

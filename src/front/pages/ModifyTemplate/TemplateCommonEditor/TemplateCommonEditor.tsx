@@ -3,12 +3,15 @@ import { InspectionMode } from "@/scripts/content/tagExtraction";
 import { MessageType } from "@/scripts/background/messageHandler";
 import modifyTemplateStyle from "../modifyTemplate.module.css";
 import Tags from "@/front/common/Tags/Tags";
+import InspectionButton from "@/front/common/InspectionButton/InspectionButton";
+import { useRef } from "react";
 interface Props {
   data : Template;
   setData: (data: Template) => void;
 }
 const TemplateCommonEditor = ({data, setData}:Props) => {
 
+  const rootTagInputRef = useRef<HTMLInputElement>(null);
     // 픽커(추출) 기능 모의 함수
   const handlePickElement = async (callback: (selector: string) => void) => {
     console.log("Entering inspect mode for element picking...");
@@ -58,16 +61,16 @@ const TemplateCommonEditor = ({data, setData}:Props) => {
           className={modifyTemplateStyle.input}
           value={data.rootTag}
           onChange={(e) => setData({ ...data, rootTag: e.target.value })}
+          ref={rootTagInputRef}
           placeholder="e.g. div.card-body"
         />
-        <button 
-          className={modifyTemplateStyle.pickBtn} 
-          onClick={() => handlePickElement((sel) => setData({...data, rootTag: sel}))}
-          title="Pick from Page"
-        >
-          🎯
-        </button>
-      </div>
+        <InspectionButton setResult={(text: string)=>{
+          setData({ ...data, rootTag: text });
+          if (rootTagInputRef.current){
+            rootTagInputRef.current.value = text;
+          }
+        }}/>
+     </div>
       <p className={modifyTemplateStyle.hint}>Fields will be searched inside this tag.</p>
     </div>
   </div>);

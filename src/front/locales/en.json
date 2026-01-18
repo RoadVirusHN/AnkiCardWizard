@@ -16,7 +16,20 @@
   "component": {
     "ModelInput":{
       "Anki Connection Error" : "Anki Connection Error"
-    }    
+    },
+    "InspectionButton": {
+      "Text Extraction Mode": "Text Extraction Mode",
+      "Hover over the text": "Hover over the text",
+      "Click to copy into your clipboard": "Click to copy into your clipboard.",
+      "Paste the text where you want!": "Paste the text where you want!",
+      "Tag Inspection Mode": "Tag Inspection Mode",
+      "Hover over the tag": "Hover over the tag",
+      "Click to pop up the menu": "Click to pop up the menu",
+      "Extract text copy the text Content": "\"Extract text\" : copy the text Content.",
+      "Extract Selector copy the CSS Selector": "\"Extract Selector\" : copy the CSS Selector.",
+      "Select Children change taget tag to a child": "\"Select Children\" : open new menu for target child tag.",
+      "Click here to exit mode": "Click here to exit mode."
+    }
   },
   "pages":{
     "ConfigPage": {
