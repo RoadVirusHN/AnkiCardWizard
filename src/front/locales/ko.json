@@ -43,8 +43,5 @@
     "ConfigPage": {
       "Locale": "언어 설정" 
     }
-  },
-  "nested": {
-    "example": "이것은 중첩된 번역의 예입니다."
   }
 }

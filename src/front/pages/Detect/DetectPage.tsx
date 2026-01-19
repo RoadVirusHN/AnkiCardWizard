@@ -10,6 +10,7 @@ import useGlobalVarStore from '@/front/utils/useGlobalVarStore';
 import useTemplate from '@/front/utils/useTemplates';
 import { MessageType } from '@/scripts/background/messageHandler';
 import { useTranslation } from 'react-i18next';
+import useLocale from '@/front/utils/useLocale';
 
 const buildCard = (key: 'Front' | 'Back', customCard: Template, extracted: Extracted) =>
   customCard[key].html.replaceAll(/\{\{(.*?)\}\}/g, 
@@ -43,10 +44,7 @@ const DetectPage: React.FC = () => {
   const {currentDeck, setCurrentDetected} = useGlobalVarStore();
   const {notes, extractedMaps, setNotes, setExtractedMaps} = useTemplate();
   
-  // TODO : make it as hook.
-  const {t} = useTranslation();
-  const tl = (key:string)=>t('pages.DetectPage.'+key);
-  
+  const tl = useLocale('pages.DetectPage.');  
   const requestExtracteds = async () => {
     setIsPending(true);
     chrome.runtime.sendMessage({

@@ -6,10 +6,12 @@ import { InspectionMode } from "@/scripts/content/tagExtraction";
 import inspectionButtonStyle from "./InspectionButton.module.css";
 import MagicIcon from "@/public/Icon/Icon-Magic.svg";
 import { useTranslation } from "react-i18next";
+import useLocale from "@/front/utils/useLocale";
 
 const InspectionButton = ({setResult, mode=InspectionMode.TAG_EXTRACTION}:{setResult: (text:string)=>void, mode?: InspectionMode}) => {
   const [panelPort, setPanelPort] = useState<chrome.runtime.Port|null>();
   const [t] = useTranslation();
+  const tl = useLocale('component.InspectionButton.');
   return <>
     <div className={inspectionButtonStyle.overlay} style={{display:panelPort ? 'flex':'none'}} 
     onClick={()=>{
@@ -26,28 +28,28 @@ const InspectionButton = ({setResult, mode=InspectionMode.TAG_EXTRACTION}:{setRe
         <span className={inspectionButtonStyle['left-pointer']}>◀</span>
         {
           mode==InspectionMode.TEXT_EXTRACTION ?(<>
-            <h1>{t('component.InspectionButton.Text Extraction Mode')}</h1>
+            <h1>{tl('Text Extraction Mode')}</h1>
             <ol>
-                <li>{t('component.InspectionButton.Hover over the text')}</li>
-                <li>{t('component.InspectionButton.Click to copy into your clipboard')}</li>
-                <li>{t('component.InspectionButton.Paste the text where you want!')}</li>
+                <li>{tl('Hover over the text')}</li>
+                <li>{tl('Click to copy into your clipboard')}</li>
+                <li>{tl('Paste the text where you want!')}</li>
             </ol></>) : (<>
-              <h1>{t('component.InspectionButton.Tag Inspection Mode')}</h1>
+              <h1>{tl('Tag Inspection Mode')}</h1>
               <ol>
-                  <li>{t('component.InspectionButton.Hover over the tag')}</li>
-                  <li>{t('component.InspectionButton.Click to pop up the menu')}
+                  <li>{tl('Hover over the tag')}</li>
+                  <li>{tl('Click to pop up the menu')}
                     <ul>
-                      <li>{t('component.InspectionButton.Extract text copy the text Content')}</li>
-                      <li>{t('component.InspectionButton.Extract Selector copy the CSS Selector')}</li>
-                      <li>{t('component.InspectionButton.Select Children change taget tag to a child')}</li>
+                      <li>{tl('Extract text copy the text Content')}</li>
+                      <li>{tl('Extract Selector copy the CSS Selector')}</li>
+                      <li>{tl('Select Children change taget tag to a child')}</li>
                     </ul>
                   </li>
-                  <li>{t('component.InspectionButton.Click to copy into your clipboard')}</li>
-                  <li>{t('component.InspectionButton.Paste the text where you want!')}</li>
+                  <li>{tl('Click to copy into your clipboard')}</li>
+                  <li>{tl('Paste the text where you want!')}</li>
               </ol>
             </>)
         }
-        <h2>* {t('component.InspectionButton.Click here to exit mode')}</h2> 
+        <h2>* {tl('Click here to exit mode')}</h2> 
         <span className={inspectionButtonStyle['left-pointer']}>◀</span>
         <span className={inspectionButtonStyle['left-pointer']}>◀</span>
         <span className={inspectionButtonStyle['left-pointer']}>◀</span>
