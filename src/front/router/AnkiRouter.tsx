@@ -1,5 +1,4 @@
-import { createHashRouter, createMemoryRouter } from "react-router";
-import HistoryPage from "../pages/History/HistoryPage";
+import { createMemoryRouter } from "react-router";
 import ConfigPage from "../pages/Config/ConfigPage";
 import ModifyTemplate from "../pages/ModifyTemplate/ModifyTemplate";
 import Main from "../pages/Main/Main";

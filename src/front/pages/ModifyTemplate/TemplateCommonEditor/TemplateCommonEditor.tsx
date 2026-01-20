@@ -5,6 +5,7 @@ import modifyTemplateStyle from "../modifyTemplate.module.css";
 import Tags from "@/front/common/Tags/Tags";
 import InspectionButton from "@/front/common/InspectionButton/InspectionButton";
 import { useRef } from "react";
+import useLocale from "@/front/utils/useLocale";
 interface Props {
   data : Template;
   setData: (data: Template) => void;
@@ -12,22 +13,10 @@ interface Props {
 const TemplateCommonEditor = ({data, setData}:Props) => {
 
   const rootTagInputRef = useRef<HTMLInputElement>(null);
-    // 픽커(추출) 기능 모의 함수
-  const handlePickElement = async (callback: (selector: string) => void) => {
-    console.log("Entering inspect mode for element picking...");
-    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-    if (!tab.id) {
-      console.warn('No active tab found!');
-      return;
-    }
-    chrome.tabs.sendMessage(tab.id, {
-      type: MessageType.ENTER_INSPECTION_MODE_FROM_PANEL,
-      mode: InspectionMode.TAG_EXTRACTION
-    });
-  };
+  const tl = useLocale('pages.ModifyTemplate.TemplateCommonEditor');
   return (<div>
     <div className={modifyTemplateStyle.formGroup}>
-      <label>Model Name (Anki)</label>
+      <label>{tl("Model Name")}</label>
       <input
         className={modifyTemplateStyle.input}
         value={data.modelName}
@@ -35,7 +24,7 @@ const TemplateCommonEditor = ({data, setData}:Props) => {
       />
     </div>
     <div className={modifyTemplateStyle.formGroup}>
-      <label>URL Patterns</label>
+      <label>{tl("URL Patterns")}</label>
       <input
         className={modifyTemplateStyle.input}
         value={data.urlPatterns.join(", ")}
@@ -55,7 +44,7 @@ const TemplateCommonEditor = ({data, setData}:Props) => {
       }
     }/>
     <div className={modifyTemplateStyle.formGroup}>
-      <label>Root Tag (Container) <span className={modifyTemplateStyle.req}>*</span></label>
+      <label>{tl("Root Tag")} <span className={modifyTemplateStyle.req}>*</span></label>
       <div className={modifyTemplateStyle.inputWithBtn}>
         <input
           className={modifyTemplateStyle.input}
@@ -71,7 +60,7 @@ const TemplateCommonEditor = ({data, setData}:Props) => {
           }
         }}/>
      </div>
-      <p className={modifyTemplateStyle.hint}>Fields will be searched inside this tag.</p>
+      <p className={modifyTemplateStyle.hint}>{tl("Fields will be searched under the root tag")}</p>
     </div>
   </div>);
 };

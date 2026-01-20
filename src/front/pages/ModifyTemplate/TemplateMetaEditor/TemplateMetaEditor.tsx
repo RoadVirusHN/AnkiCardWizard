@@ -1,5 +1,6 @@
 import { Template } from "@/front/utils/useTemplates";
 import modifyTemplateStyle from "../modifyTemplate.module.css";
+import useLocale from "@/front/utils/useLocale";
 
 interface Props {
   data : Template;
@@ -11,10 +12,11 @@ const TemplateMetaEditor = ({data, setData}:Props) => {
   const updateMeta = (key: string, value: unknown) => {
     setData({ ...data, meta: { ...data.meta, [key]: value } });
   };
+  const tl = useLocale('pages.ModifyTemplate.TemplateMetaEditor');
   
   return (<div className={modifyTemplateStyle.settingsForm}>
   <div className={modifyTemplateStyle.formGroup}>
-    <label>Template Name <span className={modifyTemplateStyle.req}>*</span></label>
+    <label>{tl("Template Name")} <span className={modifyTemplateStyle.req}>*</span></label>
     <input
       className={modifyTemplateStyle.input}
       value={data.templateName}
@@ -25,7 +27,7 @@ const TemplateMetaEditor = ({data, setData}:Props) => {
 
   <div className={modifyTemplateStyle.row}>
     <div className={modifyTemplateStyle.formGroup}>
-      <label>Author</label>
+      <label>{tl("Author")}</label>
       <input
         className={modifyTemplateStyle.input}
         value={data.meta.author || ""}
@@ -33,7 +35,7 @@ const TemplateMetaEditor = ({data, setData}:Props) => {
       />
     </div>
     <div className={modifyTemplateStyle.formGroup}>
-      <label>Version</label>
+      <label>{tl("Version")}</label>
       <input
         className={modifyTemplateStyle.input}
         value={data.meta.version || ""}
@@ -44,7 +46,7 @@ const TemplateMetaEditor = ({data, setData}:Props) => {
     
   
   <div className={modifyTemplateStyle.formGroup}>
-    <label>Description</label>
+    <label>{tl("Description")}</label>
     <textarea
       className={modifyTemplateStyle.textarea}
       value={data.meta.description || ""}

@@ -1,6 +1,7 @@
 import { useState, forwardRef, useImperativeHandle } from "react";
 import { TemplateFieldDataType, type TemplateField } from "@/front/utils/useTemplates";
 import templateFieldStyle from "./templateFieldInput.module.css";
+import useLocale from "@/front/utils/useLocale";
 
 /**
  * 외부에 노출되는 ref 메서드들
@@ -50,7 +51,7 @@ const TemplateFieldInput = forwardRef<TemplateFieldInputRef, TemplateFieldInputP
     const removeField = (index: number) => {
       setFields((prev) => prev.filter((_, i) => i !== index));
     };
-
+    const tl = useLocale('pages.ModifyTemplate.TemplateSideEditor.TemplateFieldInput');
     return (
       <div className={templateFieldStyle.container}>
         {fields.map((field, i) => (
@@ -58,14 +59,14 @@ const TemplateFieldInput = forwardRef<TemplateFieldInputRef, TemplateFieldInputP
             <input
               type="text"
               className={`${templateFieldStyle.input} ${templateFieldStyle.name}`}
-              placeholder="name"
+              placeholder={tl("Name",'pages.ModifyTemplate.TemplateSideEditor.')}
               value={field.name}
               onChange={(e) => updateField(i, "name", e.target.value)}
             />
             <input
               type="text"
               className={`${templateFieldStyle.input} ${templateFieldStyle.content}`}
-              placeholder="content"
+              placeholder={tl("content")}
               value={field.content}
               onChange={(e) => updateField(i, "content", e.target.value)}
             />
@@ -74,9 +75,9 @@ const TemplateFieldInput = forwardRef<TemplateFieldInputRef, TemplateFieldInputP
               value={field.dataType}
               onChange={(e) => updateField(i, "dataType", e.target.value)}
             >
-              <option value="text">Text</option>
-              <option value="audio">Audio</option>
-              <option value="image">Image</option>
+              <option value="text">{tl('Text','pages.ModifyTemplate.TemplateSideEditor.')}</option>
+              <option value="audio">{tl('Audio','pages.ModifyTemplate.TemplateSideEditor.')}</option>
+              <option value="image">{tl('Image','pages.ModifyTemplate.TemplateSideEditor.')}</option>
             </select>
 
             <input 
@@ -91,14 +92,14 @@ const TemplateFieldInput = forwardRef<TemplateFieldInputRef, TemplateFieldInputP
                 type="button"
                 className={templateFieldStyle.removeBtn}
                 onClick={() => removeField(i)}
-                title="Remove field"
+                title={tl("Remove field")}
               >
                 ×
               </button>
             )}
 
             {field.locked && (
-              <div className={templateFieldStyle.lockBadge} title="Required">
+              <div className={templateFieldStyle.lockBadge} title={tl("Required")}>
                 🔒
               </div>
             )}
@@ -107,7 +108,7 @@ const TemplateFieldInput = forwardRef<TemplateFieldInputRef, TemplateFieldInputP
 
         <div className={templateFieldStyle.controls}>
           <button type="button" onClick={addField} className={templateFieldStyle.addBtn}>
-            + Add Field
+            {"+ " + tl('Add Field')}
           </button>
         </div>
       </div>

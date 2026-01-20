@@ -2,6 +2,7 @@ import React, { useMemo } from "react";
 import Editor from "@monaco-editor/react";
 import styles from "../modifyTemplate.module.css";
 import { TemplateField, TemplateFieldDataType } from "@/front/utils/useTemplates";
+import useLocale from "@/front/utils/useLocale";
 
 interface SideData {
   html: string;
@@ -59,11 +60,11 @@ const TemplateSideEditor: React.FC<Props> = ({ side, data, setData }) => {
   const isLockedField = (name: string) => {
     return (side === "Front" && name === "front") || (side === "Back" && name === "back");
   };
-
+  const tl = useLocale('pages.ModifyTemplate.TemplateSideEditor');
   return (
     <div className={styles.editorContainer}>
       {/* 1. Preview Area */}
-      <div className={styles.sectionTitle}>Preview (Scale 0.85)</div>
+      <div className={styles.sectionTitle}>{tl('Preview')}</div>
       <div className={styles.previewBox}>
         <div 
           className={styles.previewContent}
@@ -72,7 +73,7 @@ const TemplateSideEditor: React.FC<Props> = ({ side, data, setData }) => {
       </div>
 
       {/* 2. HTML Editor */}
-      <div className={styles.sectionTitle}>HTML Template</div>
+      <div className={styles.sectionTitle}>{tl('HTML Code')}</div>
       <div className={styles.monacoWrapper}>
         <Editor
           height="120px"
@@ -86,8 +87,8 @@ const TemplateSideEditor: React.FC<Props> = ({ side, data, setData }) => {
 
       {/* 3. Fields List */}
       <div className={styles.fieldHeader}>
-        <div className={styles.sectionTitle} style={{marginBottom:0}}>Extraction Fields</div>
-        <button className={styles.addBtn} onClick={addField}>+ Add Field</button>
+        <div className={styles.sectionTitle} style={{marginBottom:0}}>{tl('Fields')}</div>
+        <button className={styles.addBtn} onClick={addField}>{'+ '+ tl('Add Field')}</button>
       </div>
       
       <div className={styles.fieldsList}>
@@ -99,10 +100,10 @@ const TemplateSideEditor: React.FC<Props> = ({ side, data, setData }) => {
               <input
                 className={`${styles.input} ${styles.fieldName}`}
                 value={field.name}
-                placeholder="Name"
+                placeholder={tl("Name")}
                 onChange={(e) => handleFieldChange(i, "name", e.target.value)}
                 disabled={locked} // Lock mandatory names
-                title={locked ? "Cannot change mandatory field name" : "Field Name"}
+                title={locked ? tl("Cannot change mandatory field name") : tl("Displaying Field Name")}
               />
               
               {/* CSS Selector + Picker */}
@@ -110,13 +111,13 @@ const TemplateSideEditor: React.FC<Props> = ({ side, data, setData }) => {
                 <input
                   className={`${styles.input} ${styles.fieldSelector}`}
                   value={field.content}
-                  placeholder="CSS Selector"
+                  placeholder={tl("CSS Selector")}
                   onChange={(e) => handleFieldChange(i, "content", e.target.value)}
                 />
                  <button 
                   className={styles.miniPickBtn} 
                   onClick={() => ((sel:string) => handleFieldChange(i, "content", sel))}
-                  title="Pick element"
+                  title={tl("Pick tag from page")}
                 >
                   🎯
                 </button>
@@ -128,13 +129,13 @@ const TemplateSideEditor: React.FC<Props> = ({ side, data, setData }) => {
                 value={field.dataType}
                 onChange={(e) => handleFieldChange(i, "dataType", e.target.value)}
               >
-                <option value="text">T</option>
-                <option value="image">I</option>
-                <option value="audio">A</option>
+                <option value="text">{tl('Text')}</option>
+                <option value="image">{tl('Image')}</option>
+                <option value="audio">{tl('Audio')}</option>
               </select>
 
               {/* Optional Checkbox */}
-              <div className={styles.chkWrapper} title="Is Optional?">
+              <div className={styles.chkWrapper} title={tl("Is Optional")}>
                  <input
                   type="checkbox"
                   checked={field.isOptional}

@@ -7,14 +7,16 @@ import TemplateSideEditor from "./TemplateSideEditor/TemplateSideEditor";
 import TemplateMetaEditor from "./TemplateMetaEditor/TemplateMetaEditor";
 import TemplateCommonEditor from "./TemplateCommonEditor/TemplateCommonEditor";
 import ModifyTemplateHeader from "./ModifyTemplateHeader/ModifyTemplateHeader";
+import useLocale from "@/front/utils/useLocale";
 
-enum TAB { META="meta",COMMON='common' ,FRONT="front", BACK="back" };
 
 const ModifyTemplate = () => {
   const { index } = useParams();
   const isEditMode = index !== undefined;
   const idx = isEditMode ? parseInt(index) : undefined;
   const { templates, addTemplate, modifyTemplate } = useTemplates();
+  const tl = useLocale('pages.ModifyTemplate');
+  enum TAB { META="meta",COMMON='common' ,FRONT="front", BACK="back" };
   const [activeTab, setActiveTab] = useState<TAB>(TAB.META);
   const [templateData, setTemplateData] = useState<Template>(isEditMode? templates[idx!]:{
     templateName: "",
@@ -76,7 +78,7 @@ return (
             key={tab}
             className={`${modifyTemplateStyle.tab} ${activeTab === tab ? modifyTemplateStyle.activeTab : ""}`}
             onClick={() => setActiveTab(tab as TAB)}>
-            {tab}
+            {tl(tab)}
           </button>)}
       </div>
       <div className={modifyTemplateStyle.content}>        

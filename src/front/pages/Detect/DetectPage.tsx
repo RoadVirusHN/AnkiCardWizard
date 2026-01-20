@@ -44,7 +44,7 @@ const DetectPage: React.FC = () => {
   const {currentDeck, setCurrentDetected} = useGlobalVarStore();
   const {notes, extractedMaps, setNotes, setExtractedMaps} = useTemplate();
   
-  const tl = useLocale('pages.DetectPage.');  
+  const tl = useLocale('pages.DetectPage');  
   const requestExtracteds = async () => {
     setIsPending(true);
     chrome.runtime.sendMessage({

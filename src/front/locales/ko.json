@@ -11,7 +11,8 @@
     "templates": "템플릿",
     "deck": "덱",
     "tags": "태그",
-    "empty": "없음"
+    "empty": "없음",
+    "new tag": "새 태그"
   },
   "component": {
     "ModelInput":{
@@ -42,6 +43,45 @@
     },
     "ConfigPage": {
       "Locale": "언어 설정" 
+    },
+    "ModifyTemplate":{
+      "meta": "메타 정보",
+      "common": "공통",
+      "front": "앞면",
+      "back": "뒷면",
+      "TemplateCommonEditor": {
+        "Model Name" : "모델명",
+        "URL Patterns": "URL 패턴",
+        "Root Tag": "탐색 태그",
+        "Fields will be searched under the root tag": "필드는 탐색 태그 내에서만 검색됩니다."
+      },
+      "TemplateMetaEditor": {
+        "Template Name": "템플릿 명",
+        "Author": "만든이",
+        "Version": "버전",
+        "Description": "설명"
+      },
+      "TemplateSideEditor": {
+        "Preview": "미리보기",
+        "HTML Code": "HTML 코드",
+        "Fields": "요소",
+        "Add Field": "요소 추가",
+        "Name": "이름",
+        "Cannot change mandator field name": "필수 요소 이름은 변경할 수 없습니다",
+        "Displaying Field Name": "표시되는 요소명",
+        "CSS Selector": "CSS 선택자",
+        "Pick tag from page": "페이지에서 태그를 선택하세요.",
+        "Text": "텍스트",
+        "Image": "이미지",
+        "Audio": "오디오",
+        "is Optional": "선택사항 여부",
+        "TemplateFieldInput":{
+          "content": "내용",
+          "Remove field": "요소 삭제",
+          "Required": "필수",
+          "Add Field": "요소 추가"   
+        }
+      }
     }
   }
 }

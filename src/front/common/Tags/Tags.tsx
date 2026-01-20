@@ -2,6 +2,7 @@ import tagsStyle from "./tags.module.css";
 import useTemplate from "@/front/utils/useTemplates";
 import AddIcon from "@/public/Icon/Icon-Add.svg";
 import { getComplementaryColor, getRandomColor } from "@/front/utils/functions";
+import { useTranslation } from "react-i18next";
 
 
 interface TagsProps {
@@ -13,7 +14,7 @@ interface TagsProps {
 
 const Tags = ({givenTags, isModifying, onRemoveTag, onAddTag}:TagsProps) => {
   const {tags, addTag} = useTemplate();
-  
+  const {t} = useTranslation();
   const deleteTag = (e: React.MouseEvent, tag: string) => {
     e.stopPropagation();
     onRemoveTag(tag);
@@ -42,7 +43,7 @@ const Tags = ({givenTags, isModifying, onRemoveTag, onAddTag}:TagsProps) => {
       }
     )}
     {isModifying ? <>
-    <input id="tagInput" className={tagsStyle.tagInput} type='text' placeholder="New Tag" 
+    <input id="tagInput" className={tagsStyle.tagInput} type='text' placeholder={t('common.new tag')} 
     onKeyDown={(e)=>{if (e.key==='Enter') insertTag()}}/> 
     <img src={AddIcon} className={tagsStyle.tagAdder} onClick={insertTag}/></>
     : null}
