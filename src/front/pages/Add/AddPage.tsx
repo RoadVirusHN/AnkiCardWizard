@@ -17,6 +17,7 @@ import { InspectionMode } from "@/scripts/content/tagExtraction";
 import SimpleButton from "@/front/common/SimpleButton/SimpleButton";
 import TemplateInput from "@/front/common/Inputs/TemplatInput/TemplateInput";
 import DeckInput from "@/front/common/StatusBar/DeckInput/DeckInput";
+import useLocale from "@/front/utils/useLocale";
 
 const AddPage = ({}) => {
   const {fetchAnki} = useAnkiConnectionStore();
@@ -24,9 +25,11 @@ const AddPage = ({}) => {
   const [curNote, setCurNote] = useState(currentAddingNote);
   const [isChanged, setIsChanged] = useState(false);
   const [isModifying, setIsModifying] = useState(true);
+  const tl = useLocale('pages.AddPage');
+  const tlC = useLocale('common');
   return <div>
     <div className={addPageStyle.header}>     
-      <h2>Add Card To Anki</h2>
+      <h2>{tl('Add Note to Anki')}</h2>
       <div className={commonStyle.toggle}>
         <div className={addPageStyle.modBtns} style={{visibility: isChanged ? "visible" : "hidden"}}>
           <img src={CancleIcon} onClick={()=>{
@@ -43,7 +46,7 @@ const AddPage = ({}) => {
           <input type="checkbox" onChange={(e)=>{
             setIsModifying(e.target.checked);
           }} checked={isModifying}/>
-          <span className={commonStyle.slider} title={isModifying ? "Modify" : "Preview"}/>
+          <span className={commonStyle.slider} title={tlC(isModifying ? "modify" : "preview")}/>
         </label>
         <img src={CodeIcon} />
       </div>
@@ -67,7 +70,7 @@ const AddPage = ({}) => {
           setIsChanged(true);
           setCurNote({...curNote, tags: curNote.tags.filter(t=>t!==tag)});
         }}/>
-        <h3>front preview {isModifying ? <InspectionButton mode={InspectionMode.TEXT_EXTRACTION} setResult={()=>{}}/> : ''}</h3>
+        <h3>{tlC('front') +' '+tlC('preview')} {isModifying ? <InspectionButton mode={InspectionMode.TEXT_EXTRACTION} setResult={()=>{}}/> : ''}</h3>
         {
           isModifying ?
           (<Editor
@@ -88,7 +91,7 @@ const AddPage = ({}) => {
             />) :
             <Preview html={curNote.fields.Front}/>
         }
-        <h3>back preview {isModifying ? <InspectionButton mode={InspectionMode.TEXT_EXTRACTION} setResult={()=>{}}/> : ''}</h3>
+        <h3>{tlC('back') +' ' + tlC('preview')} {isModifying ? <InspectionButton mode={InspectionMode.TEXT_EXTRACTION} setResult={()=>{}}/> : ''}</h3>
         {
           isModifying ? 
           (<Editor
@@ -121,10 +124,10 @@ const AddPage = ({}) => {
           fetchAnki(req).then((res)=>{
             setIsChanged(false);
             setCurNote(currentAddingNote);
-            alert(res.error ? `Error: ${res.error}` : 'Note added successfully!');
+            alert(res.error ? tlC('error')+`: ${res.error}` : tl('Note added successfully'));
             });
           }}
-        text="Add Card"
+        text={tl('Add Note')}
       />
   </div>;
 };

@@ -9,10 +9,17 @@
   "common":{
     "model": "Model",
     "templates": "Templates",
+    "template": "Template",
     "deck": "Deck",
     "tags": "Tags",
     "empty": "Empty",
-    "new tag": "New Tag"
+    "new tag": "New Tag",
+    "Anki Disconnected": "Anki Disconnected",
+    "error": "Error",
+    "back":"Back",
+    "front":"Front",
+    "preview":"Preview",
+    "modify": "Modify"
   },
   "component": {
     "ModelInput":{
@@ -41,14 +48,24 @@
       "Failed to add note": "Failed to add note :",
       "Note added successfully": "Note added successfully."
     },
+    "AddPage":{
+      "Add Note to Anki": "Add Note to Anki",
+      "Add Note": "Add Note",
+      "Note added successfully": "Note added successfully."
+    },
     "ConfigPage": {
-      "Locale": "Locale" 
+      "Locale": "Locale",
+      "Light": "Light",
+      "Dark": "Dark",
+      "System": "System"
     },
     "ModifyTemplate":{
       "meta": "Meta",
       "common": "Common",
       "front": "Front",
       "back": "Back",
+      "modify template": "Modify Template",
+      "new template": "New Template",
       "TemplateCommonEditor": {
         "Model Name" : "Model Name",
         "URL Patterns": "URL Patterns",

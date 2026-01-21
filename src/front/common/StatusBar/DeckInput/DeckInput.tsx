@@ -3,10 +3,12 @@ import DecksIcon from "@/public/Icon/Icon-Decks.svg";
 import statusBarStyle from "../statusBar.module.css";
 import useGlobalVarStore from "@/front/utils/useGlobalVarStore";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 const DeckInput = ({initDeck,onChange}:{initDeck? : string, onChange? : (deck:string)=>void}) => {
   const {decks} = useAnkiConnectionStore();
   const {currentDeck,setCurrentDeck} = useGlobalVarStore();
   const [curDeck, setCurDeck] = useState(initDeck || currentDeck);
+  const {t} = useTranslation();
   const onChangeDeck = (deck:string) => {
     if (decks.length===0) return;
     setCurrentDeck(deck);
@@ -26,7 +28,10 @@ const DeckInput = ({initDeck,onChange}:{initDeck? : string, onChange? : (deck:st
             onChangeDeck(e.currentTarget.value)
           }
       } value={curDeck}>
-        {decks.length>0? decks.map((deck) => <option key={deck} value={deck}>{deck}</option>) : <option value=''>Check Anki Connection!</option>}
+        {decks.length>0? 
+          decks.map((deck) => <option key={deck} value={deck}>{deck}</option>) 
+          : <option value=''>{t('common.Anki Disconnected')}</option>
+        }
       </select>
     </div>
   );

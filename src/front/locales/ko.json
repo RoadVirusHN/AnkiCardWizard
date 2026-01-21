@@ -9,10 +9,17 @@
   "common":{
     "model": "모델",
     "templates": "템플릿",
+    "template": "템플릿",
     "deck": "덱",
     "tags": "태그",
     "empty": "없음",
-    "new tag": "새 태그"
+    "new tag": "새 태그",
+    "Anki Disconnected": "Anki 연결 끊김",
+    "error": "오류",
+    "back":"뒷면",
+    "front":"앞면",
+    "preview":"미리보기",
+    "modify": "수정"
   },
   "component": {
     "ModelInput":{
@@ -41,14 +48,24 @@
       "Failed to add note": "노트 추가 실패 :",
       "Note added successfully": "노트가 성공적으로 추가되었습니다."
     },
+    "AddPage":{
+      "Add Note to Anki": "Anki에 노트 추가",
+      "Add Note": "노트 추가",
+      "Note added successfully": "노트가 성공적으로 추가되었습니다."
+    },
     "ConfigPage": {
-      "Locale": "언어 설정" 
+      "Locale": "언어 설정",
+      "Light": "라이트",
+      "Dark": "다크",
+      "System": "시스템 설정"
     },
     "ModifyTemplate":{
       "meta": "메타 정보",
       "common": "공통",
       "front": "앞면",
       "back": "뒷면",
+      "modify template": "템플릿 수정",
+      "new template": "새 템플릿",
       "TemplateCommonEditor": {
         "Model Name" : "모델명",
         "URL Patterns": "URL 패턴",

@@ -9,7 +9,7 @@ import useLocale from '@/front/utils/useLocale';
 const ConfigPage: React.FC = () => {
   // locale, theme, font, about, javascript, default Anki Connect url, 
   const [_t, i18n] = useTranslation();
-  const tl = useLocale('pages.ConfigPage.');
+  const tl = useLocale('pages.ConfigPage');
   const {language, setLanguage} = useConfigure();
   const [locale, setLocale] = useState(language);
   return (
@@ -24,6 +24,12 @@ const ConfigPage: React.FC = () => {
       value={locale}>
         <option value={Language.EN}>English</option>
         <option value={Language.KO}>한국어</option>
+      </select>
+      <label htmlFor="theme-select">{tl('Theme')}</label>
+      <select name="theme" id="theme-select">
+        <option value="System">{tl('System')}</option>
+        <option value="Light">{tl('Light')}</option>
+        <option value="Dark">{tl('Dark')}</option>
       </select>
     </div>
   );
