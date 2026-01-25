@@ -10,6 +10,19 @@
   --color-hyperlink: #81b1e1;
 }
 
+[data-theme="dark"] {
+  --color-primary: #cbd1d7;
+  --color-secondary: #a4abb4;
+  --color-dark: #3e3e3f;
+  --color-light: #575454;
+  --color-danger: #e96767;
+  --color-warning: #f0fd88;
+  --color-on: #7ae065;
+  --color-off: #8599ae;
+  --color-hyperlink: #9cc7f1;
+}
+
+
 .no-select {
   -webkit-user-select: none; /* Safari */
   -ms-user-select: none; /* IE 10 and IE 11 */

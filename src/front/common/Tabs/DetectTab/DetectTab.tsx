@@ -25,11 +25,10 @@ const DetectTab = ({}) => {
         <span className={commonStyle.badge}>{currentDetected}</span>
         <img src={AnkiIcon} className={`${tabsStyle["anki-logo"]} ` + (isPending ? `${tabsStyle.spinning}`:'')}/>
         <TooltipWrapper 
-        classes={[tabsStyle.tooltip]}
-        text={`${isPending ? 'connecting..':(isConnected ? 'refresh?' : 'Anki disconnected')}`} 
-        tooltipDirection={TooltipDirection.BOTTOM}
-        textStyles={{top: '45px'}}
-        >
+          classes={[tabsStyle.tooltip]}
+          text={`${isPending ? 'connecting..':(isConnected ? 'refresh?' : 'Anki disconnected')}`} 
+          tooltipDirection={TooltipDirection.BOTTOM}
+          textStyles={{top: '45px'}}>
           <span onClick={checkConnection} style={{cursor: 'pointer', color:isPending ? 'gray' : (isConnected ? 'greenyellow' : 'red')}}>●</span>
         </TooltipWrapper>
       </div>
