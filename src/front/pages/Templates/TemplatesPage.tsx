@@ -1,3 +1,4 @@
+import Icon from "@/front/common/Icon/Icon";
 import TemplateDetail from "@/front/pages/Templates/TemplateDetail/TemplateDetail";
 import useTemplate from "@/front/utils/useTemplates";
 import AddIcon from "@/public/Icon/Icon-Add.svg";
@@ -7,7 +8,7 @@ const TemplatesPage = ({}) => {
   const {templates} = useTemplate();  
   const navigate = useNavigate();
   return (<div>
-    <img src={AddIcon} onClick={()=>{
+    <Icon url={AddIcon} handleClick={()=>{
       navigate("/templates/modify");
     }}
     style={{cursor: "pointer"}}/>  

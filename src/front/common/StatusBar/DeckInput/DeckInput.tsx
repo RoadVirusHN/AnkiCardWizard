@@ -4,6 +4,7 @@ import statusBarStyle from "../statusBar.module.css";
 import useGlobalVarStore from "@/front/utils/useGlobalVarStore";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import Icon from "../../Icon/Icon";
 const DeckInput = ({initDeck,onChange}:{initDeck? : string, onChange? : (deck:string)=>void}) => {
   const {decks} = useAnkiConnectionStore();
   const {currentDeck,setCurrentDeck} = useGlobalVarStore();
@@ -16,7 +17,7 @@ const DeckInput = ({initDeck,onChange}:{initDeck? : string, onChange? : (deck:st
   return (
     <div className={statusBarStyle.deckSelector}>
       <label htmlFor="deck-select">
-         <img src={DecksIcon} />
+         <Icon url={DecksIcon} />
       </label>
       <select id="deck-select" name="deck-select" style={{height: '20px', width: '180px'}} 
         onChange={

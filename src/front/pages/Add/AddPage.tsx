@@ -18,6 +18,7 @@ import SimpleButton from "@/front/common/SimpleButton/SimpleButton";
 import TemplateInput from "@/front/common/Inputs/TemplatInput/TemplateInput";
 import DeckInput from "@/front/common/StatusBar/DeckInput/DeckInput";
 import useLocale from "@/front/utils/useLocale";
+import Icon from "@/front/common/Icon/Icon";
 
 const AddPage = ({}) => {
   const {fetchAnki} = useAnkiConnectionStore();
@@ -32,23 +33,23 @@ const AddPage = ({}) => {
       <h2>{tl('Add Note to Anki')}</h2>
       <div className={commonStyle.toggle}>
         <div className={addPageStyle.modBtns} style={{visibility: isChanged ? "visible" : "hidden"}}>
-          <img src={CancleIcon} onClick={()=>{
+          <Icon url={CancleIcon} handleClick={()=>{
             setIsChanged(false);
             setCurNote(currentAddingNote);
-          }} style={{'cursor': 'pointer', margin:'5px'}}/>
-          <img src={SaveIcon} onClick={()=>{
+          }} style={{'cursor': 'pointer', margin: '5px'}}/>
+          <Icon url={SaveIcon} handleClick={()=>{
             setIsChanged(false);
             setCurrentAddingNote(curNote);
           }} style={{'cursor': 'pointer', margin: '5px'}}/>
         </div>
-        <img src={PreviewIcon} />
+        <Icon url={PreviewIcon}/>
         <label className={commonStyle.switch}>
           <input type="checkbox" onChange={(e)=>{
             setIsModifying(e.target.checked);
           }} checked={isModifying}/>
           <span className={commonStyle.slider} title={tlC(isModifying ? "modify" : "preview")}/>
         </label>
-        <img src={CodeIcon} />
+        <Icon url={CodeIcon}/>
       </div>
     </div>
       {<section className={addPageStyle.previewPage}>

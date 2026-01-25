@@ -10,7 +10,6 @@ import useLocale from "@/front/utils/useLocale";
 
 const InspectionButton = ({setResult, mode=InspectionMode.TAG_EXTRACTION}:{setResult: (text:string)=>void, mode?: InspectionMode}) => {
   const [panelPort, setPanelPort] = useState<chrome.runtime.Port|null>();
-  const [t] = useTranslation();
   const tl = useLocale('component.InspectionButton.');
   return <>
     <div className={inspectionButtonStyle.overlay} style={{display:panelPort ? 'flex':'none'}} 

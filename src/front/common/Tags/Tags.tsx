@@ -3,6 +3,7 @@ import useTemplate from "@/front/utils/useTemplates";
 import AddIcon from "@/public/Icon/Icon-Add.svg";
 import { getComplementaryColor, getRandomColor } from "@/front/utils/functions";
 import { useTranslation } from "react-i18next";
+import Icon from "../Icon/Icon";
 
 
 interface TagsProps {
@@ -45,7 +46,7 @@ const Tags = ({givenTags, isModifying, onRemoveTag, onAddTag}:TagsProps) => {
     {isModifying ? <>
     <input id="tagInput" className={tagsStyle.tagInput} type='text' placeholder={t('common.new tag')} 
     onKeyDown={(e)=>{if (e.key==='Enter') insertTag()}}/> 
-    <img src={AddIcon} className={tagsStyle.tagAdder} onClick={insertTag}/></>
+    <Icon url={AddIcon} className={tagsStyle.tagAdder} handleClick={insertTag}/></>
     : null}
   </div>);
 };

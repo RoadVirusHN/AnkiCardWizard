@@ -1,5 +1,6 @@
 import { FunctionComponent, SVGAttributes } from 'react';
 import simpleButtonStyles from './simpleButton.module.css';
+import Icon from '../Icon/Icon';
 interface ButtonProps {
   text?: string;
   src?: string; 
@@ -9,7 +10,7 @@ interface ButtonProps {
 }
 const SimpleButton = ({text, src, onClick, overridedStyle, title}:ButtonProps) => {
   return (<button className={`${simpleButtonStyles['simple-btn']}`} onClick={onClick} style={overridedStyle} title={title}>
-    {src && <img src={src}/>} {text}
+    {src && <Icon url={src}/>} {text}
   </button>);
 };  
 export default SimpleButton;
