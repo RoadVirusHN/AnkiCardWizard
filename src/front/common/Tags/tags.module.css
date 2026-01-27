@@ -30,7 +30,6 @@
   field-sizing: content;
   border: 2px dashed var(--color-primary);
   color: var(--color-primary);
-  background-color: transparent;
   font-size: small;
 }
 .tagInput:focus{

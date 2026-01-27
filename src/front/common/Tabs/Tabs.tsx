@@ -7,16 +7,12 @@ import { useEffect } from "react";
 import useGlobalVarStore, { Tab } from "@/front/utils/useGlobalVarStore";
 import DetectTab from "./DetectTab/DetectTab";
 import commonStyle from "@/front/common.module.css";
-import TooltipWrapper, { TooltipDirection } from "../TooltipWrapper/TooltipWrapper";
-import { useTranslation } from "react-i18next";
-import useConfigure, { Theme } from "@/front/utils/useConfigure";
-import Icon from "../Icon/Icon";
+import { useTranslation } from "react-i18next";import Icon from "../Icon/Icon";
 
 const Tabs = ({}) => {
   const location = useLocation();
   const {currentTab, setCurrentTab} = useGlobalVarStore();
   const [t] = useTranslation();
-  const {theme} = useConfigure();
   useEffect(() => {
     switch (location.pathname) {
       case '/detect': case '/':
@@ -58,7 +54,6 @@ const Tabs = ({}) => {
     <NavLink 
     className={`${tabsStyle.tab} ${currentTab==Tab.CONFIG? tabsStyle.selected : ''}`} 
     to={'/config'}>
-      {/* <img src={ConfigIcon} style={{fill: "gray"}}/> */}
       <Icon url={ConfigIcon}/>
       <p>{t('tabs.config')}</p>
     </NavLink>

@@ -2,13 +2,13 @@ import { RouterProvider } from "react-router";
 import AnkiRouter from "./router/AnkiRouter";
 import { useEffect, useState } from "react";
 import useGlobalVarStore from "./utils/useGlobalVarStore";
-import useConfigure, { Theme } from "./utils/useConfigure";
+import useConfigure, { Theme, ThemeSetting } from "./utils/useConfigure";
 import i18n from './locales/i18n';
 
 const App = ({}) => {
   const {currentUrl} = useGlobalVarStore();
   const [router, setRouter] =  useState<ReturnType<typeof AnkiRouter>| null>(null);
-  const {language, theme, setTheme, setIsUserSchemeDark} = useConfigure();
+  const {language, themeOption, setThemeSetting} = useConfigure();
 
   useEffect(()=>{
     setRouter(AnkiRouter(currentUrl || '/'));
@@ -16,12 +16,12 @@ const App = ({}) => {
       console.log("App.tsx setting i18n language to:", language);
       i18n.changeLanguage(language);
     }
-    if (theme===Theme.NONE||theme===Theme.SYSTEM_DARK||theme===Theme.SYSTEM_LIGHT) {
-      const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      setIsUserSchemeDark(isDark);
-      setTheme(isDark ? Theme.SYSTEM_DARK: Theme.SYSTEM_LIGHT);
+    // set theme based on system preference if userSetting is system-based or none.
+    const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    if (themeOption.userSetting === ThemeSetting.SYSTEM_LIGHT ||themeOption.userSetting===ThemeSetting.SYSTEM_DARK||themeOption.userSetting===ThemeSetting.NONE) {
+      setThemeSetting(isDark ? ThemeSetting.SYSTEM_DARK : ThemeSetting.SYSTEM_LIGHT);
     }
-    if (theme===Theme.DARK||theme===Theme.SYSTEM_DARK) {
+    if (themeOption.theme===Theme.DARK) {
       document.documentElement.setAttribute('data-theme', 'dark');
     }
   }, []);

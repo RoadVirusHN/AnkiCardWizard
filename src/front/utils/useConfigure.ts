@@ -6,7 +6,12 @@ export enum Language {
   KO = 'ko',
 }
 
-export enum Theme {
+interface ThemeOption {
+  theme: Theme;
+  userSetting: ThemeSetting;
+}
+
+export enum ThemeSetting {
   NONE = 'none',
   SYSTEM_DARK = 'system-dark',
   SYSTEM_LIGHT = 'system-light',
@@ -14,43 +19,46 @@ export enum Theme {
   DARK = 'dark',
 }
 
+export enum Theme {
+  LIGHT = 'light',
+  DARK = 'dark',
+}
 
 // WARN : less than 8kb per item in chrome.storage.sync, maximum 100kb total.
 interface ConfigureState {
   language: Language;
-  theme: Theme;
-  isUserSchemeDark: boolean;
+  themeOption: ThemeOption;
   setLanguage: (lang: Language) => void;
-  setTheme: (theme: Theme) => void;
-  setIsUserSchemeDark: (scheme: boolean) => void;
+  setThemeSetting: (themeSetting: ThemeSetting) => void;
 }
 
 const useConfigure = create<ConfigureState>()(
   persist(
     (set) => ({
       language: Language.EN,
-      theme: Theme.NONE,
-      isUserSchemeDark: false,
+      themeOption: {
+        theme: Theme.LIGHT,
+        userSetting: ThemeSetting.NONE,
+      },
       setLanguage: (lang: Language) => {
         set({ language: lang });
       },
-      setTheme: (theme: Theme) => {
-        set({ theme });
-        switch (theme) {
-          case Theme.LIGHT: case Theme.SYSTEM_LIGHT:
-            document.documentElement.setAttribute('data-theme', 'light');
-            break;
-          case Theme.DARK: case Theme.SYSTEM_DARK:
+      setThemeSetting: (themeSetting: ThemeSetting) => {
+        let newThemeOption = {
+          theme: Theme.LIGHT,
+          userSetting: themeSetting,
+        };
+        switch (themeSetting) {
+          case ThemeSetting.DARK: case ThemeSetting.SYSTEM_DARK:
             document.documentElement.setAttribute('data-theme', 'dark');
+            newThemeOption.theme = Theme.DARK;
             break;
           default:
             document.documentElement.setAttribute('data-theme', 'light');
             break;
         }
-      },
-      setIsUserSchemeDark: (scheme: boolean) => {
-        set({ isUserSchemeDark: scheme });
-      },
+        set({ themeOption: newThemeOption });
+      }
     }),
     {
       name: 'anki-card-wizard-configure-store',

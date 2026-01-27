@@ -1,7 +1,7 @@
 import useTemplate from "@/front/utils/useTemplates";
 import previewCardStyle from "./previewCard.module.css";
 import { useParams } from "react-router";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import Tags from "@/front/common/Tags/Tags";
 import { Editor } from "@monaco-editor/react";
 import InspectionButton from "@/front/common/InspectionButton/InspectionButton";
@@ -10,6 +10,7 @@ import PreviewHeader from "./PreviewHeader/PreviewHeader";
 import { PreviewContext } from "./PreviewContext";
 import { InspectionMode } from "@/scripts/content/tagExtraction";
 import ModelInput from "@/front/common/Inputs/ModelInput/ModelInput";
+import useConfigure, { Theme } from "@/front/utils/useConfigure";
 
 const PreviewCard = ({}) => {
   const {index} = useParams();
@@ -18,8 +19,8 @@ const PreviewCard = ({}) => {
   const [contextValue, setContextValue] = useState({isChanged: false, isModifying : false,curNote: notes[idx], idx});
   const {curNote, isModifying, isChanged} = contextValue; 
   const [curText, setCurText] = useState('');
+  const {themeOption} = useConfigure();
   const setResult = (text:string) => {setCurText(text);};
-  console.log(curNote);
   return (<div>
     <PreviewContext.Provider value={{contextValue,setContextValue}}>
       <PreviewHeader/>
@@ -52,6 +53,7 @@ const PreviewCard = ({}) => {
             value={curNote.fields.Front}
             width='100%'
             height='200px'
+            theme={themeOption.theme === Theme.DARK ? "vs-dark" : "light"}
             onChange={(value)=>{
               setContextValue({...contextValue,
                 curNote:{...curNote, fields: {...curNote.fields, Front: value || ''}},
@@ -74,6 +76,7 @@ const PreviewCard = ({}) => {
             value={curNote.fields.Back}
             width='100%'
             height='200px'
+            theme={themeOption.theme === Theme.DARK ? "vs-dark" : "light"}
             onChange={(value)=>{
               setContextValue({...contextValue,
                 curNote:{...curNote, fields: {...curNote.fields, Back: value || ''}},

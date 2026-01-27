@@ -3,6 +3,7 @@ import Editor from "@monaco-editor/react";
 import styles from "../modifyTemplate.module.css";
 import { TemplateField, TemplateFieldDataType } from "@/front/utils/useTemplates";
 import useLocale from "@/front/utils/useLocale";
+import useConfigure, { Theme } from "@/front/utils/useConfigure";
 
 interface SideData {
   html: string;
@@ -61,6 +62,7 @@ const TemplateSideEditor: React.FC<Props> = ({ side, data, setData }) => {
     return (side === "Front" && name === "front") || (side === "Back" && name === "back");
   };
   const tl = useLocale('pages.ModifyTemplate.TemplateSideEditor');
+  const {themeOption} = useConfigure();
   return (
     <div className={styles.editorContainer}>
       {/* 1. Preview Area */}
@@ -79,7 +81,7 @@ const TemplateSideEditor: React.FC<Props> = ({ side, data, setData }) => {
           height="120px"
           defaultLanguage="html"
           value={data.html}
-          theme="light"
+          theme={themeOption.theme === Theme.DARK ? "vs-dark" : "light"}
           onChange={handleHtmlChange}
           options={{ minimap: { enabled: false }, lineNumbers: 'off', folding: false, padding: { top: 8 } }}
         />
