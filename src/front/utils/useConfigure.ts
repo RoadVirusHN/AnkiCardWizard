@@ -28,8 +28,10 @@ export enum Theme {
 interface ConfigureState {
   language: Language;
   themeOption: ThemeOption;
+  fontSize: string;
   setLanguage: (lang: Language) => void;
   setThemeSetting: (themeSetting: ThemeSetting) => void;
+  setFontSize: (fontSize: string) => void;
 }
 
 const useConfigure = create<ConfigureState>()(
@@ -40,6 +42,7 @@ const useConfigure = create<ConfigureState>()(
         theme: Theme.LIGHT,
         userSetting: ThemeSetting.NONE,
       },
+      fontSize: '100%',
       setLanguage: (lang: Language) => {
         set({ language: lang });
       },
@@ -58,6 +61,9 @@ const useConfigure = create<ConfigureState>()(
             break;
         }
         set({ themeOption: newThemeOption });
+      },
+      setFontSize: (fontSize: string) => {
+        set({ fontSize: fontSize });
       }
     }),
     {

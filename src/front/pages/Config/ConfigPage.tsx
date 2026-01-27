@@ -10,9 +10,14 @@ const ConfigPage: React.FC = () => {
   // font size, about, javascript, default Anki Connect url, default setting, default templates 
   const [_t, i18n] = useTranslation();
   const tl = useLocale('pages.ConfigPage');
-  const {language,setLanguage, themeOption, setThemeSetting} = useConfigure();
+  const {
+    language,setLanguage, 
+    themeOption, setThemeSetting,
+    fontSize, setFontSize
+  } = useConfigure();
   const [locale, setLocale] = useState(language);
   const [curThemeSetting, setCurThemeSetting] = useState(themeOption.userSetting);
+  const [curFontSize, setCurFontSize] = useState(fontSize);
   const isUserSchemeDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
   return (
     <div>
@@ -43,6 +48,21 @@ const ConfigPage: React.FC = () => {
           <option value={isUserSchemeDark ? ThemeSetting.SYSTEM_DARK : ThemeSetting.SYSTEM_LIGHT}>{isUserSchemeDark ?tl('SystemDark'):tl('SystemLight')}</option>
           <option value={ThemeSetting.LIGHT}>{tl('Light')}</option>
           <option value={ThemeSetting.DARK}>{tl('Dark')}</option>
+        </select>
+      </div>
+      <div>
+        <label htmlFor="fontSizeSelect">{tl('font size')}</label>
+        <select name="fontSizeSelect" id="fontSizeSelect" onChange={(e)=>{
+          const selectedFontSize = e.target.value;
+          setFontSize(selectedFontSize);
+          setCurFontSize(selectedFontSize);
+        }} 
+        value={curFontSize}
+        >
+          <option value="90%">small</option>
+          <option value="100%">normal(default)</option>
+          <option value="110%">large</option>
+          <option value="120%">xx-large</option>
         </select>
       </div>
     </div>
