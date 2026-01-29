@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import useGlobalVarStore from "./utils/useGlobalVarStore";
 import useConfigure, { Theme, ThemeSetting } from "./utils/useConfigure";
 import i18n from './locales/i18n';
+import "./common.css";
 
 const App = ({}) => {
   const {currentUrl} = useGlobalVarStore();
