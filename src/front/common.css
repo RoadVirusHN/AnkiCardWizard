@@ -40,3 +40,11 @@ input, select, textarea {
   color: var(--color-primary);
   border-radius: 4px;
 }
+h1, h2, h3, h4, h5, h6 {
+  color: var(--color-primary);
+  margin: 0;
+  padding: 0;
+}
+label {
+  color: var(--color-primary);
+}
