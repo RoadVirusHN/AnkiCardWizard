@@ -21,6 +21,7 @@ const PreviewCard = ({}) => {
   const [curText, setCurText] = useState('');
   const {themeOption} = useConfigure();
   const setResult = (text:string) => {setCurText(text);};
+
   return (<div>
     <PreviewContext.Provider value={{contextValue,setContextValue}}>
       <PreviewHeader/>

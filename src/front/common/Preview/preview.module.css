@@ -12,3 +12,9 @@
   width: 100%;
   min-height: 20%; 
 }
+.modeSelector{
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
