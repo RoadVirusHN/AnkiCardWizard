@@ -12,6 +12,10 @@
   width: 100%;
   min-height: 20%; 
 }
+.safeMode{
+  contain: content;
+  isolation: isolate;
+}
 .modeSelector{
   display: flex;
   justify-content: center;

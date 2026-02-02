@@ -67,7 +67,7 @@ const ModifyTemplate = () => {
 return (
     <div className={modifyTemplateStyle.container}>
       <ModifyTemplateHeader 
-        title={isEditMode ? tl("modfiy template") : tl("new template")}
+        title={isEditMode ? tl("modify template") : tl("new template")}
         isChanged={isChanged}
         onSave={handleSave}
         onCancle={handleCancle}

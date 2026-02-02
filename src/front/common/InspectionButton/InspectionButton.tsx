@@ -5,12 +5,11 @@ import { MessageType } from "@/scripts/background/messageHandler";
 import { InspectionMode } from "@/scripts/content/tagExtraction";
 import inspectionButtonStyle from "./InspectionButton.module.css";
 import MagicIcon from "@/public/Icon/Icon-Magic.svg";
-import { useTranslation } from "react-i18next";
 import useLocale from "@/front/utils/useLocale";
 
 const InspectionButton = ({setResult, mode=InspectionMode.TAG_EXTRACTION}:{setResult: (text:string)=>void, mode?: InspectionMode}) => {
   const [panelPort, setPanelPort] = useState<chrome.runtime.Port|null>();
-  const tl = useLocale('component.InspectionButton.');
+  const tl = useLocale('component.InspectionButton');
   return <>
     <div className={inspectionButtonStyle.overlay} style={{display:panelPort ? 'flex':'none'}} 
     onClick={()=>{
