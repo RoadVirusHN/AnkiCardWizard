@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import useConfigure, { Language, Theme, ThemeSetting } from '@/front/utils/useConfigure';
 import useLocale from '@/front/utils/useLocale';
+import SimpleButton from '@/front/common/SimpleButton/SimpleButton';
 
 
 const ConfigPage: React.FC = () => {
@@ -25,9 +26,7 @@ const ConfigPage: React.FC = () => {
         <label htmlFor='locale-select'>{tl('Locale')}</label>
         <select name='locale' id='locale-select' onChange={(e)=>{
           const selectedLocale = e.target.value as Language;
-          setLocale(selectedLocale);
-          i18n.changeLanguage(selectedLocale);
-          setLanguage(selectedLocale);        
+          setLocale(selectedLocale); 
         }}
         value={locale}>
           <option value={Language.EN}>English</option>
@@ -39,7 +38,6 @@ const ConfigPage: React.FC = () => {
         <select name="theme" id="theme-select" onChange={
           (e)=>{
             const selectedTheme = e.target.value as ThemeSetting;
-            setThemeSetting(selectedTheme);
             setCurThemeSetting(selectedTheme);
           }
         }
@@ -54,7 +52,6 @@ const ConfigPage: React.FC = () => {
         <label htmlFor="fontSizeSelect">{tl('font size')}</label>
         <select name="fontSizeSelect" id="fontSizeSelect" onChange={(e)=>{
           const selectedFontSize = e.target.value;
-          setFontSize(selectedFontSize);
           setCurFontSize(selectedFontSize);
         }} 
         value={curFontSize}>
@@ -64,6 +61,14 @@ const ConfigPage: React.FC = () => {
           <option value="very-large">very large</option>
         </select>
       </div>
+      <SimpleButton onClick={()=>{
+        setLanguage(locale);
+        i18n.changeLanguage(locale);
+        setThemeSetting(curThemeSetting);
+        setFontSize(curFontSize);  
+      }}>
+        {tl('Apply')}
+      </SimpleButton>
     </div>
   );
 };

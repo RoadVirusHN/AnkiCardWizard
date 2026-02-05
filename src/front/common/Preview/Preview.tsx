@@ -44,7 +44,7 @@ const Preview = ({html} : {html:string}) => {
     <div className={previewStyle.modeSelector}>
       {removed && removed.length > 0 && 
         <Icon 
-          url={FilterIcon} 
+          url={FilterIcon} // TODO : sucky icon! change it!
           title={tl("Some elementsscriptstags were removed for security reasons.")}/>}
       <form>
         <label>
@@ -82,7 +82,7 @@ const Preview = ({html} : {html:string}) => {
         <iframe 
           className={previewStyle.preview} 
           // credentialless="true" // 아직 typescript 지원 안함 : 쿠키, 네트워크, 로컬 스토리지 접근 차단
-          srcDoc={sanitizedHtml.toString()} 
+          srcDoc={html} 
           onErrorCapture={handleImageError}
           sandbox="allow-scripts allow-popups allow-forms"
           title="Preview Frame"
