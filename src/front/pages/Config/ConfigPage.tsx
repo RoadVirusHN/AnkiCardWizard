@@ -79,6 +79,18 @@ const ConfigPage: React.FC = () => {
       }}>
         {tl('Cancle')}
       </SimpleButton>
+      <SimpleButton onClick={()=>{
+        const uiLanguage = chrome.i18n.getUILanguage();
+        const defaultLang = uiLanguage.startsWith('ko') ? Language.KO : Language.EN;
+        setLocale(defaultLang);
+        const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (themeOption.userSetting === ThemeSetting.SYSTEM_LIGHT ||themeOption.userSetting===ThemeSetting.SYSTEM_DARK||themeOption.userSetting===ThemeSetting.NONE) {
+          setCurThemeSetting(isDark ? ThemeSetting.SYSTEM_DARK : ThemeSetting.SYSTEM_LIGHT);
+        }
+        setCurFontSize('normal');
+      }}>
+        {tl('Reset to default')}
+      </SimpleButton>
     </div>
   );
 };
