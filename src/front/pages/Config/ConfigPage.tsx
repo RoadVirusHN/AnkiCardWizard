@@ -62,7 +62,10 @@ const ConfigPage: React.FC = () => {
           <option value="very-large">very large</option>
         </select>
       </div>
-      <SimpleButton onClick={()=>{}}>
+      <SimpleButton onClick={()=>{
+        //Add default templates
+
+      }}>
         {tl('Add Default Templates')}
       </SimpleButton>
       <div className={configPageStyle.floatingBtnContainer}>
@@ -86,7 +89,7 @@ const ConfigPage: React.FC = () => {
           {tl('Cancle')}
         </SimpleButton>
         <SimpleButton onClick={()=>{
-          if (confirm(tl('Reset to default') + '?')){
+          if (confirm(tl('Reset to default settings?'))) {
             const uiLanguage = chrome.i18n.getUILanguage();
             const defaultLang = uiLanguage.startsWith('ko') ? Language.KO : Language.EN;
             setLocale(defaultLang);

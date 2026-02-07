@@ -69,7 +69,8 @@
       "Apply": "Apply",
       "Cancle": "Cancle",
       "Add Default Templates": "Add Default Templates",
-      "Default": "Default"
+      "Default": "Default",
+      "Reset to default settings": "Reset to default settings?"
     },
     "ModifyTemplate":{
       "meta": "Meta",

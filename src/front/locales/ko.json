@@ -69,7 +69,8 @@
       "Apply": "적용",
       "Cancle": "취소",
       "Add Default Templates": "기본 템플릿 추가",
-      "Default": "기본값"
+      "Default": "기본값",
+      "Reset to default settings": "기본 설정으로 재설정하시겠습니까?"
     },
     "ModifyTemplate":{
       "meta": "메타 정보",
