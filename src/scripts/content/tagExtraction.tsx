@@ -1,8 +1,13 @@
 import { MessageType } from "../background/messageHandler";
 import i18n from 'i18next';
 import { initLocale } from "./content";
+import Tooltip from "@/content/Tooltip";
+import { JSX } from "react";
+import { createRoot, Root } from "react-dom/client";
+
+let root : Root;
 let overlayElement: HTMLDivElement | null = null; // 오버레이 DIV
-let infoElement: HTMLDivElement | null = null; // 툴팁 DIV ("Copied!" 메시지용)
+let infoElement: JSX.Element | null = null; // 툴팁 DIV ("Copied!" 메시지용)
 let menuElement: HTMLDivElement | null = null; // 메뉴 DIV (선택창용)
 let contentPort: chrome.runtime.Port | null = null; // 포트 연결 상태 관리;
 
@@ -54,6 +59,7 @@ const getUniqueSelector = (el: HTMLElement): string => {
 // -----------------------------------------------------------------------------
 // 2. UI 생성 로직 (Overlay, Tooltip, Menu)
 // -----------------------------------------------------------------------------
+// TODO : Make element IDs unique to avoid conflicts with other extensions
 function createUIComponents() {
   // 2-1. 하이라이트 오버레이
   if (!overlayElement) {
@@ -69,29 +75,12 @@ function createUIComponents() {
       display: 'none',
     });
     document.body.appendChild(overlayElement);
+    root = createRoot(overlayElement);
   }
 
   // 2-2. 알림 툴팁 (Copied 메시지)
   if (!infoElement) {
-    infoElement = document.createElement('div');
-    infoElement.id = 'extension-tooltip';
-    Object.assign(infoElement.style, {
-      position: 'fixed',
-      zIndex: '1000000',
-      padding: '5px 10px',
-      backgroundColor: '#333',
-      color: 'white',
-      borderRadius: '4px',
-      pointerEvents: 'none',
-      display: 'none',
-      fontSize: '12px',
-      maxWidth: '300px',
-      whiteSpace: 'nowrap',
-      overflow: 'hidden',
-      textOverflow: 'ellipsis',
-      boxShadow: '0 2px 5px rgba(0,0,0,0.2)',
-    });
-    document.body.appendChild(infoElement);
+    root.render(<Tooltip />);
   }
 
   // 2-3. 액션 메뉴 (텍스트/태그/자식 선택) - 클릭 상호작용 필요하므로 pointerEvents: auto
