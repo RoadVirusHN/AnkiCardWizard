@@ -138,11 +138,16 @@ export const activateInspectionMode = (mode: InspectionMode = InspectionMode.TEX
   document.addEventListener('scroll', handleMouseOut, true);
 };
 
+function hideDisplayElements() {
+  const event = new CustomEvent('toggleOverlayDisplay', { detail: { isDisplay: false } });
+  window.dispatchEvent(event);
+}
+
 export const deactivateInspectionMode = () => {
   console.log('DeActivate InspectionMode');
 
-  if (overlayElement) overlayElement.style.display = 'none';
-  if (menuElement) menuElement.style.display = 'none'; // 메뉴도 숨김
+
+  hideDisplayElements();
 
   contentPort?.disconnect();
   document.removeEventListener('mouseover', handleMouseOver, true);
