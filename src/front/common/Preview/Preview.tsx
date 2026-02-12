@@ -15,9 +15,7 @@ import useLocale from "@/front/utils/useLocale";
   입력길이 제한
   마우스 커서 오버시 위험요소 툴팁 표시
 
-
   shadowdom과 css isolation 공부하기
-  iframe sandbox 옵션 공부하기
 
 */
 
@@ -25,12 +23,20 @@ enum PreviewMode {
   SAFE = 'safe',
   ALLOW_JS = 'allow-js',
 }
+
+const iFrameModeConfig = {
+  ADD_TAGS: ['script','style'],
+  ADD_ATTR: ['onclick','onmouseover','style'],
+  FORBID_TAGS: ['meta', 'link', 'base'],
+  FORCE_BODY: true,
+  RETURN_TRUSTED_TYPE: true
+};
 const Preview = ({html} : {html:string}) => {
-  const sanitizedHtml = DOMPurify.sanitize(html, {
-    RETURN_TRUSTED_TYPE: true,
-  });
-  const removed = DOMPurify.removed;
   const [mode, setMode] = useState<PreviewMode>(PreviewMode.SAFE);
+  const sanitizedHtml = DOMPurify.sanitize(html, mode===PreviewMode.SAFE ? {
+    RETURN_TRUSTED_TYPE: true,
+  } : iFrameModeConfig);
+  const removed = DOMPurify.removed;
   const tl = useLocale('component.Preview');
   const handleImageError : ReactEventHandler<HTMLDivElement>= (e) => {
     if (e.currentTarget.tagName === 'IMG') {
@@ -82,8 +88,8 @@ const Preview = ({html} : {html:string}) => {
         <iframe 
           className={previewStyle.preview} 
           // credentialless="true" // 아직 typescript 지원 안함 : 쿠키, 네트워크, 로컬 스토리지 접근 차단
+          // src={} // fallback url
           srcDoc={html} 
-          onErrorCapture={handleImageError}
           sandbox="allow-scripts allow-popups allow-forms"
           title="Preview Frame"
         />

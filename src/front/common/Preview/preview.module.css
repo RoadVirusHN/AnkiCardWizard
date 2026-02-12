@@ -13,8 +13,10 @@
   min-height: 20%; 
 }
 .safeMode{
+  all: initial;
   contain: content;
   isolation: isolate;
+  transform: translate(0,0);
 }
 .modeSelector{
   display: flex;

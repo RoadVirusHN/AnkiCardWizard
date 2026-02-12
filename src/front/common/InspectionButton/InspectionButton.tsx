@@ -10,6 +10,7 @@ import useLocale from "@/front/utils/useLocale";
 //TODO : URGENT! : fix the inspection error when user change tab then enter inspection mode.
 // Uncaught (in promise) Error: Could not establish connection. Receiving end does not exist.
 // solving : init content script when tab is changed or re-activated.
+// it... just disapeared... without doing nothing....
 const InspectionButton = ({setResult, mode=InspectionMode.TAG_EXTRACTION}:{setResult: (text:string)=>void, mode?: InspectionMode}) => {
   const [panelPort, setPanelPort] = useState<chrome.runtime.Port|null>();
   const tl = useLocale('component.InspectionButton');
