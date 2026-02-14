@@ -55,6 +55,7 @@ const getUniqueSelector = (el: HTMLElement): string => {
 // -----------------------------------------------------------------------------
 // TODO : Make element IDs unique to avoid conflicts with other extensions
 function createUIComponents() {
+  if (document.getElementById('extension-ui-container')) return;
   const container = document.createElement('div');
   container.id = 'extension-ui-container';
   container.style.position = 'fixed';
@@ -140,7 +141,7 @@ export const activateInspectionMode = (mode: InspectionMode = InspectionMode.TEX
   currentMode = mode; // 모드 설정
 
   createUIComponents(); // UI 준비
-  showDisplayElements();
+//  showDisplayElements();
   contentPort = port;
   document.addEventListener('mouseover', handleMouseOver, true);
   document.addEventListener('mouseout', handleMouseOut, true);
@@ -150,20 +151,20 @@ export const activateInspectionMode = (mode: InspectionMode = InspectionMode.TEX
 function showDisplayElements(){
   const event = new CustomEvent('toggleOverlayDisplay', { detail: { isDisplay: true } });
   window.dispatchEvent(event);
-  console.log(event);
+  console.log("showDisplayElement Event :",event);
 }
 
 function hideDisplayElements() {
   const event = new CustomEvent('toggleOverlayDisplay', { detail: { isDisplay: false } });
   window.dispatchEvent(event);
-  console.log(event);
+  console.log("hideDisplayElement Event :",event);
 }
 
 export const deactivateInspectionMode = () => {
   console.log('DeActivate InspectionMode');
 
 
-  hideDisplayElements();
+  //hideDisplayElements();
   document.body.removeChild(document.getElementById('extension-ui-container')!); 
 
   contentPort?.disconnect();
