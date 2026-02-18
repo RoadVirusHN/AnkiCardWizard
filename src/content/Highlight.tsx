@@ -12,6 +12,7 @@ const Highlight = ({onClick}: {onClick:(e:MouseEvent)=>void}) => {
   const [rect, setRect] = useState<HighlightRect>({width: 0, height: 0, top: 0, left: 0}); 
   const [isDisplay, setIsDisplay] = useState(true);
   useEffect(()=>{
+    console.log(`Highlight useEffect called`);
     const onMouseOver = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
       if (!isValidElement(target)) return;

@@ -3,7 +3,7 @@ import Tooltip from "./Tooltip";
 import Highlight from "./Highlight";
 import { useEffect, useState } from "react";
 import commonStyles from "./common.module.css";
-import { EXTENSION_UI_ID, InspectionMode } from "@/scripts/content/tagExtraction2";
+import { deactivateInspectionMode, EXTENSION_UI_ID, InspectionMode } from "@/scripts/content/tagExtraction2";
 import { MessageType } from "@/scripts/background/messageHandler";
 
 enum InspectionState{
@@ -44,7 +44,8 @@ export const isValidElement = (element: HTMLElement) => {
   if (
     element.className.includes(commonStyles["extension-tooltip"]) ||
     element.className.includes(commonStyles.highlight) ||
-    element.id === 'extension-menu' ||
+    element.className.includes(commonStyles.menu)  ||
+    element.className.includes(commonStyles.header)  ||
     element.id === EXTENSION_UI_ID
   )
     return false;
@@ -56,11 +57,11 @@ const App = ({mode, port}:{mode:InspectionMode, port:chrome.runtime.Port}) => {
   const [showingTooltip, setShowingTooltip] = useState(false);
   const [text, setText] = useState('');
   const [{x,y}, setPosition] = useState({x:0, y:0});  
+  const [target, setTarget] = useState<HTMLElement>();
   const showTooltip = (text: string, x: number, y: number) => {
     setShowingTooltip(true);
     setText(text);
     setPosition({ x, y });
-    console.log("show tooltip");
     setTimeout(() => {
       setShowingTooltip(false);
       port.postMessage({ type: MessageType.SEND_INSPECTION_DATA_FROM_CONTENT, data: text });
@@ -76,20 +77,23 @@ const App = ({mode, port}:{mode:InspectionMode, port:chrome.runtime.Port}) => {
       .catch((err) => console.error(err));
   };
   const onClick = (e:MouseEvent) =>{
-    console.log('Element Clicked');  
+    if (state !== InspectionState.HIGHLIGHT) return;
+    console.log("onClicked!");
     e.preventDefault();
     e.stopPropagation();
     setState(InspectionState.ON_CLICK);
-    copyToClipboard((e.target as HTMLElement).innerHTML.trim(), e.clientX, e.clientY, port);
     if (mode== InspectionMode.TAG_EXTRACTION) {
-      
+      setTarget(e.target as HTMLElement);
     } else {
+      copyToClipboard((e.target as HTMLElement).innerHTML.trim(), e.clientX, e.clientY, port);
     }
   };
   return <>
     {state === InspectionState.HIGHLIGHT && <Highlight onClick={onClick}/>}
-    {state === InspectionState.ON_CLICK && 
-     ( mode == InspectionMode.TAG_EXTRACTION ? <Menu /> : <></>)}
+    {state === InspectionState.ON_CLICK && target &&
+     ( mode == InspectionMode.TAG_EXTRACTION ? <Menu target={target} onClick={copyToClipboard} deClick={()=>{
+      setState(InspectionState.HIGHLIGHT);
+      }}/> : <></>)}
     <Tooltip text={text} x={x} y={y} showingTooltip={showingTooltip}/>
   </>;
 };
