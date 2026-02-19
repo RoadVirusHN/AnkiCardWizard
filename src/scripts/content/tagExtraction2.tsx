@@ -18,6 +18,22 @@ function createUIComponents(inspectionMode: InspectionMode, port: chrome.runtime
   if (document.getElementById(EXTENSION_UI_ID)) return;
   const container = document.createElement('div');
   
+  chrome.storage.sync.get('anki-card-wizard-configure-store', (result) => {
+    const store = result['anki-card-wizard-configure-store'];
+    if (store && store.state){
+      if (store.state.themeOption) {
+        const theme = store.state.themeOption.theme;
+        console.log(store.state.themeOption, theme);
+        container.setAttribute('data-theme', theme);
+      }
+      if (store.state.fontSize) {
+        const fontSize = store.state.fontSize;
+        container.classList.add(`font-${fontSize}`);
+      }
+    } 
+    
+  });
+
   container.id = EXTENSION_UI_ID;
   Object.assign(container.style, {
     position: 'fixed',

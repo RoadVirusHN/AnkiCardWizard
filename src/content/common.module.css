@@ -1,29 +1,21 @@
-.extension-overlay{
-  position: fixed;
-  pointer-events: none;
-  z-index: 999999;
-  background-color: rgba(173, 216, 230, 0.5);
-  border: 2px solid royalblue;
-  box-sizing: border-box;
-  display: none;
-}
+
 .highlight {
   position: fixed;
   pointer-events: none;
   z-index: 999999;
   background-color: rgba(173, 216, 230, 0.5);
-  border: 2px solid royalblue;
+  border: 2px solid var(--color-hyperlink);
   box-sizing: border-box;
 }
 .extension-tooltip{
   position: fixed;
   z-index: 1000000;
   padding: 5px 10px;
-  background-color: #333;
-  color: white;
+  background-color: var(--color-light);
+  color: var(--color-primary);
   border-radius: 4px;
   pointer-events: none;
-  font-size: 12px;
+  font-size: 1em;
   max-width: 300px;
   white-space: nowrap;
   overflow: hidden;
@@ -33,8 +25,8 @@
 .menu {
   position: fixed;
   z-index: 1000001;
-  background-color: white;
-  border: 1px solid #ccc;
+  background-color: var(--color-light);
+  border: 1px solid var(--color-secondary);
   border-radius: 6px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
   flex-direction: column;
@@ -44,16 +36,18 @@
   max-height: 500px;
   padding: 5px;
   font-family: sans-serif;
-  font-size: 13px;
-  color: #333;
+  font-size: 1em;
+  color: var(--color-primary);
   overflow-x: hidden;
   overflow-y: auto;
 }
 
 .header {
   font-weight: bold;
+  font-size: 1.2em;
   padding: 8px 12px;
-  border-bottom: 1px solid #eee;
+  color: var(--color-primary);
+  border-bottom: 1px solid var(--color-primary);
   margin-bottom: 5px;
 }
 .menu button {
@@ -64,10 +58,10 @@
   background: transparent;
   text-align: left;
   cursor: pointer;
-  color: #333;
-  border-bottom: 1px solid #eee;
-  font-size: 13px;
+  color: var(--color-secondary);
+  border-bottom: 1px solid var(--color-primary);
+  font-size: 1em;
 }
 .menu button:hover {
-  background: #f0f0f0;
+  background: var(--color-light);
 }

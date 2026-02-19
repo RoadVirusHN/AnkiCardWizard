@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import commonStyles from "./common.module.css";
 import { deactivateInspectionMode, EXTENSION_UI_ID, InspectionMode } from "@/scripts/content/tagExtraction2";
 import { MessageType } from "@/scripts/background/messageHandler";
+import "./common.css";
 
 enum InspectionState{
   HIGHLIGHT = 'HIGHLIGHT',
@@ -52,6 +53,8 @@ export const isValidElement = (element: HTMLElement) => {
   return true;
 };
 
+//TODO: App doing to much, split to multiple components
+// ex) App: manage state, container: position, Highlight: highlight logic, Menu: menu logic, Tooltip: tooltip logic
 const App = ({mode, port}:{mode:InspectionMode, port:chrome.runtime.Port}) => {
   const [state, setState] = useState(InspectionState.HIGHLIGHT);
   const [showingTooltip, setShowingTooltip] = useState(false);
@@ -92,6 +95,7 @@ const App = ({mode, port}:{mode:InspectionMode, port:chrome.runtime.Port}) => {
     {state === InspectionState.HIGHLIGHT && <Highlight onClick={onClick}/>}
     {state === InspectionState.ON_CLICK && target &&
      ( mode == InspectionMode.TAG_EXTRACTION ? <Menu target={target} 
+      // TODO: Change onClick
       onClick={(text:string,x:number,y:number)=>{
         copyToClipboard(text,x,y,port)
         setTarget(undefined);
