@@ -4,16 +4,20 @@ import useLocale from "@/front/utils/useLocale";
 import { X } from "react-router/dist/development/index-react-server-client-1TI9M9o1";
 import { getUniqueSelector } from "./App";
 
-const Menu = ({target, onClick, deClick}:
-  {
-    target: HTMLElement, 
-    onClick:(text: string, x: number, y: number) => void,
-    deClick:() => void
-  }
-) => {
-  const [curTarget,setCurTarget] = useState(target);
+export interface MenuItem {
+  key: string;
+  onClick: () => void;
+}
+interface MenuProps {
+  items: MenuItem[];
+  deClick:() => void;
+  pos: {x:number, y:number};
+}
+
+const Menu = ({items, deClick, pos}:MenuProps) => {
+  const [curItems,setCurItems] = useState(items);
   const [mode, setMode]= useState<'main' | 'children'>('main');
-  const rect = curTarget.getBoundingClientRect();
+  const rect = curItems.getBoundingClientRect();
   const menuRef = useRef<HTMLDivElement>(null);
   const tl = useLocale('background');
   useEffect(()=>{
@@ -32,19 +36,19 @@ const Menu = ({target, onClick, deClick}:
     style={{top: rect.top, left: rect.left}}
     ref={menuRef}
   >
-    <div className={commonStyles.header}>{mode ==='main' ? (`<${curTarget.tagName.toLowerCase()}> ` + tl('Selected')) : tl('Select Child')}</div>
+    <div className={commonStyles.header}>{mode ==='main' ? (`<${curItems.tagName.toLowerCase()}> ` + tl('Selected')) : tl('Select Child')}</div>
     {
       mode==='main' ? (
         <>
           <button
             onClick={()=>{
-              const text =curTarget.textContent?.trim() || '';
+              const text =curItems.textContent?.trim() || '';
               onClick(text,rect.top, rect.left);
             }}
             >{'📄 ' + tl('Extract Text')}</button>
           <button
           onClick={()=>{
-            const selector = getUniqueSelector(curTarget);
+            const selector = getUniqueSelector(curItems);
             onClick(selector,rect.top, rect.left);
           }}
           >{'🎯 ' + tl('Extract Selector')}</button>
@@ -53,7 +57,7 @@ const Menu = ({target, onClick, deClick}:
             e.stopPropagation();
             setMode('children');
           }}
-          >{'📂 ' + tl('Select Children') + ` (${curTarget.children.length})`}</button>
+          >{'📂 ' + tl('Select Children') + ` (${curItems.children.length})`}</button>
         </>
     ) : (
       <>
@@ -63,11 +67,11 @@ const Menu = ({target, onClick, deClick}:
             setMode('main');
           }}
         >{'⬅️'}</button>
-        {Array.from(curTarget.children).map((child, idx)=>(
+        {Array.from(curItems.children).map((child, idx)=>(
           <button key={idx}
             onClick={(e)=>{
               e.stopPropagation();
-              setCurTarget(child as HTMLElement);
+              setCurItems(child as HTMLElement);
               setMode('main');
             }}
           >{`<${child.tagName.toLowerCase()}> ${child.textContent?.trim().slice(0,15) || '...'}`}</button>

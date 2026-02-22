@@ -1,4 +1,4 @@
-import Menu from "./Menu";
+import Menu, { MenuItem } from "./Menu";
 import Tooltip from "./Tooltip";
 import Highlight from "./Highlight";
 import { useEffect, useState } from "react";
@@ -11,7 +11,8 @@ import getCssSelector from "css-selector-generator";
 
 enum InspectionState{
   HIGHLIGHT = 'HIGHLIGHT',
-  ON_CLICK= 'ON_CLICK'
+  MENU= 'MENU',
+  TOOLTIP= 'TOOLTIP'
 }
 //TODO : two modes(TAG_EXTRACTION : Non-Unique, TEXT_EXTRACTION : Unique)
 export const getUniqueSelector = (el: HTMLElement): string => {
@@ -36,19 +37,32 @@ export const isValidElement = (element: HTMLElement) => {
 // ex) App: manage state, container: position, Highlight: highlight logic, Menu: menu logic, Tooltip: tooltip logic
 const App = ({mode, port}:{mode:InspectionMode, port:chrome.runtime.Port}) => {
   const [state, setState] = useState(InspectionState.HIGHLIGHT);
-  const [showingTooltip, setShowingTooltip] = useState(false);
   const [text, setText] = useState('');
   const [{x,y}, setPosition] = useState({x:0, y:0});  
-  const [target, setTarget] = useState<HTMLElement>();
+  const [items, setItems] = useState<MenuItem[]>([] as MenuItem[]);
   const showTooltip = (text: string, x: number, y: number) => {
-    setShowingTooltip(true);
+    setState(InspectionState.TOOLTIP);
     setText(text);
     setPosition({ x, y });
     setTimeout(() => {
-      setShowingTooltip(false);
       port.postMessage({ type: MessageType.SEND_INSPECTION_DATA_FROM_CONTENT, data: text });
     }, 2000); // 2초 후에 툴팁 숨김
   };
+  const showMenu = (items:MenuItem[], x: number, y: number) => {
+    setState(InspectionState.MENU);
+    setItems(items);
+     // 메뉴 표시 후 클릭 이벤트가 메뉴 외부에서 발생하면 메뉴 숨김
+     const handleClickOutside = (e: MouseEvent) => {
+      if (!e.target || !(e.target instanceof HTMLElement)) return;
+      if (!e.target.closest(`.${commonStyles.menu}`)) {
+        setState(InspectionState.HIGHLIGHT);
+      }
+    };
+    document.addEventListener('click', handleClickOutside);
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }
   // 클립보드 복사 및 툴팁 표시
   const copyToClipboard = (text: string, x: number, y: number, port: chrome.runtime.Port) => {
     navigator.clipboard
@@ -58,31 +72,34 @@ const App = ({mode, port}:{mode:InspectionMode, port:chrome.runtime.Port}) => {
       })
       .catch((err) => console.error(err));
   };
-  const onClick = (e:MouseEvent) =>{
+  const onHighlightClicked = (e:MouseEvent) =>{
     if (state !== InspectionState.HIGHLIGHT) return;
     console.log("onClicked!");
     e.preventDefault();
     e.stopPropagation();
-    setState(InspectionState.ON_CLICK);
+    setState(InspectionState.MENU);
     if (mode== InspectionMode.TAG_EXTRACTION) {
-      setTarget(e.target as HTMLElement);
+      setItems([{
+
+      },
+
+      ]);
     } else {
       copyToClipboard((e.target as HTMLElement).innerHTML.trim(), e.clientX, e.clientY, port);
+      setItems([]);
     }
   };
   return <>
-    {state === InspectionState.HIGHLIGHT && <Highlight onClick={onClick}/>}
-    {state === InspectionState.ON_CLICK && target &&
-     ( mode == InspectionMode.TAG_EXTRACTION ? <Menu target={target} 
-      // TODO: Change onClick
-      onClick={(text:string,x:number,y:number)=>{
-        copyToClipboard(text,x,y,port)
-        setTarget(undefined);
-      }} 
+    {state === InspectionState.HIGHLIGHT && <Highlight onClick={onHighlightClicked}/>}
+    {state === InspectionState.MENU &&
+     ( mode == InspectionMode.TAG_EXTRACTION && items.length > 0 ? <Menu items={items} 
       deClick={()=>{
         setState(InspectionState.HIGHLIGHT);
-      }}/> : <></>)}
-    <Tooltip text={text} x={x} y={y} showingTooltip={showingTooltip}/>
+      }} pos={{x,y}}/> : <></>)}
+      {
+        state === InspectionState.TOOLTIP &&
+        <Tooltip text={text} pos={{x,y}}/>
+      }
   </>;
 };
 export default App;
