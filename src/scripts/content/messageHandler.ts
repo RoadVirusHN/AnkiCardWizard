@@ -22,7 +22,20 @@ export const messageHandler = async (
       port.onDisconnect.addListener(() => {
         deactivateInspectionMode();
       });
-      activateInspectionMode(message.data as InspectionMode, port);
+      if (
+        typeof message.data === 'object' &&
+        message.data !== null &&
+        'mode' in message.data &&
+        'rootSelector' in message.data
+      ) {
+        activateInspectionMode(
+          (message.data as { mode: InspectionMode }).mode,
+          port,
+          (message.data as { rootSelector: string }).rootSelector
+        );
+      } else {
+        console.error('Invalid message data:', message.data);
+      }
       break;
   }
   return isAsync;

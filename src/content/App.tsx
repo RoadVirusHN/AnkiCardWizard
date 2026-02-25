@@ -9,15 +9,24 @@ import { MessageType } from "@/scripts/background/messageHandler";
 import "./common.css";
 import getCssSelector, { cssSelectorGenerator } from "css-selector-generator";
 import useLocale from "@/front/utils/useLocale";
+import { CssSelectorType } from "css-selector-generator/types/types";
 
 enum InspectionState{
   HIGHLIGHT = 'HIGHLIGHT',
   MENU= 'MENU',
   TOOLTIP= 'TOOLTIP'
 }
-//TODO : two modes(TAG_EXTRACTION : Non-Unique, TEXT_EXTRACTION : Unique)
-export const getUniqueSelector = (el: HTMLElement): string[] => {
-  return Array.from(cssSelectorGenerator(el, {maxResults: 3}));
+//TODO : two modes(TAG_EXTRACTION : Non-Unique, FEILD_EXTRACTION : Unique)
+export const getUniqueSelector = (el: HTMLElement, mode: 'Unique'|'NonUnique',root?: HTMLElement): string[] => {
+  root = root || document.body;
+  return Array.from(cssSelectorGenerator(el, {root,
+    maxResults: 3, 
+    combineWithinSelector: mode === 'Unique', // 동일한 요소 내에서 여러 selector 조합 허용 여부
+    combineBetweenSelectors: mode === 'Unique', // 여러 selector 조합 허용 여부
+    blacklist: [EXTENSION_UI_ID, ...Object.values(commonStyles)],
+    selectors: ['id', 'class', 'tag', 'attribute', ...(mode === 'Unique' ? [] : ['nth-child'])] as CssSelectorType[],
+    includeTag: true, // Css selector에 태그 이름 포함 여부
+  }));
 };
 
 // 요소 유효성 검사
@@ -36,12 +45,13 @@ export const isValidElement = (element: HTMLElement) => {
 
 //TODO: App doing to much, split to multiple components
 // ex) App: manage state, container: position, Highlight: highlight logic, Menu: menu logic, Tooltip: tooltip logic
-const App = ({mode, port}:{mode:InspectionMode, port:chrome.runtime.Port}) => {
+const App = ({mode, port, rootSelector}:{mode:InspectionMode, port:chrome.runtime.Port, rootSelector:string}) => {
   const [state, setState] = useState(InspectionState.HIGHLIGHT);
   const [text, setText] = useState('');
   const [{x,y}, setPosition] = useState({x:0, y:0});  
   const [items, setItems] = useState<MenuItem[]>([] as MenuItem[]);
   const [menuHeader, setMenuHeader] = useState('');
+  const [selectorMode, setSelectorMode] = useState<'Unique'|'NonUnique'>(InspectionMode.TAG_EXTRACTION===mode ? 'NonUnique' : 'Unique');
   const tl = useLocale('background');
   const showTooltip = (text: string, x: number, y: number) => {
     setState(InspectionState.TOOLTIP);
@@ -86,7 +96,8 @@ const App = ({mode, port}:{mode:InspectionMode, port:chrome.runtime.Port}) => {
         copyToClipboard(text,x, y, port);
       }},
       {key:'🎯 ' + tl('Extract Selector'), onClick:()=>{
-        const selector = getUniqueSelector(target);
+        const root = document.querySelector(rootSelector);
+        const selector = getUniqueSelector(target, selectorMode, rootSelector==='' ? undefined:(root as HTMLElement));
         setItems(Array.from(selector, s=>({key: s, onClick:()=>{
           copyToClipboard(s,x, y, port);
         }})));
