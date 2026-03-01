@@ -1,4 +1,3 @@
-import { InspectionMode } from '../content/tagExtraction';
 import { MessageType } from './messageHandler';
 
 const sidePanelPorts = {} as { [tabId: number]: chrome.runtime.Port};
@@ -6,23 +5,14 @@ const portTabMap = new WeakMap<chrome.runtime.Port, number>();
 const contentScriptPorts = {} as { [tabId: number]: chrome.runtime.Port };
 
 export enum PortNames {
-  ENTER_TEXT_INSPECTION_MODE_FROM_PANEL = 'ENTER_TEXT_INSPECTION_MODE_FROM_PANEL',
-  ENTER_TAG_INSPECTION_MODE_FROM_PANEL = 'ENTER_TAG_INSPECTION_MODE_FROM_PANEL',
-  ENTER_FIELD_INSPECTION_MODE_FROM_PANEL = 'ENTER_FIELD_INSPECTION_MODE_FROM_PANEL',
+  ENTER_INSPECTION_MODE_FROM_PANEL = 'ENTER_INSPECTION_MODE_FROM_PANEL',
   READY_INSPECTION_MODE_FROM_CONTENT = 'READY_INSPECTION_MODE_FROM_CONTENT',
 }
-const portNameToInspectionMode = {
-  [PortNames.ENTER_TEXT_INSPECTION_MODE_FROM_PANEL]: InspectionMode.TEXT_EXTRACTION,
-  [PortNames.ENTER_TAG_INSPECTION_MODE_FROM_PANEL]: InspectionMode.TAG_EXTRACTION,
-  [PortNames.ENTER_FIELD_INSPECTION_MODE_FROM_PANEL]: InspectionMode.FIELD_EXTRACTION,
-};
 
 export const connectHandler = (port: chrome.runtime.Port) => {
   console.log("Background received connection on port:", port.name);
   switch (port.name) {
-    case PortNames.ENTER_TEXT_INSPECTION_MODE_FROM_PANEL:
-    case PortNames.ENTER_TAG_INSPECTION_MODE_FROM_PANEL:
-    case PortNames.ENTER_FIELD_INSPECTION_MODE_FROM_PANEL:
+    case PortNames.ENTER_INSPECTION_MODE_FROM_PANEL:
       port.onMessage.addListener((msg) => {
         const tabId = msg.tabId as number;
         console.log("background get message", msg);
@@ -34,8 +24,7 @@ export const connectHandler = (port: chrome.runtime.Port) => {
             sidePanelPorts[tabId] = port;
             chrome.tabs.sendMessage(tabId, {
               type: MessageType.ENTER_INSPECTION_MODE_FROM_PANEL,
-              data: portNameToInspectionMode[port.name as keyof typeof portNameToInspectionMode],
-              rootSelector: msg.rootSelector,
+              data: msg.data
             });
             portTabMap.set(port, tabId); // Store tabId in the port object
             break;
