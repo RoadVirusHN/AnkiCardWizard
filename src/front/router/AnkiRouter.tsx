@@ -6,6 +6,7 @@ import DetectPage from "../pages/Detect/DetectPage";
 import AddPage from "../pages/Add/AddPage";
 import TemplatesPage from "../pages/Templates/TemplatesPage";
 import PreviewCard from '../pages/PreviewCard/PreviewCard';
+import ErrorPage from "../pages/Error/ErrorPage";
 
 const router = (currentUrl: string)=> createMemoryRouter([
   {
@@ -40,8 +41,9 @@ const router = (currentUrl: string)=> createMemoryRouter([
         path: "previewCard/:index",
         element: <PreviewCard/>
       }
-    ]
-  }
+    ],
+    errorElement: <ErrorPage/>
+  },
 ], {initialEntries: [currentUrl]});
 
 export default router;

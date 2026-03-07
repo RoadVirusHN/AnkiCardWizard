@@ -22,6 +22,7 @@ import useConfigure, { Theme } from "@/front/utils/useConfigure";
 import useInspection from "@/front/utils/useInspection";
 import MagicIcon from "@/public/Icon/Icon-Magic.svg";
 import { InspectionMode } from "@/scripts/content/constants";
+import { data } from "react-router";
 
 const AddPage = ({}) => {
   const {fetchAnki} = useAnkiConnectionStore();
@@ -33,6 +34,7 @@ const AddPage = ({}) => {
   const tlC = useLocale('common');
   const {themeOption} = useConfigure();
   const {enterInspectionMode,cancleInspectionMode,isInspectionMode} = useInspection();
+  throw data("hohoho error", {status: 1111});
   return <div>
     <div className={addPageStyle.header}>     
       <h2>{tl('Add Note to Anki')}</h2>
@@ -56,9 +58,13 @@ const AddPage = ({}) => {
         </label>
         <Icon url={CodeIcon}/>
       </div>
+      <button onClick={()=>{
+        console.log("wtff");
+        throw new Error("make error");
+        }}>make Error!</button>
     </div>
       {<section className={addPageStyle.previewPage}>
-        <InspectionOverlay mode={InspectionMode.TEXT_EXTRACTION} cancleInspectionMode={cancleInspectionMode}/>
+        {isInspectionMode ?? <InspectionOverlay mode={InspectionMode.TEXT_EXTRACTION} cancleInspectionMode={cancleInspectionMode}/>}
         <DeckInput onChange={(deck:string)=>{setCurNote({...curNote, deckName: deck})}}/>
         <TemplateInput defaultTemplate={curNote.templateName} setTemplate={(template:string)=>{
           setCurNote({...curNote, templateName: template});
