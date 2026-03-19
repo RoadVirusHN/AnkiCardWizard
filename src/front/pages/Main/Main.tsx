@@ -2,8 +2,10 @@ import Tabs from '@/front/common/Tabs/Tabs';
 import mainStyle from "./main.module.css";
 import { Outlet } from 'react-router';
 import PathUpdater from '@/front/utils/PathUpdater';
+import { withErrorBoundary } from 'react-error-boundary';
+import ErrorPage from '../Error/ErrorPage';
 
-const Popup: React.FC = () => {
+const Main = () => {
  
   return (
     <div className={mainStyle.main}>
@@ -16,4 +18,7 @@ const Popup: React.FC = () => {
   );
 };
 
-export default Popup;
+export default withErrorBoundary(Main,
+  {
+    FallbackComponent: ErrorPage
+  });

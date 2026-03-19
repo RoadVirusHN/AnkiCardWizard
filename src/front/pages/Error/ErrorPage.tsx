@@ -2,37 +2,37 @@ import useLocale from "@/front/utils/useLocale";
 import { isRouteErrorResponse, useNavigate, useRouteError } from "react-router";
 import errorPageStyle from "./errorPage.module.css";
 import SimpleButton from "@/front/common/SimpleButton/SimpleButton";
+import { FallbackProps } from "react-error-boundary";
+import i18n from "@/front/locales/i18n";
 
-const getErrorGuid = (status:string,tl:(key: string, altKey?: string) => string)=>{
-  const altKey = "pages.ErrorPage.codes." + status;
-  return {status:status,statusText:tl("statusText",altKey),description: tl("description",altKey), solutions: tl("solutions",altKey) as unknown as string[]};
+const getErrorGuide = (infos:{status: string, message: string},tl:(key: string, altKey?: string) => string)=>{
+  let altKey = "pages.ErrorPage.codes." + infos.status;
+  let description = tl("description",altKey);
+  if (!i18n.exists(altKey)){
+    altKey = "pages.ErrorPage.codes.Unknown Error";
+    if (infos.message.length > 0){
+      description = infos.message; 
+    }
+  }
+  return {status:infos.status,statusText:tl("statusText",altKey),description, solutions: tl("solutions",altKey) as unknown as string[]};
 };
 
-const getErrorCode = (error: unknown): string => {
+const getErrorInfo = (error: unknown): {status: string, message: string} => {
   console.log("error: ",error);
   if (isRouteErrorResponse(error)) {
     console.log(error.data);
-    return String(error.status);
+    return {status: String(error.status),message: error.data?.message || error.statusText || "An error occurred while loading the page."};
   } else if (error instanceof Error){
-    return error.message;
+    return {status: error.name, message: error.message};
   }
-  return "DEFAULT";
+  return {status: "Unknown Error", message: "An unexpected error has occurred."};
 };
 
-// TODO
-// Error title : status + message
-// Error detailed description
-// solution or suggestion (if any)
-// brand identity (logo, color, etc) for user reassurance
-// Go Home button
-// Go Back button
-// Maybe a button to report the error (copy error detail to clipboard and open github issue page)
-
-// TODO: theme, fontsize, word break
-const ErrorPage = () => {
-  let error = getErrorCode(useRouteError());
+// TODO: Responsive, runtime error and route error handling
+const ErrorPage = ({ error: runtimeError, resetErrorBoundary }: Partial<FallbackProps>) => {
+  let infos = getErrorInfo(runtimeError ?? useRouteError());
   const tl = useLocale('pages.ErrorPage');
-  const guide = getErrorGuid(error, tl);
+  const guide = getErrorGuide(infos, tl);
   console.log(guide);
   const navigate = useNavigate();
   return (
@@ -53,9 +53,11 @@ const ErrorPage = () => {
           </ul>
         </div>
       </div>
-
-      <SimpleButton onClick={()=>navigate(-1)}>Go Back</SimpleButton>
-      <SimpleButton onClick={()=>navigate('/')}>Go Home</SimpleButton>
+      <SimpleButton onClick={()=>{
+        resetErrorBoundary?.();
+        navigate('/',{replace: true});//replace to avoid user go home to error page again
+        // No Go back button for prevent error page loop
+      }}>Go Home</SimpleButton>
       <div className={errorPageStyle['contact-info']}>
         <span className={errorPageStyle.email}>Contact : tempEmail@google.com</span>
       </div>
