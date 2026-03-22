@@ -1,6 +1,7 @@
 import { data, NavLink } from "react-router";
-
+import {  useErrorBoundary } from "react-error-boundary";
 const ErrorTesting = ({}) => {
+  const {showBoundary} = useErrorBoundary();
   return <div>
     runtime errors
     <button onClick={()=>{
@@ -9,7 +10,7 @@ const ErrorTesting = ({}) => {
       }}>404(Response)</button>
     <button onClick={()=>{
       //throw 500 error
-      throw new Error("This is a test error for testing the error boundary.");
+      showBoundary(new Error("This is a test error for testing the error boundary."));
       }}>500</button>
     <button onClick={()=>{
       throw data("testing 403", {status: 403, statusText: "Forbidden"});
