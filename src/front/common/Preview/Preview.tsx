@@ -46,7 +46,7 @@ const Preview = ({html} : {html:string}) => {
     }
   };
   return (
-  <div>
+  <div className={previewStyle.previewContainer}>
     <div className={previewStyle.modeSelector}>
       {removed && removed.length > 0 && 
         <Icon 
@@ -75,26 +75,34 @@ const Preview = ({html} : {html:string}) => {
         </label>
       </form>
     </div>
-    {
-      mode === PreviewMode.SAFE ?
-      <root.div className={`${previewStyle.previewWrapper} ${previewStyle.safeMode}`}>
+      <root.div style={{width: '100%', display: mode===PreviewMode.SAFE ? 'block': 'none'}}>
+        <style>{`
+          :host {
+            display: block;
+            border: 1px solid #61758a;
+            border-radius: 12px;
+            width: 100%;
+            height: 200px;
+            overflow: auto;
+            transform: scale(0.85);
+          }
+          * { box-sizing: border-box; }
+        `}</style>
         <div 
-        className={previewStyle.preview}
         onErrorCapture={handleImageError}
         dangerouslySetInnerHTML={{__html: sanitizedHtml}} 
         />
-      </root.div> :
-      <div className={previewStyle.previewWrapper}>
+      </root.div> 
+      <div className={previewStyle.previewWrapper} style={{display: mode===PreviewMode.ALLOW_JS ? 'block': 'none'}}>
         <iframe 
           className={previewStyle.preview} 
-          // credentialless="true" // 아직 typescript 지원 안함 : 쿠키, 네트워크, 로컬 스토리지 접근 차단
+          // credentialless="true" // 아직 typescript, 일부 브라우저 지원 안함 : 쿠키, 네트워크, 로컬 스토리지 접근 차단
           // src={} // fallback url
           srcDoc={html} 
           sandbox="allow-scripts allow-popups allow-forms"
           title="Preview Frame"
         />
       </div>
-    }
   </div>);
 };
 export default Preview;
