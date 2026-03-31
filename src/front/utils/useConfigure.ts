@@ -29,10 +29,20 @@ interface ConfigureState {
   language: Language;
   themeOption: ThemeOption;
   fontSize: string;
+  styles: { [modelName: string]: { card: string; [cards: string]: string } };
   setLanguage: (lang: Language) => void;
   setThemeSetting: (themeSetting: ThemeSetting) => void;
   setFontSize: (fontSize: string) => void;
+  setStyles: (modelName: string, key: string, newStyle: string) => void;
 }
+
+const DEFAULT_STYLE = `
+  font-family: arial;
+  font-size: 20px;
+  text-align: center;
+  color: black;
+  background-color: white;
+`;
 
 const useConfigure = create<ConfigureState>()(
   persist(
@@ -43,6 +53,11 @@ const useConfigure = create<ConfigureState>()(
         userSetting: ThemeSetting.NONE,
       },
       fontSize: 'normal',
+      styles: {
+        basic:{
+          card: DEFAULT_STYLE
+        }
+      },
       setLanguage: (lang: Language) => {
         set({ language: lang });
       },
@@ -67,7 +82,17 @@ const useConfigure = create<ConfigureState>()(
         html.classList.remove('font-small', 'font-normal', 'font-large', 'font-very-large');
         html.classList.add(`font-${fontSize}`);
         set({ fontSize: fontSize });
-      }
+      },
+      setStyles: (modelName:string, key:string, newStyle:string) => {
+        set((state) => {
+          const newStyles = { ...state.styles };
+          if (!newStyles[modelName]) {
+            newStyles[modelName] = { card: DEFAULT_STYLE };
+          }
+          newStyles[modelName][key] = newStyle;
+          return { styles: newStyles };
+        });
+      },
     }),
     {
       name: 'anki-card-wizard-configure-store',
