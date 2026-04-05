@@ -33,8 +33,7 @@ export interface Note {
   deckName: string;
   modelName: string;
   fields: {
-    Front: string;
-    Back: string;
+    [field:string]: string;
   };
   tags: string[];
   audio?: {
@@ -44,13 +43,16 @@ export interface Note {
     fields: string | string[];
   };
 }
+export interface Field {
+  name: string; html: string; items: TemplateItem[], priority:number;
+}
 export interface Template {
   meta: TemplateMeta;
   templateName: string;
   modelName: string;
   urlPatterns: string[];
   rootTag: string;
-  Fields: { name: string; html: string; items: TemplateItem[] }[];
+  fields: Field[];
   tags: string[];
   audio?: {
     url: string;

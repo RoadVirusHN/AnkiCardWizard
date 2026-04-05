@@ -1,6 +1,6 @@
 import {
-  TemplateField,
-  TemplateFieldDataType,
+  TemplateItem,
+  TemplateItemDataType,
   Template,
   ExtractedMap,
   Extracted,
@@ -72,24 +72,24 @@ const checkUrlMatched = (customCard: Template): boolean => {
     })
   );
 };
-const extractFields = (root: Element, record: Record<string, string>) => (field: TemplateField) => {
+const extractFields = (root: Element, record: Record<string, string>) => (field: TemplateItem) => {
   try {
     let element: Element | null = null;
     element = root.querySelector(field.content);
 
     if (element) {
       switch (field.dataType) {
-        case TemplateFieldDataType.TEXT:
+        case TemplateItemDataType.TEXT:
           record[field.name] = element.textContent || '';
           break;
-        case TemplateFieldDataType.IMAGE:
+        case TemplateItemDataType.IMAGE:
           if (element instanceof HTMLImageElement) {
             record[field.name] = element.src;
           } else {
             record[field.name] = (element as HTMLElement).getAttribute('src') || '';
           }
           break;
-        case TemplateFieldDataType.AUDIO:
+        case TemplateItemDataType.AUDIO:
           record[field.name] = (element as HTMLAudioElement).src || '';
           break;
         default:
