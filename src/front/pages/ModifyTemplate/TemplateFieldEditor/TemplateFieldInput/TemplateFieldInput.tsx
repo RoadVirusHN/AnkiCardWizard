@@ -1,34 +1,34 @@
 import { useState, forwardRef, useImperativeHandle } from "react";
-import { TemplateFieldDataType, type TemplateField } from "@/front/utils/useTemplates";
+import { TemplateItemDataType, type TemplateItem } from "@/front/utils/useTemplates";
 import templateFieldStyle from "./templateFieldInput.module.css";
 import useLocale from "@/front/utils/useLocale";
 
 /**
  * 외부에 노출되는 ref 메서드들
  */
-export interface TemplateFieldInputRef {
-  getFields: () => TemplateField[]; // locked 속성 제거된 배열 반환
-  clearFields: () => void;
-  setDefaultFields: (fields: (TemplateField & { locked?: boolean })[], lock?: boolean) => void;
+export interface TemplateItemInputRef {
+  getItems: () => TemplateItem[]; // locked 속성 제거된 배열 반환
+  clearItems: () => void;
+  setDefaultItems: (fields: (TemplateItem & { locked?: boolean })[], lock?: boolean) => void;
 }
 
-interface TemplateFieldInputProps {
-  defaultValue?: (TemplateField & { locked?: boolean })[];
+interface TemplateItemInputProps {
+  defaultValue?: (TemplateItem & { locked?: boolean })[];
 }
 
-type InternalField = TemplateField & { locked?: boolean };
+type InternalItem = TemplateItem & { locked?: boolean };
 
-const TemplateFieldInput = forwardRef<TemplateFieldInputRef, TemplateFieldInputProps>(
+const TemplateItemInput = forwardRef<TemplateItemInputRef, TemplateItemInputProps>(
   ({ defaultValue = [] }, ref) => {
-    const [fields, setFields] = useState<InternalField[]>(() =>
+    const [items, setItems] = useState<InternalItem[]>(() =>
       (defaultValue || []).map((f) => ({ ...f }))
     );
 
     useImperativeHandle(ref, () => ({
-      getFields: () => fields.map(({ locked, ...rest }) => rest),
-      clearFields: () => setFields([]),
-      setDefaultFields: (flds, lock = false) => {
-        setFields((prev) => [
+      getItems: () => items.map(({ locked, ...rest }) => rest),
+      clearItems: () => setItems([]),
+      setDefaultItems: (flds, lock = false) => {
+        setItems((prev) => [
           ...flds.map((f) => ({ ...f, locked: lock || f.locked })),
           ...prev.filter((p) => !p.locked), // 기존 잠긴 것들은 유지, 비잠긴것은 뒤에 붙음
         ]);
@@ -36,25 +36,25 @@ const TemplateFieldInput = forwardRef<TemplateFieldInputRef, TemplateFieldInputP
     }));
 
     const addField = () => {
-      setFields((prev) => [
+      setItems((prev) => [
         ...prev,
-        { name: "", content: "", dataType: TemplateFieldDataType.TEXT, locked: false, isOptional: true},
+        { name: "", content: "", dataType: TemplateItemDataType.TEXT, locked: false, isOptional: true},
       ]);
     };
 
-    const updateField = (index: number, key: keyof TemplateField, value: string|boolean) => {
-      setFields((prev) =>
+    const updateField = (index: number, key: keyof TemplateItem, value: string|boolean) => {
+      setItems((prev) =>
         prev.map((f, i) => (i === index ? { ...f, [key]: value } : f))
       );
     };
 
     const removeField = (index: number) => {
-      setFields((prev) => prev.filter((_, i) => i !== index));
+      setItems((prev) => prev.filter((_, i) => i !== index));
     };
     const tl = useLocale('pages.ModifyTemplate.TemplateSideEditor.TemplateFieldInput');
     return (
       <div className={templateFieldStyle.container}>
-        {fields.map((field, i) => (
+        {items.map((field, i) => (
           <div key={i} className={templateFieldStyle.fieldRow}>
             <input
               type="text"
@@ -116,4 +116,4 @@ const TemplateFieldInput = forwardRef<TemplateFieldInputRef, TemplateFieldInputP
   }
 );
 
-export default TemplateFieldInput;
+export default TemplateItemInput;
