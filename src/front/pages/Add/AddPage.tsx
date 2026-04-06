@@ -99,7 +99,7 @@ const AddPage = ({}) => {
               });
             }}
             />) :
-            <Preview html={curNote.fields.Front}/>
+            <Preview html={curNote.fields.Front} modelName={curNote.modelName}/>
         }
         <h3>{tlC('back') +' ' + tlC('preview')} {isModifying ?? <SimpleButton title="Extract Field Css Selector" src={MagicIcon} onClick={()=>enterInspectionMode()}/>}</h3>
         {
@@ -121,7 +121,7 @@ const AddPage = ({}) => {
               });
             }}
             />)
-          : <Preview html={curNote.fields.Back}/>
+          : <Preview html={curNote.fields.Back} modelName={curNote.modelName}/>
         }
       </section> }
       <SimpleButton src={AddIcon} 

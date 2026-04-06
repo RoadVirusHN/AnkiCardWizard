@@ -1,4 +1,4 @@
-import { Template, TemplateFieldDataType } from '@/front/utils/useTemplates';
+import { Template, TemplateItemDataType } from '@/front/utils/useTemplates';
 
 export const STORAGE_KEY = 'anki-card-wizard-global-var-store';
 export const defaultTemplates: Template[] = [
@@ -8,18 +8,23 @@ export const defaultTemplates: Template[] = [
     modelName: 'Basic',
     urlPatterns: [],
     rootTag: 'body',
-    Front: {
+    fields: 
+    [{
+      name: 'Front',
       html: '{{Front}}',
-      fields: [
-        { name: 'Front', content: '', dataType: TemplateFieldDataType.TEXT, isOptional: false },
+      items: [
+        { name: 'Front', content: '', dataType: TemplateItemDataType.TEXT, isOptional: false },
       ],
+      priority: 1,
     },
-    Back: {
+    {
+      name: 'Back',
       html: '{{Back}}',
-      fields: [
-        { name: 'Back', content: '', dataType: TemplateFieldDataType.TEXT, isOptional: false },
+      items: [
+        { name: 'Back', content: '', dataType: TemplateItemDataType.TEXT, isOptional: false },
       ],
-    },
+      priority: 2,
+    }],
     tags: [],
   },
 ];

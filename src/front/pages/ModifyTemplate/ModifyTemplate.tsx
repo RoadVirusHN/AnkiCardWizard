@@ -1,9 +1,9 @@
-import useTemplates, { TEMPLATE_CODE, TemplateFieldDataType} from "@/front/utils/useTemplates";
+import useTemplates, { TEMPLATE_CODE, TemplateItemDataType} from "@/front/utils/useTemplates";
 import { useParams } from "react-router";
 import { useState } from "react";
 import modifyTemplateStyle from "./modifyTemplate.module.css";
 import type { Template } from "@/front/utils/useTemplates";
-import TemplateSideEditor from "./TemplateSideEditor/TemplateSideEditor";
+import TemplateFieldEditor from "./TemplateFieldEditor/TemplateFieldEditor";
 import TemplateMetaEditor from "./TemplateMetaEditor/TemplateMetaEditor";
 import TemplateCommonEditor from "./TemplateCommonEditor/TemplateCommonEditor";
 import ModifyTemplateHeader from "./ModifyTemplateHeader/ModifyTemplateHeader";
@@ -16,8 +16,10 @@ const emptyTemplate: Template = {
     urlPatterns: ["*"],
     rootTag: "div.word",
     tags: [],
-    Front: { html: "<h2>{{front}}</h2>", fields: [{name: "front", content: "h1", dataType: TemplateFieldDataType.TEXT,isOptional: false}] },
-    Back: { html: "<p>{{back}}</p>", fields: [{name: "back", content: "p", dataType: TemplateFieldDataType.TEXT,isOptional: false}] },
+    fields: [
+      {name: "Front", html: "<h2>{{front}}</h2>", items: [{name: "front", content: "h1", dataType: TemplateItemDataType.TEXT,isOptional: false}], priority:1 },
+      {name:"Back", html: "<p>{{back}}</p>", items: [{name: "back", content: "p", dataType: TemplateItemDataType.TEXT,isOptional: false}], priority:2 },
+    ]
 };
 
 
@@ -27,10 +29,11 @@ const ModifyTemplate = () => {
   const isEditMode = index !== undefined;
   const idx = isEditMode ? parseInt(index) : undefined;
   const { templates, addTemplate, modifyTemplate } = useTemplates();
+  const currentTemplate = isEditMode && idx !== undefined ? templates[idx] : emptyTemplate;  
   const tl = useLocale('pages.ModifyTemplate');
-  enum TAB { META="meta",COMMON='common' ,FRONT="front", BACK="back" };
-  const [activeTab, setActiveTab] = useState<TAB>(TAB.META);
-  const [templateData, setTemplateData] = useState<Template>(isEditMode? templates[idx!]:emptyTemplate);
+  const tabs = ["meta", "common", ...currentTemplate.fields.map(f => f.name.toLowerCase())];
+  const [activeTab, setActiveTab] = useState(tabs[0]);
+  const [templateData, setTemplateData] = useState<Template>(currentTemplate);
   const [isChanged, setIsChanged] = useState<boolean>(false);
   const changeTemplatData = (updatedData: Template) => {
     setIsChanged(true);
@@ -49,11 +52,7 @@ const ModifyTemplate = () => {
   };
 
   const handleCancle = () => {
-    if (isEditMode && idx !== undefined) {
-      setTemplateData(templates[idx]);
-    } else {
-      setTemplateData(emptyTemplate);
-    }
+    setTemplateData(currentTemplate);
     setIsChanged(false);
   };
   
@@ -67,47 +66,34 @@ return (
         onCancle={handleCancle}
       />
       <div className={modifyTemplateStyle.tabs}>
-        {Object.values(TAB).map(tab => 
+        {tabs.map(tab => 
           <button
             key={tab}
             className={`${modifyTemplateStyle.tab} ${activeTab === tab ? modifyTemplateStyle.activeTab : ""}`}
-            onClick={() => setActiveTab(tab as TAB)}>
+            onClick={() => setActiveTab(tab)}>
             {tl(tab)}
           </button>)}
       </div>
       <div className={modifyTemplateStyle.content}>        
-        {activeTab === TAB.META && (
+        {activeTab === "meta" && (
           <TemplateMetaEditor 
             data={templateData} 
             setData={changeTemplatData}/>)}
-        {activeTab === TAB.COMMON && (
+        {activeTab === "common" && (
           <TemplateCommonEditor 
             data={templateData} 
             setData={changeTemplatData}/>)}
-        {activeTab === TAB.FRONT && (
-          <TemplateSideEditor
-            side={"Front"}
+        {activeTab !== "meta"&&activeTab!=="common" && (
+          <TemplateFieldEditor
+            fieldName={activeTab}
             template={templateData}
-            data={templateData.Front}
             setData={(newData) => {
-              setTemplateData(prev => ({
-                ...prev,
-                ["Front"]: newData
-              }));
-              setIsChanged(true);
-            }}
-          />
-        )}
-        {activeTab === TAB.BACK && (
-          <TemplateSideEditor
-            side={"Back"}
-            template={templateData}
-            data={templateData.Back}
-            setData={(newData) => {
-              setTemplateData(prev => ({
-                ...prev,
-                ["Back"]: newData
-              }));
+              setTemplateData(
+                {
+                  ...templateData,
+                  fields: templateData.fields.map(f => f.name.toLowerCase() === activeTab ? { ...f, ...newData } : f)
+                }
+              );
               setIsChanged(true);
             }}
           />

@@ -1,6 +1,6 @@
 import detectPageStyle from '@/front/pages/Detect/detectPage.module.css';
 import { JSX, useState } from 'react';
-import useCustomCard, { Extracted, ExtractedMap, Note, Template, TemplateFieldDataType } from '@/front/utils/useTemplates';
+import useCustomCard, { Extracted, ExtractedMap, Note, Template, TemplateItemDataType } from '@/front/utils/useTemplates';
 import DetectedCard from './DetectedCard/DetectedCard';
 import DeckInput from '@/front/common/StatusBar/DeckInput/DeckInput';
 import AddIcon from '@/public/Icon/Icon-Add.svg';
@@ -9,7 +9,6 @@ import useAnkiConnectionStore from '@/front/utils/useAnkiConnectionStore';
 import useGlobalVarStore from '@/front/utils/useGlobalVarStore';
 import useTemplate from '@/front/utils/useTemplates';
 import { MessageType } from '@/scripts/background/messageHandler';
-import { useTranslation } from 'react-i18next';
 import useLocale from '@/front/utils/useLocale';
 
 const buildCard = (key: 'Front' | 'Back', customCard: Template, extracted: Extracted) =>
@@ -18,9 +17,9 @@ const buildCard = (key: 'Front' | 'Back', customCard: Template, extracted: Extra
       const fieldInfo = customCard[key].fields.find(f=>f.name === fieldName);
       if (fieldInfo) {
         switch (fieldInfo.dataType) {
-          case TemplateFieldDataType.IMAGE:
+          case TemplateItemDataType.IMAGE:
             return `<img src="${extracted[key][fieldName] || ''}" />`;
-          case TemplateFieldDataType.AUDIO:
+          case TemplateItemDataType.AUDIO:
             return `[sound:${extracted[key][fieldName] || ''}]`;
           default:
             return extracted[key][fieldName] || '';
