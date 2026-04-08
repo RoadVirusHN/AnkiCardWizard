@@ -52,7 +52,7 @@ export interface Field {
 export interface Template {
   meta: TemplateMeta;
   templateName: string;
-  modelName: string;
+  model: Model;
   urlPatterns: string[];
   rootTag: string;
   fields: Field[];
@@ -63,6 +63,21 @@ export interface Template {
     skipHash: string;
     fields: string[];
   };
+}
+export interface ModelField{
+  name: string;
+  html: string;
+  style: string;
+}
+export interface Model {
+  name: string;
+  id: string;
+  fields: Map<string, ModelField>;
+  templates: {
+    name: string;
+    qfmt: string;
+    afmt: string;
+  }[];
 }
 interface TemplateState {
   templates: Template[];
@@ -80,6 +95,9 @@ interface TemplateState {
   updateTag: (name: string, color: string) => void;
   extractedMaps: ExtractedMap;
   setExtractedMaps: (newMaps: ExtractedMap) => void;
+  models: {[modelName: string]: Model};
+  addModel: (model: Model) => void;
+  removeModel: (modelName: string) => void;
 }
 
 export enum TEMPLATE_CODE {
@@ -87,7 +105,7 @@ export enum TEMPLATE_CODE {
   INVALID_TEMPLATE_NAME = 'INVALID_TEMPLATE_NAME',
   DUPLICATE_TEMPLATE_NAME = 'DUPLICATE_TEMPLATE_NAME',
   INVALID_AUTHOR_NAME = 'INVALID_AUTHOR_NAME',
-  INVALID_MODEL_NAME = 'INVALID_MODEL_NAME',
+  INVALID_MODEL = 'INVALID_MODEL',
   INVALID_ROOT_TAG = 'INVALID_ROOT_TAG',
   NO_SUCH_TEMPLATE = 'NO_SUCH_TEMPLATE',
 }
@@ -102,8 +120,8 @@ const isTemplateValid = (template: Template, curTemplates: Template[]): TEMPLATE
   // if (!template.meta.author || template.meta.author.trim() === '') {
   //   return TEMPLATE_CODE.INVALID_AUTHOR_NAME;
   // }
-  if (!template.modelName || template.modelName.trim() === '') {
-    return TEMPLATE_CODE.INVALID_MODEL_NAME;
+  if (!template.model) {
+    return TEMPLATE_CODE.INVALID_MODEL;
   }
   if (!template.rootTag || template.rootTag.trim() === '') {
     return TEMPLATE_CODE.INVALID_ROOT_TAG;
@@ -201,6 +219,19 @@ const useTemplate = create<TemplateState>()(
         set(() => ({
           extractedMaps: newMaps,
         }));
+      },
+      models: {},
+      addModel: (model) => {
+        set((state) => ({
+          models: { ...state.models, [model.name]: model },
+        }));
+      },
+      removeModel: (modelName) => {
+        set((state) => {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          const { [modelName]: _deleted, ...rest } = state.models;
+          return { models: rest };
+        });
       },
     }),
     {
