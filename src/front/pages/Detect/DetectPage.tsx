@@ -11,23 +11,26 @@ import useTemplate from '@/front/utils/useTemplates';
 import { MessageType } from '@/scripts/background/messageHandler';
 import useLocale from '@/front/utils/useLocale';
 
-const buildCard = (key: 'Front' | 'Back', customCard: Template, extracted: Extracted) =>
-  customCard[key].html.replaceAll(/\{\{(.*?)\}\}/g, 
-    (_, fieldName) => {
-      const fieldInfo = customCard[key].fields.find(f=>f.name === fieldName);
-      if (fieldInfo) {
-        switch (fieldInfo.dataType) {
+const buildField = (key: string, customCard: Template, extracted: Extracted) =>{
+  let target = customCard.fields.find((v)=>v.name===key);
+  if (target!==undefined) {
+    target.html.replaceAll(/\{\{(.*?)\}\}/g, (_, itemName) => {
+      const itemInfo = target.items.find(i=>i.name === itemName);
+      if (itemInfo) {
+        switch (itemInfo.dataType) {
           case TemplateItemDataType.IMAGE:
-            return `<img src="${extracted[key][fieldName] || ''}" />`;
+            return `<img src="${extracted[key][itemName] || ''}" />`;
           case TemplateItemDataType.AUDIO:
-            return `[sound:${extracted[key][fieldName] || ''}]`;
+            return `[sound:${extracted[key][itemName] || ''}]`;
           default:
-            return extracted[key][fieldName] || '';
+            return extracted[key][itemName] || '';
         }
       }
       return ''; // Ensure a string is always returned
-    }
-  );
+    });        
+  }
+  return target ? target.html : '';
+}
 //TODO : Apply SCSS for css.
 //TODO : MAKE Interfaces&Types FILE
 
@@ -76,25 +79,23 @@ const DetectPage: React.FC = () => {
   }
 
   const getNote = (customCard : Template, extracted : Extracted) =>{    
-    const buildedFront = buildCard("Front",customCard,extracted);
-    const buildedBack = buildCard("Back", customCard, extracted);
-
+    let fields = {} as Note['fields'];
+    for (const field of customCard.fields) {
+      fields[field.name] = buildField(field.name, customCard, extracted);
+    }
     return ({
+            templateName: customCard.templateName,
             deckName: currentDeck || 'Default',
             modelName: customCard.modelName || 'Basic',
-            templateName: customCard.templateName,
-            fields: {
-              Front: buildedFront || 'Something Wrong with Front',
-              Back:  buildedBack || 'Something Wrong with Back',
-            },
+            fields,
+            tags: customCard.tags || [],
             audio: customCard.audio ? {
               url: customCard.audio.url,
               filename: customCard.audio.filename,
               skipHash: customCard.audio.skipHash,
               fields: customCard.audio.fields,
             } : undefined,
-            tags: customCard.tags || [],
-          });
+          }) as Note;
   }
   const addSelected = ()=>{   
     fetchAnki({action: "addNotes",params: { notes : [...selected.keys()].map((i)=>({
