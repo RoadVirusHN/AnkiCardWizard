@@ -1,13 +1,8 @@
-import { MessageType } from './messageHandler';
+import { MessageType, PortNames } from 'types/chrome.types';
 
 const sidePanelPorts = {} as { [tabId: number]: chrome.runtime.Port};
 const portTabMap = new WeakMap<chrome.runtime.Port, number>();
 const contentScriptPorts = {} as { [tabId: number]: chrome.runtime.Port };
-
-export enum PortNames {
-  ENTER_INSPECTION_MODE_FROM_PANEL = 'ENTER_INSPECTION_MODE_FROM_PANEL',
-  READY_INSPECTION_MODE_FROM_CONTENT = 'READY_INSPECTION_MODE_FROM_CONTENT',
-}
 
 export const connectHandler = (port: chrome.runtime.Port) => {
   console.log("Background received connection on port:", port.name);

@@ -8,7 +8,7 @@ import SimpleButton from '@/front/common/SimpleButton/SimpleButton';
 import useAnkiConnectionStore from '@/front/utils/useAnkiConnectionStore';
 import useGlobalVarStore from '@/front/utils/useGlobalVarStore';
 import useTemplate from '@/front/utils/useTemplates';
-import { MessageType } from '@/scripts/background/messageHandler';
+import { MessageType } from 'types/chrome.types';
 import useLocale from '@/front/utils/useLocale';
 
 const buildField = (key: string, customCard: Template, extracted: Extracted) =>{

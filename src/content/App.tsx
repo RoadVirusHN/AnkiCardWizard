@@ -3,7 +3,7 @@ import Tooltip from "./Tooltip";
 import Highlight from "./Highlight";
 import { useState } from "react";
 import commonStyles from "./common.module.css";
-import { MessageType } from "@/scripts/background/messageHandler";
+import { MessageType } from 'types/chrome.types';
 import "./common.css";
 import { cssSelectorGenerator } from "css-selector-generator";
 import useLocale from "@/front/utils/useLocale";

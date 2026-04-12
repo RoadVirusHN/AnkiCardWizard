@@ -1,5 +1,5 @@
 import { Template } from '@/front/utils/useTemplates';
-import { Message, MessageType } from '../background/messageHandler';
+import { Message, MessageType } from 'types/chrome.types';
 import { getExtractedFromPage } from './content';
 import { activateInspectionMode, deactivateInspectionMode } from './tagExtraction';
 import { PortNames } from '../background/connectHandler';

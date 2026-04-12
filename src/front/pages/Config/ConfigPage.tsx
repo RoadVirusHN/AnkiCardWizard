@@ -5,7 +5,6 @@ import { useTranslation } from 'react-i18next';
 import useConfigure, { Language, Theme, ThemeSetting } from '@/front/utils/useConfigure';
 import useLocale from '@/front/utils/useLocale';
 import SimpleButton from '@/front/common/SimpleButton/SimpleButton';
-import { MessageType } from '@/scripts/background/messageHandler';
 
 
 const ConfigPage: React.FC = () => {

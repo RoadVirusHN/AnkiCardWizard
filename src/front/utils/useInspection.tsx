@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { CssSelectorGeneratorOptionsInput } from "css-selector-generator/types/types";
 import { PortNames } from "@/scripts/background/connectHandler";
-import { MessageType } from "@/scripts/background/messageHandler";
+import { MessageType } from 'types/chrome.types';
 import { InspectionMode } from "@/scripts/content/constants";
 
 interface _UseInspectionParams {  
