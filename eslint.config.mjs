@@ -26,6 +26,8 @@ export default [
       semi: ['error', 'always'],
       quotes: ['warn', 'single'],
       'prettier/prettier': ['warn'],
+      'no-unused-vars': 'off', // TypeScript에서 사용하지 않는 변수는 @typescript-eslint/no-unused-vars로 처리
+      '@typescript-eslint/no-unused-vars': ['error', { varsIgnorePattern: '^_', argsIgnorePattern: '^_' }], // 사용하지 않는 변수는 경고, 단 '_'로 시작하는 변수는 무시
     },
   },
 
