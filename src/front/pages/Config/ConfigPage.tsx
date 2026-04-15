@@ -1,10 +1,11 @@
 import commonStyle from '@/front/common.module.css';
 import configPageStyle from "./configPage.module.css";
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import useConfigure, { Language, Theme, ThemeSetting } from '@/front/utils/useConfigure';
+import useConfigure from '@/front/utils/useConfigure';
 import useLocale from '@/front/utils/useLocale';
 import SimpleButton from '@/front/common/SimpleButton/SimpleButton';
+import { LANGUAGE, Language, THEME_SETTING, ThemeSetting } from '@/types/app.types';
 
 
 const ConfigPage: React.FC = () => {
@@ -30,8 +31,8 @@ const ConfigPage: React.FC = () => {
           setLocale(selectedLocale); 
         }}
         value={locale}>
-          <option value={Language.EN}>English</option>
-          <option value={Language.KO}>한국어</option>
+          <option value={LANGUAGE.EN}>English</option>
+          <option value={LANGUAGE.KO}>한국어</option>
         </select>
       </div>  
       <div>
@@ -44,9 +45,9 @@ const ConfigPage: React.FC = () => {
         }
         value={curThemeSetting}
         >
-          <option value={isUserSchemeDark ? ThemeSetting.SYSTEM_DARK : ThemeSetting.SYSTEM_LIGHT}>{isUserSchemeDark ?tl('SystemDark'):tl('SystemLight')}</option>
-          <option value={ThemeSetting.LIGHT}>{tl('Light')}</option>
-          <option value={ThemeSetting.DARK}>{tl('Dark')}</option>
+          <option value={isUserSchemeDark ? THEME_SETTING.SYSTEM_DARK : THEME_SETTING.SYSTEM_LIGHT}>{isUserSchemeDark ?tl('SystemDark'):tl('SystemLight')}</option>
+          <option value={THEME_SETTING.LIGHT}>{tl('Light')}</option>
+          <option value={THEME_SETTING.DARK}>{tl('Dark')}</option>
         </select>
       </div>
       <div>
@@ -91,11 +92,11 @@ const ConfigPage: React.FC = () => {
         <SimpleButton onClick={()=>{
           if (confirm(tl('Reset to default settings?'))) {
             const uiLanguage = chrome.i18n.getUILanguage();
-            const defaultLang = uiLanguage.startsWith('ko') ? Language.KO : Language.EN;
+            const defaultLang = uiLanguage.startsWith('ko') ? LANGUAGE.KO : LANGUAGE.EN;
             setLocale(defaultLang);
             const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            if (themeOption.userSetting === ThemeSetting.SYSTEM_LIGHT ||themeOption.userSetting===ThemeSetting.SYSTEM_DARK||themeOption.userSetting===ThemeSetting.NONE) {
-              setCurThemeSetting(isDark ? ThemeSetting.SYSTEM_DARK : ThemeSetting.SYSTEM_LIGHT);
+            if (themeOption.userSetting === THEME_SETTING.SYSTEM_LIGHT ||themeOption.userSetting===THEME_SETTING.SYSTEM_DARK||themeOption.userSetting===THEME_SETTING.NONE) {
+              setCurThemeSetting(isDark ? THEME_SETTING.SYSTEM_DARK : THEME_SETTING.SYSTEM_LIGHT);
             }
             setCurFontSize('normal');
           }

@@ -4,10 +4,11 @@ import AddCardIcon from "@/public/Icon/Icon-AddCard.svg";
 import CardTypeIcon from "@/public/Icon/Icon-CardType.svg";
 import ConfigIcon from "@/public/Icon/Icon-Config.svg";
 import { useEffect } from "react";
-import useGlobalVarStore, { Tab } from "@/front/utils/useGlobalVarStore";
+import useGlobalVarStore from "@/front/utils/useGlobalVarStore";
 import DetectTab from "./DetectTab/DetectTab";
 import commonStyle from "@/front/common.module.css";
 import { useTranslation } from "react-i18next";import Icon from "../Icon/Icon";
+import { TAB } from "@/types/app.types";
 
 const Tabs = ({}) => {
   const location = useLocation();
@@ -16,22 +17,22 @@ const Tabs = ({}) => {
   useEffect(() => {
     switch (location.pathname) {
       case '/detect': case '/':
-        if (currentTab !== Tab.DETECT) setCurrentTab(Tab.DETECT);
+        if (currentTab !== TAB.DETECT) setCurrentTab(TAB.DETECT);
         break;
       case '/add':
-        if (currentTab !== Tab.ADD) setCurrentTab(Tab.ADD);
+        if (currentTab !== TAB.ADD) setCurrentTab(TAB.ADD);
         break;
       case '/templates':
-        if (currentTab !== Tab.TEMPLATES) setCurrentTab(Tab.TEMPLATES);
+        if (currentTab !== TAB.TEMPLATES) setCurrentTab(TAB.TEMPLATES);
         break;
       case '/config':
-        if (currentTab !== Tab.CONFIG) setCurrentTab(Tab.CONFIG);
+        if (currentTab !== TAB.CONFIG) setCurrentTab(TAB.CONFIG);
         break;
       case '/modify':
-        if (currentTab !== Tab.CONFIG) setCurrentTab(Tab.TEMPLATES);
+        if (currentTab !== TAB.CONFIG) setCurrentTab(TAB.TEMPLATES);
         break;
       default:
-        if (location.pathname.match('/templates')!==null) setCurrentTab(Tab.TEMPLATES);
+        if (location.pathname.match('/templates')!==null) setCurrentTab(TAB.TEMPLATES);
         // TODO: error handling for unknown path can be added here
         break;
     }
@@ -40,19 +41,19 @@ const Tabs = ({}) => {
   <nav className={`${tabsStyle.tabs} ${commonStyle["no-select"]}`}>
     <DetectTab/>
     <NavLink 
-    className={`${tabsStyle.tab} ${currentTab==Tab.ADD? tabsStyle.selected : ''}`} 
+    className={`${tabsStyle.tab} ${currentTab==TAB.ADD? tabsStyle.selected : ''}`} 
     to={'/add'}>
       <Icon url={AddCardIcon}/>
       <p>{t('tabs.add')}</p>
       </NavLink>
     <NavLink 
-    className={`${tabsStyle.tab} ${currentTab==Tab.TEMPLATES? tabsStyle.selected : ''}`} 
+    className={`${tabsStyle.tab} ${currentTab==TAB.TEMPLATES? tabsStyle.selected : ''}`} 
     to={'/templates'}>
       <Icon url={CardTypeIcon}/>
       <p>{t('tabs.templates')}</p>
     </NavLink>    
     <NavLink 
-    className={`${tabsStyle.tab} ${currentTab==Tab.CONFIG? tabsStyle.selected : ''}`} 
+    className={`${tabsStyle.tab} ${currentTab==TAB.CONFIG? tabsStyle.selected : ''}`} 
     to={'/config'}>
       <Icon url={ConfigIcon}/>
       <p>{t('tabs.config')}</p>

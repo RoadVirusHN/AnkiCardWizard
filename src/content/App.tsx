@@ -3,18 +3,21 @@ import Tooltip from "./Tooltip";
 import Highlight from "./Highlight";
 import { useState } from "react";
 import commonStyles from "./common.module.css";
-import { MessageType } from 'types/chrome.types';
 import "./common.css";
 import { cssSelectorGenerator } from "css-selector-generator";
 import useLocale from "@/front/utils/useLocale";
 import { CssSelectorGeneratorOptionsInput, CssSelectorType } from "css-selector-generator/types/types";
-import { EXTENSION_UI_ID, InspectionMode } from "@/scripts/content/constants";
+import { EXTENSION_UI_ID  } from "@/scripts/content/constants";
+import { INSPECTION_MODE, InspectionMode } from "@/types/app.types";
+import { MESSAGE_TYPE } from "@/types/chrome.types";
 
-enum InspectionState{
-  HIGHLIGHT = 'HIGHLIGHT',
-  MENU= 'MENU',
-  TOOLTIP= 'TOOLTIP'
-}
+const INSPECTION_STATE = {
+  HIGHLIGHT: 'HIGHLIGHT',
+  MENU: 'MENU',
+  TOOLTIP: 'TOOLTIP'
+} as const;
+type InspectionState = typeof INSPECTION_STATE[keyof typeof INSPECTION_STATE];
+
 export const getUniqueSelector = (el: HTMLElement, cssSelectorOptions:CssSelectorGeneratorOptionsInput): string[] => {
   return Array.from(cssSelectorGenerator(el, cssSelectorOptions));
 };
@@ -54,24 +57,24 @@ const tagToText = (tag: HTMLElement) => {
 //TODO: App doing to much, split to multiple components
 // ex) App: manage state, container: position, Highlight: highlight logic, Menu: menu logic, Tooltip: tooltip logic
 const App = ({mode, port, cssSelectorOptions, deactivate}:{mode:InspectionMode, port:chrome.runtime.Port, cssSelectorOptions:CssSelectorGeneratorOptionsInput, deactivate:()=>void}) => {
-  const [state, setState] = useState(InspectionState.HIGHLIGHT);
+  const [state, setState] = useState(INSPECTION_STATE.HIGHLIGHT as InspectionState);
   const [text, setText] = useState('');
   const [{x,y}, setPosition] = useState({x:0, y:0});  
   const [items, setItems] = useState<MenuItem[]>([] as MenuItem[]);
   const [menuHeader, setMenuHeader] = useState('');
   const tl = useLocale('background');
   const showTooltip = (text: string, x: number, y: number) => {
-    setState(InspectionState.TOOLTIP);
+    setState(INSPECTION_STATE.TOOLTIP);
     setText(text);
     setPosition({ x, y });
-    port.postMessage({ type: MessageType.SEND_INSPECTION_DATA_FROM_CONTENT, data: text });
+    port.postMessage({ type: MESSAGE_TYPE.SEND_INSPECTION_DATA_FROM_CONTENT, data: text });
     setTimeout(() => {
       deactivate();
     }, 2000); // 2초 후에 툴팁 숨김
   };
 
   const showMenu = (items:MenuItem[], x: number, y: number, header:string) => {
-    setState(InspectionState.MENU);
+    setState(INSPECTION_STATE.MENU);
     setItems(items);
     setPosition({ x, y });
     setMenuHeader(header);
@@ -79,7 +82,7 @@ const App = ({mode, port, cssSelectorOptions, deactivate}:{mode:InspectionMode, 
      const handleClickOutside = (e: MouseEvent) => {
       if (!e.target || !(e.target instanceof HTMLElement)) return;
       if (!e.target.closest(`div.${CSS.escape(commonStyles.menu)}`)) {
-        setState(InspectionState.HIGHLIGHT);
+        setState(INSPECTION_STATE.HIGHLIGHT);
       }
     };
     document.addEventListener('click', handleClickOutside);
@@ -129,13 +132,13 @@ const App = ({mode, port, cssSelectorOptions, deactivate}:{mode:InspectionMode, 
   };
 
   const onHighlightClicked = (e:MouseEvent) =>{
-    if (state !== InspectionState.HIGHLIGHT) return;
+    if (state !== INSPECTION_STATE.HIGHLIGHT) return;
     e.preventDefault();
     e.stopPropagation();
     const target = e.target;
     const rect = (target as HTMLElement).getBoundingClientRect();
     if (!(target instanceof HTMLElement && isValidElement(target))) return;
-    if (mode== InspectionMode.TAG_EXTRACTION) {
+    if (mode== INSPECTION_MODE.TAG_EXTRACTION) {
       showMenu(
         createMenuItems(target,{x: rect.left, y: rect.top},),
         rect.left, rect.top,
@@ -145,15 +148,15 @@ const App = ({mode, port, cssSelectorOptions, deactivate}:{mode:InspectionMode, 
     }
   };
   return <>
-    {state === InspectionState.HIGHLIGHT && <Highlight onClick={onHighlightClicked}/>}
-    {state === InspectionState.MENU &&
-     ( mode == InspectionMode.TAG_EXTRACTION && items.length > 0 ? 
+    {state === INSPECTION_STATE.HIGHLIGHT && <Highlight onClick={onHighlightClicked}/>}
+    {state === INSPECTION_STATE.MENU &&
+     ( mode == INSPECTION_MODE.TAG_EXTRACTION && items.length > 0 ? 
      <Menu items={items} 
       header={menuHeader}
       deClick={()=>{
-        setState(InspectionState.HIGHLIGHT);
+        setState(INSPECTION_STATE.HIGHLIGHT);
       }} pos={{x,y}}/> : <></>)}
-    {state === InspectionState.TOOLTIP &&
+    {state === INSPECTION_STATE.TOOLTIP &&
       <Tooltip text={text} pos={{x,y}}/>
     }
   </>;

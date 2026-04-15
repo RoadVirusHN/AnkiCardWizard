@@ -18,11 +18,11 @@ import TemplateInput from "@/front/common/Inputs/TemplatInput/TemplateInput";
 import DeckInput from "@/front/common/StatusBar/DeckInput/DeckInput";
 import useLocale from "@/front/utils/useLocale";
 import Icon from "@/front/common/Icon/Icon";
-import useConfigure, { Theme } from "@/front/utils/useConfigure";
+import useConfigure from "@/front/utils/useConfigure";
 import useInspection from "@/front/utils/useInspection";
 import MagicIcon from "@/public/Icon/Icon-Magic.svg";
-import { InspectionMode } from "@/scripts/content/constants";
-import { data, NavLink } from "react-router";
+import { NavLink } from "react-router";
+import { INSPECTION_MODE, THEME } from "@/types/app.types";
 
 const AddPage = ({}) => {
   const {fetchAnki} = useAnkiConnectionStore();
@@ -60,7 +60,7 @@ const AddPage = ({}) => {
       <NavLink to="/errorTesting/runtime">go to Error page</NavLink>
     </div>
       {<section className={addPageStyle.previewPage}>
-        {isInspectionMode ?? <InspectionOverlay mode={InspectionMode.TEXT_EXTRACTION} cancleInspectionMode={cancleInspectionMode}/>}
+        {isInspectionMode ?? <InspectionOverlay mode={INSPECTION_MODE.TEXT_EXTRACTION} cancleInspectionMode={cancleInspectionMode}/>}
         <DeckInput onChange={(deck:string)=>{setCurNote({...curNote, deckName: deck})}}/>
         <TemplateInput defaultTemplate={curNote.templateName} setTemplate={(template:string)=>{
           setCurNote({...curNote, templateName: template});
@@ -87,7 +87,7 @@ const AddPage = ({}) => {
             value={curNote.fields.Front}
             width='100%'
             height='200px'
-            theme={themeOption.theme === Theme.DARK ? "vs-dark" : "light"}
+            theme={themeOption.theme === THEME.DARK ? "vs-dark" : "light"}
             onChange={(value)=>{
               setCurNote({...curNote, fields: {...curNote.fields, Front: value || ''}}); 
               setIsChanged(true); 
@@ -109,7 +109,7 @@ const AddPage = ({}) => {
             value={curNote.fields.Back}
             width='100%'
             height='200px'
-            theme={themeOption.theme === Theme.DARK ? "vs-dark" : "light"}
+            theme={themeOption.theme === THEME.DARK ? "vs-dark" : "light"}
             onChange={(value)=>{
               setCurNote({...curNote, fields: {...curNote.fields, Back: value || ''}});  
               setIsChanged(true);

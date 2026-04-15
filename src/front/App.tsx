@@ -2,9 +2,10 @@ import { RouterProvider } from "react-router";
 import AnkiRouter from "./router/AnkiRouter";
 import { useEffect, useState } from "react";
 import useGlobalVarStore from "./utils/useGlobalVarStore";
-import useConfigure, { Theme, ThemeSetting } from "./utils/useConfigure";
+import useConfigure from "./utils/useConfigure";
 import i18n from './locales/i18n';
 import "./common.css";
+import { THEME, THEME_SETTING } from "@/types/app.types";
 
 const App = ({}) => {
   const {currentUrl} = useGlobalVarStore();
@@ -19,10 +20,10 @@ const App = ({}) => {
     }
     // set theme based on system preference if userSetting is system-based or none.
     const isSystemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    if (themeOption.userSetting === ThemeSetting.SYSTEM_LIGHT ||themeOption.userSetting===ThemeSetting.SYSTEM_DARK||themeOption.userSetting===ThemeSetting.NONE) {
-      setThemeSetting(isSystemDark ? ThemeSetting.SYSTEM_DARK : ThemeSetting.SYSTEM_LIGHT);
+    if (themeOption.userSetting === THEME_SETTING.SYSTEM_LIGHT ||themeOption.userSetting===THEME_SETTING.SYSTEM_DARK||themeOption.userSetting===THEME_SETTING.NONE) {
+      setThemeSetting(isSystemDark ? THEME_SETTING.SYSTEM_DARK : THEME_SETTING.SYSTEM_LIGHT);
     }
-    if (themeOption.theme===Theme.DARK) {
+    if (themeOption.theme===THEME.DARK) {
       document.documentElement.setAttribute('data-theme', 'dark');
     }
     

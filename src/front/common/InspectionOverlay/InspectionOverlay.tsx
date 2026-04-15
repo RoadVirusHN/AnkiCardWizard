@@ -1,4 +1,4 @@
-import { InspectionMode } from "@/scripts/content/constants";
+import { INSPECTION_MODE, InspectionMode } from "@/types/app.types";
 import inspectionOverlayStyle from "./InspectionOverlay.module.css";
 import useLocale from "@/front/utils/useLocale";
 
@@ -12,7 +12,7 @@ const InspectionOverlay = ({mode, cancleInspectionMode}:{ mode: InspectionMode, 
         <span className={inspectionOverlayStyle['left-pointer']}>◀</span>
         <span className={inspectionOverlayStyle['left-pointer']}>◀</span>
         {
-          mode==InspectionMode.TEXT_EXTRACTION ?(<>
+          mode==INSPECTION_MODE.TEXT_EXTRACTION ?(<>
             <h1>{tl('Text Extraction Mode')}</h1>
             <ol>
                 <li>{tl('Hover over the text')}</li>

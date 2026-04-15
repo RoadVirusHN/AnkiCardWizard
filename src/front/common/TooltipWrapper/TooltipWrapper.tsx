@@ -1,7 +1,7 @@
 import React, {ReactNode} from 'react';
 import tooltipStyle from './tooltip.module.css';
 import commonStyle from "@/front/common.module.css";
-import { TooltipDirection } from '@/types/app.types';
+import { TOOLTIP_DIRECTION, TooltipDirection } from '@/types/app.types';
 
 interface TooltipWrapperProps {
   children?:ReactNode,
@@ -12,7 +12,7 @@ interface TooltipWrapperProps {
   tooltipDirection?: TooltipDirection,
 }
 const TooltipWrapper = (
-  {children, classes, text, textStyles, styles, tooltipDirection=TooltipDirection.TOP}:TooltipWrapperProps
+  {children, classes, text, textStyles, styles, tooltipDirection=TOOLTIP_DIRECTION.TOP}:TooltipWrapperProps
 ) => {
     // TODO: use clsx later.
     let classNames = `${tooltipStyle.tooltip} ${commonStyle['no-select']}`;
@@ -21,16 +21,16 @@ const TooltipWrapper = (
     }
     let directionStyle;
     switch (tooltipDirection) {
-      case TooltipDirection.BOTTOM:
+      case TOOLTIP_DIRECTION.BOTTOM:
         directionStyle = tooltipStyle['tooltip-bottom'];
         break;
-      case TooltipDirection.LEFT:
+      case TOOLTIP_DIRECTION.LEFT:
         directionStyle = tooltipStyle['tooltip-left'];
         break;
-      case TooltipDirection.RIGHT:
+      case TOOLTIP_DIRECTION.RIGHT:
         directionStyle = tooltipStyle['tooltip-right'];
         break;
-      case TooltipDirection.BOTTOM_LEFT:
+      case TOOLTIP_DIRECTION.BOTTOM_LEFT:
         directionStyle = tooltipStyle['tooltip-bottom-left'];  // fix later
         break;
       default:

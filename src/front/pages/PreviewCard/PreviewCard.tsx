@@ -9,11 +9,11 @@ import Preview from "@/front/common/Preview/Preview";
 import PreviewHeader from "./PreviewHeader/PreviewHeader";
 import { PreviewContext } from "./PreviewContext";
 import ModelInput from "@/front/common/Inputs/ModelInput/ModelInput";
-import useConfigure, { Theme } from "@/front/utils/useConfigure";
+import useConfigure from "@/front/utils/useConfigure";
 import useInspection from "@/front/utils/useInspection";
 import MagicIcon from "@/public/Icon/Icon-Magic.svg";
 import SimpleButton from "@/front/common/SimpleButton/SimpleButton";
-import { InspectionMode } from "@/scripts/content/constants";
+import { INSPECTION_MODE, THEME } from "@/types/app.types";
 
 const PreviewCard = ({}) => {
   const {index} = useParams();
@@ -24,7 +24,7 @@ const PreviewCard = ({}) => {
   const [curText, setCurText] = useState('');
   const {themeOption} = useConfigure();
   const onResult = (text:string) => setCurText(text);
-  const {enterInspectionMode,cancleInspectionMode,isInspectionMode} = useInspection(InspectionMode.TEXT_EXTRACTION, 'body',{});
+  const {enterInspectionMode,cancleInspectionMode,isInspectionMode} = useInspection(INSPECTION_MODE.TEXT_EXTRACTION, 'body',{});
 
   return (<div>
     <PreviewContext.Provider value={{contextValue,setContextValue}}>
@@ -58,7 +58,7 @@ const PreviewCard = ({}) => {
             value={curNote.fields.Front}
             width='100%'
             height='200px'
-            theme={themeOption.theme === Theme.DARK ? "vs-dark" : "light"}
+            theme={themeOption.theme === THEME.DARK ? "vs-dark" : "light"}
             onChange={(value)=>{
               setContextValue({...contextValue,
                 curNote:{...curNote, fields: {...curNote.fields, Front: value || ''}},
@@ -81,7 +81,7 @@ const PreviewCard = ({}) => {
             value={curNote.fields.Back}
             width='100%'
             height='200px'
-            theme={themeOption.theme === Theme.DARK ? "vs-dark" : "light"}
+            theme={themeOption.theme === THEME.DARK ? "vs-dark" : "light"}
             onChange={(value)=>{
               setContextValue({...contextValue,
                 curNote:{...curNote, fields: {...curNote.fields, Back: value || ''}},
@@ -98,7 +98,7 @@ const PreviewCard = ({}) => {
         }
       </section>      
     }
-    {isInspectionMode && <InspectionOverlay mode={InspectionMode.TEXT_EXTRACTION} cancleInspectionMode={cancleInspectionMode}/>}
+    {isInspectionMode && <InspectionOverlay mode={INSPECTION_MODE.TEXT_EXTRACTION} cancleInspectionMode={cancleInspectionMode}/>}
   </div>);
 };
 export default PreviewCard;

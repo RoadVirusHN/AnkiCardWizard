@@ -1,4 +1,4 @@
-import { Language, Theme, ThemeSetting } from '@/types/app.types';
+import { LANGUAGE, Language, THEME, Theme, THEME_SETTING, ThemeSetting } from '@/types/app.types';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
@@ -6,7 +6,6 @@ interface ThemeOption {
   theme: Theme;
   userSetting: ThemeSetting;
 }
-
 
 // WARN : less than 8kb per item in chrome.storage.sync, maximum 100kb total.
 interface ConfigureState {
@@ -19,7 +18,7 @@ interface ConfigureState {
   setFontSize: (fontSize: string) => void;
   setStyles: (modelName: string, key: string, newStyle: string) => void;
 }
-// TODO : Move style setting to local storage. 
+// TODO : Move style setting to local storage.
 const DEFAULT_STYLE = `
   font-family: arial;
   font-size: 20px;
@@ -31,29 +30,30 @@ const DEFAULT_STYLE = `
 const useConfigure = create<ConfigureState>()(
   persist(
     (set) => ({
-      language: Language.EN,
+      language: LANGUAGE.EN,
       themeOption: {
-        theme: Theme.LIGHT,
-        userSetting: ThemeSetting.NONE,
+        theme: THEME.LIGHT,
+        userSetting: THEME_SETTING.NONE,
       },
       fontSize: 'normal',
       styles: {
-        basic:{
-          card: DEFAULT_STYLE
-        }
+        basic: {
+          card: DEFAULT_STYLE,
+        },
       },
       setLanguage: (lang: Language) => {
         set({ language: lang });
       },
       setThemeSetting: (themeSetting: ThemeSetting) => {
         let newThemeOption = {
-          theme: Theme.LIGHT,
+          theme: THEME.LIGHT as Theme,
           userSetting: themeSetting,
         };
         switch (themeSetting) {
-          case ThemeSetting.DARK: case ThemeSetting.SYSTEM_DARK:
+          case THEME_SETTING.DARK:
+          case THEME_SETTING.SYSTEM_DARK:
             document.documentElement.setAttribute('data-theme', 'dark');
-            newThemeOption.theme = Theme.DARK;
+            newThemeOption.theme = THEME.DARK;
             break;
           default:
             document.documentElement.setAttribute('data-theme', 'light');
@@ -67,7 +67,7 @@ const useConfigure = create<ConfigureState>()(
         html.classList.add(`font-${fontSize}`);
         set({ fontSize: fontSize });
       },
-      setStyles: (modelName:string, key:string, newStyle:string) => {
+      setStyles: (modelName: string, key: string, newStyle: string) => {
         set((state) => {
           const newStyles = { ...state.styles };
           if (!newStyles[modelName]) {

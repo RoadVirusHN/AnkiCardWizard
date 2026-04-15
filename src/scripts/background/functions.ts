@@ -1,17 +1,18 @@
-import useConfigure, { Language, ThemeSetting } from '@/front/utils/useConfigure';
+import useConfigure from '@/front/utils/useConfigure';
 import useTemplate from '@/front/utils/useTemplates';
 import { defaultTemplates } from './constants';
+import { LANGUAGE, THEME_SETTING } from '@/types/app.types';
 
 export const onInstalled = () => {
   if (!useConfigure.getState().language) {
     const uiLanguage = chrome.i18n.getUILanguage();
-    const defaultLang = uiLanguage.startsWith('ko') ? Language.KO : Language.EN;
+    const defaultLang = uiLanguage.startsWith('ko') ? LANGUAGE.KO : LANGUAGE.EN;
     console.log('Detected UI Language:', uiLanguage, 'Setting default language to:', defaultLang);
     useConfigure.getState().setLanguage(defaultLang);
     console.log('Extension installed or updated. Default language set to:', useConfigure.getState().language);
   }
   if (!useConfigure.getState().themeOption) {
-    useConfigure.getState().setThemeSetting(ThemeSetting.NONE);
+    useConfigure.getState().setThemeSetting(THEME_SETTING.NONE);
   }
   if (!useConfigure.getState().fontSize) {
     useConfigure.getState().setFontSize('normal');
