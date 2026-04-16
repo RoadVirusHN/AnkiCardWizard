@@ -5,11 +5,15 @@ export interface Extracted {
 export interface ExtractedMap {
   [idx: number]: Extracted[];
 }
-export enum TemplateItemDataType {
-  TEXT = 'text',
-  AUDIO = 'audio',
-  IMAGE = 'image',
-}
+
+export const TEMPLATE_ITEM_DATA_TYPES = {
+  TEXT: 'text',
+  IMAGE: 'image',
+  AUDIO: 'audio',
+} as const;
+
+export type TemplateItemDataType =
+  (typeof TEMPLATE_ITEM_DATA_TYPES)[keyof typeof TEMPLATE_ITEM_DATA_TYPES];
 
 export interface TemplateItem {
   name: string;
