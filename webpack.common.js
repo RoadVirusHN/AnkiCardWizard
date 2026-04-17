@@ -7,9 +7,9 @@ const DelWebpackPlugin = require('del-webpack-plugin');
 
 module.exports = {
   entry: {
-    background: "./src/scripts/background/background.ts",
-    content: "./src/scripts/content/content.ts",
-    root: "./src/front/root.tsx",
+    background: "./src/background/background.ts",
+    content: "./src/content/content.ts",
+    root: "./src/panel/root.tsx",
   },
   output: {
     filename: "[name].js",
@@ -62,7 +62,7 @@ module.exports = {
   plugins: [    
     // popup.html에 popup.js 번들 자동 주입
     new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, 'src/front/index.html'),
+      template: path.resolve(__dirname, 'src/panel/index.html'),
       filename: 'index.html',
       chunks: ['root'],
     }),
