@@ -1,5 +1,5 @@
 {
-  "name": "ankicardwizard",
+  "name": "ankinotewizard",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -10,20 +10,19 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/RoadVirusHN/AnkiCardWizard.git"
+    "url": "git+https://github.com/RoadVirusHN/AnkiNoteWizard.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/RoadVirusHN/AnkiCardWizard/issues"
+    "url": "https://github.com/RoadVirusHN/AnkiNoteWizard/issues"
   },
-  "homepage": "https://github.com/RoadVirusHN/AnkiCardWizard#readme",
+  "homepage": "https://github.com/RoadVirusHN/AnkiNoteWizard#readme",
   "description": "",
   "dependencies": {
     "@monaco-editor/react": "^4.7.0",
     "css-selector-generator": "^3.8.0",
-    "dompurify": "^3.3.1",
     "i18next": "^25.7.4",
     "monaco-editor": "^0.54.0",
     "monaco-editor-webpack-plugin": "^7.1.1",
