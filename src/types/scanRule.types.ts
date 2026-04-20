@@ -6,23 +6,17 @@ export interface ExtractedMap {
   [idx: number]: Extracted[];
 }
 
-export const TEMPLATE_ITEM_DATA_TYPES = {
+export const FIELD_DATA_TYPES = {
   TEXT: 'text',
   IMAGE: 'image',
   AUDIO: 'audio',
+  VIDEO: 'video',
 } as const;
 
-export type TemplateItemDataType =
-  (typeof TEMPLATE_ITEM_DATA_TYPES)[keyof typeof TEMPLATE_ITEM_DATA_TYPES];
+export type FieldDataType =
+  (typeof FIELD_DATA_TYPES)[keyof typeof FIELD_DATA_TYPES];
 
-export interface TemplateItem {
-  name: string;
-  content: string;
-  dataType: TemplateItemDataType;
-  isOptional: boolean;
-}
-
-export interface TemplateMeta {
+export interface ScanRuleMeta {
   key?: string;
   author?: string;
   description?: string;
@@ -30,9 +24,9 @@ export interface TemplateMeta {
   url?: string;
 }
 export interface Note {
-  templateName: string;
+  scanRuleName: string;
   deckName: string;
-  modelName: string;
+  modelId: string;
   fields: {
     [fieldName: string]: string;
   };
@@ -44,19 +38,13 @@ export interface Note {
     fields: string | string[];
   };
 }
-export interface Field {
-  name: string;
-  html: string;
-  items: TemplateItem[];
-  priority: number;
-}
-export interface Template {
-  meta: TemplateMeta;
-  templateName: string;
-  model: Model;
+
+export interface ScanRule {
+  meta: ScanRuleMeta;
+  scanRuleName: string;
+  modelId: string;
   urlPatterns: string[];
   rootTag: string;
-  fields: Field[];
   tags: string[];
   audio?: {
     url: string;
@@ -65,18 +53,9 @@ export interface Template {
     fields: string[];
   };
 }
-export interface ModelField{
-  name: string;
-  html: string;
-  style: string;
-}
 export interface Model {
   name: string;
   id: string;
-  fields: Map<string, ModelField>;
-  templates: {
-    name: string;
-    qfmt: string;
-    afmt: string;
-  }[];
+  fields: string[];
+  style?: string;
 }

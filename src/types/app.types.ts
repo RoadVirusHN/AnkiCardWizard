@@ -1,3 +1,5 @@
+import { Model } from './scanRule.types';
+
 export interface FetchAnkiRequestBody {
   action: string;
   params?: Record<string, unknown>;
@@ -29,7 +31,7 @@ export const TAB = {
   DETECT: 'DETECT',
   ADD: 'ADD',
   HISTORY: 'HISTORY',
-  TEMPLATES: 'TEMPLATES',
+  SCAN_RULES: 'SCAN_RULES',
   CONFIG: 'CONFIG',
 } as const;
 export type Tab = (typeof TAB)[keyof typeof TAB];
@@ -46,16 +48,16 @@ export const TOOLTIP_DIRECTION = {
 } as const;
 export type TooltipDirection = (typeof TOOLTIP_DIRECTION)[keyof typeof TOOLTIP_DIRECTION];
 
-export const TEMPLATE_CODE = {
+export const SCAN_RULE_CODE = {
   OK: 'ok',
-  INVALID_TEMPLATE_NAME: 'invalid_template_name',
-  DUPLICATE_TEMPLATE_NAME: 'duplicate_template_name',
+  INVALID_SCAN_RULE_NAME: 'invalid_scanRule_name',
+  DUPLICATE_SCAN_RULE_NAME: 'duplicate_scanRule_name',
   INVALID_AUTHOR_NAME: 'invalid_author_name',
   INVALID_MODEL: 'invalid_model',
   INVALID_ROOT_TAG: 'invalid_root_tag',
-  NO_SUCH_TEMPLATE: 'no_such_template',
+  NO_SUCH_SCAN_RULE: 'no_such_scanRule',
 } as const;
-export type TEMPLATE_CODE = (typeof TEMPLATE_CODE)[keyof typeof TEMPLATE_CODE];
+export type SCAN_RULE_CODE = (typeof SCAN_RULE_CODE)[keyof typeof SCAN_RULE_CODE];
 
 export const INSPECTION_MODE = {
   TAG_EXTRACTION: 'TAG_EXTRACTION',
@@ -64,3 +66,9 @@ export const INSPECTION_MODE = {
 } as const;
 
 export type InspectionMode = (typeof INSPECTION_MODE)[keyof typeof INSPECTION_MODE];
+
+export const Default_BASIC_MODEL = {
+  name: 'Basic',
+  id: '1576165339',
+  fields: ['Front', 'Back'],
+} as Model;
