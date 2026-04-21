@@ -1,11 +1,11 @@
 import { createMemoryRouter, data } from "react-router";
 import ConfigPage from "../features/Config/ConfigPage";
-import ModifyTemplate from "../features/ModifyTemplate/ModifyTemplate";
+import ModifyScanRule from "../features/ModifyScanRule/ModifyTemplate";
 import Main from "../features/Main/Main";
 import DetectPage from "../features/Detect/DetectPage";
 import AddPage from "../features/Add/AddPage";
-import TemplatesPage from "../features/Templates/TemplatesPage";
-import PreviewCard from '../features/PreviewCard/PreviewCard';
+import ScanRulesPage from "../features/ScanRule/ScanRulesPage";
+import PreviewCard from '../features/_PreviewCard/PreviewCard';
 import ErrorPage from "../features/Error/ErrorPage";
 import ErrorTesting from "../features/ErrorTesting/ErrorTesting";
 
@@ -28,16 +28,16 @@ const router = (currentUrl: string)=> createMemoryRouter([
         element: <AddPage/>
       },
       {
-        path: "templates",
-        element: <TemplatesPage/>
+        path: "scanRules",
+        element: <ScanRulesPage/>
       },
       {
         path: "config",
         element: <ConfigPage/>
       },
       {
-        path: "templates/modify/:index?",
-        element: <ModifyTemplate/>
+        path: "scanRules/modify/:index?",
+        element: <ModifyScanRule/>
       },
       {
         path: "previewCard/:index",
