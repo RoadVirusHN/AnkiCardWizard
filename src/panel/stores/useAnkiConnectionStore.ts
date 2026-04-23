@@ -1,4 +1,5 @@
 import { FetchAnkiRequestBody } from '@/types/app.types';
+import { Model } from '@/types/scanRule.types';
 import { create } from 'zustand';
 
 interface AnkiResponseBody<T = unknown> {
@@ -9,7 +10,7 @@ interface AnkiConnectionState {
   isConnected: boolean;
   isPending: boolean;
   decks: string[];
-  models: string[];
+  models: { [modelIds: string]: Model };
   checkConnection: () => Promise<void>;
   fetchAnki: <T>(request: FetchAnkiRequestBody) => Promise<AnkiResponseBody<T>>;
 }
@@ -30,7 +31,7 @@ const useAnkiConnectionStore = create<AnkiConnectionState>((set, get) => ({
   isConnected: false,
   isPending: false,
   decks: [],
-  models: [],
+  models: {},
   checkConnection: async () => {
     if (get().isPending) return;
     set({ isPending: true });
@@ -39,8 +40,26 @@ const useAnkiConnectionStore = create<AnkiConnectionState>((set, get) => ({
       return { result: null, error: err.message };
     });
     set({ isPending: false, isConnected: !res.error, decks: res.result || [] });
-    const userModels = await callAnki<string[]>({ action: 'modelNames' })
-    set({ models: userModels.result || [] });
+    const modelNamesAndIds = await callAnki<{ [modelNames: string]: number }>({
+      action: 'modelNamesAndIds',
+    });
+
+    let newModels: { [modelIds: string]: Model } = {};
+    Object.keys(modelNamesAndIds.result || {}).forEach(async (modelName) => {
+      let fields =
+        (await callAnki<string[]>({ action: 'modelFieldNames', params: { modelName } })).result ||
+        [];
+      let style =
+        (await callAnki<string>({ action: 'modelStyling', params: { modelName } })).result || '';
+      newModels[modelNamesAndIds.result![modelName]] = {
+        name: modelName,
+        id: String(modelNamesAndIds.result![modelName]),
+        fields,
+        style,
+      };
+    });
+
+    set({ models: newModels });
   },
   fetchAnki: async <T>(request: FetchAnkiRequestBody) => {
     if (get().isConnected === false) return Promise.reject('Anki is not connected');

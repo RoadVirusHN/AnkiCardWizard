@@ -1,24 +1,24 @@
 import { useState, forwardRef, useImperativeHandle } from "react";
-import templateFieldStyle from "./templateFieldInput.module.css";
+import scanRuleFieldStyle from "./scanRuleFieldInput.module.css";
 import useLocale from "@/panel/hooks/useLocale";
-import { TEMPLATE_ITEM_DATA_TYPES, TemplateItem } from "@/types/scanRule.types";
+import { FIELD_DATA_TYPES  } from "@/types/scanRule.types";
 
 /**
  * 외부에 노출되는 ref 메서드들
  */
-export interface TemplateItemInputRef {
-  getItems: () => TemplateItem[]; // locked 속성 제거된 배열 반환
+export interface ScanRuleItemInputRef {
+  getItems: () => ScanRuleItem[]; // locked 속성 제거된 배열 반환
   clearItems: () => void;
-  setDefaultItems: (fields: (TemplateItem & { locked?: boolean })[], lock?: boolean) => void;
+  setDefaultItems: (fields: (ScanRuleItem & { locked?: boolean })[], lock?: boolean) => void;
 }
 
-interface TemplateItemInputProps {
-  defaultValue?: (TemplateItem & { locked?: boolean })[];
+interface ScanRuleItemInputProps {
+  defaultValue?: (ScanRuleItem & { locked?: boolean })[];
 }
 
-type InternalItem = TemplateItem & { locked?: boolean };
+type InternalItem = ScanRuleItem & { locked?: boolean };
 
-const TemplateItemInput = forwardRef<TemplateItemInputRef, TemplateItemInputProps>(
+const _ScanRuleFieldInput = forwardRef<ScanRuleItemInputRef, ScanRuleItemInputProps>(
   ({ defaultValue = [] }, ref) => {
     const [items, setItems] = useState<InternalItem[]>(() =>
       (defaultValue || []).map((f) => ({ ...f }))
@@ -38,11 +38,11 @@ const TemplateItemInput = forwardRef<TemplateItemInputRef, TemplateItemInputProp
     const addField = () => {
       setItems((prev) => [
         ...prev,
-        { name: "", content: "", dataType: TEMPLATE_ITEM_DATA_TYPES.TEXT, locked: false, isOptional: true},
+        { name: "", content: "", dataType: FIELD_DATA_TYPES.TEXT, locked: false, isOptional: true},
       ]);
     };
 
-    const updateField = (index: number, key: keyof TemplateItem, value: string|boolean) => {
+    const updateField = (index: number, key: keyof ScanRuleItem, value: string|boolean) => {
       setItems((prev) =>
         prev.map((f, i) => (i === index ? { ...f, [key]: value } : f))
       );
@@ -51,33 +51,33 @@ const TemplateItemInput = forwardRef<TemplateItemInputRef, TemplateItemInputProp
     const removeField = (index: number) => {
       setItems((prev) => prev.filter((_, i) => i !== index));
     };
-    const tl = useLocale('pages.ModifyTemplate.TemplateSideEditor.TemplateFieldInput');
+    const tl = useLocale('pages.ModifyScanRule.ScanRuleSideEditor.ScanRuleFieldInput');
     return (
-      <div className={templateFieldStyle.container}>
+      <div className={scanRuleFieldStyle.container}>
         {items.map((field, i) => (
-          <div key={i} className={templateFieldStyle.fieldRow}>
+          <div key={i} className={scanRuleFieldStyle.fieldRow}>
             <input
               type="text"
-              className={`${templateFieldStyle.input} ${templateFieldStyle.name}`}
-              placeholder={tl("Name",'pages.ModifyTemplate.TemplateSideEditor.')}
+              className={`${scanRuleFieldStyle.input} ${scanRuleFieldStyle.name}`}
+              placeholder={tl("Name",'pages.ModifyScanRule.ScanRuleSideEditor.')}
               value={field.name}
               onChange={(e) => updateField(i, "name", e.target.value)}
             />
             <input
               type="text"
-              className={`${templateFieldStyle.input} ${templateFieldStyle.content}`}
+              className={`${scanRuleFieldStyle.input} ${scanRuleFieldStyle.content}`}
               placeholder={tl("content")}
               value={field.content}
               onChange={(e) => updateField(i, "content", e.target.value)}
             />
             <select
-              className={`${templateFieldStyle.select} ${templateFieldStyle.datatype}`}
+              className={`${scanRuleFieldStyle.select} ${scanRuleFieldStyle.datatype}`}
               value={field.dataType}
               onChange={(e) => updateField(i, "dataType", e.target.value)}
             >
-              <option value="text">{tl('Text','pages.ModifyTemplate.TemplateSideEditor.')}</option>
-              <option value="audio">{tl('Audio','pages.ModifyTemplate.TemplateSideEditor.')}</option>
-              <option value="image">{tl('Image','pages.ModifyTemplate.TemplateSideEditor.')}</option>
+              <option value="text">{tl('Text','pages.ModifyScanRule.ScanRuleSideEditor.')}</option>
+              <option value="audio">{tl('Audio','pages.ModifyScanRule.ScanRuleSideEditor.')}</option>
+              <option value="image">{tl('Image','pages.ModifyScanRule.ScanRuleSideEditor.')}</option>
             </select>
 
             <input 
@@ -90,7 +90,7 @@ const TemplateItemInput = forwardRef<TemplateItemInputRef, TemplateItemInputProp
             {!field.locked && (
               <button
                 type="button"
-                className={templateFieldStyle.removeBtn}
+                className={scanRuleFieldStyle.removeBtn}
                 onClick={() => removeField(i)}
                 title={tl("Remove field")}
               >
@@ -99,15 +99,15 @@ const TemplateItemInput = forwardRef<TemplateItemInputRef, TemplateItemInputProp
             )}
 
             {field.locked && (
-              <div className={templateFieldStyle.lockBadge} title={tl("Required")}>
+              <div className={scanRuleFieldStyle.lockBadge} title={tl("Required")}>
                 🔒
               </div>
             )}
           </div>
         ))}
 
-        <div className={templateFieldStyle.controls}>
-          <button type="button" onClick={addField} className={templateFieldStyle.addBtn}>
+        <div className={scanRuleFieldStyle.controls}>
+          <button type="button" onClick={addField} className={scanRuleFieldStyle.addBtn}>
             {"+ " + tl('Add Field')}
           </button>
         </div>
@@ -116,4 +116,4 @@ const TemplateItemInput = forwardRef<TemplateItemInputRef, TemplateItemInputProp
   }
 );
 
-export default TemplateItemInput;
+export default _ScanRuleFieldInput;

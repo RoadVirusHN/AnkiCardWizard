@@ -1,6 +1,6 @@
 import { createMemoryRouter, data } from "react-router";
 import ConfigPage from "../features/Config/ConfigPage";
-import ModifyScanRule from "../features/ModifyScanRule/ModifyTemplate";
+import ModifyScanRule from "../features/ModifyScanRule/ModifyScanRule";
 import Main from "../features/Main/Main";
 import DetectPage from "../features/Detect/DetectPage";
 import AddPage from "../features/Add/AddPage";

@@ -39,6 +39,19 @@ export interface Note {
   };
 }
 
+export const SELECTOR_TYPES = {
+  CSS: 'css',
+  // XPATH: 'xpath',
+  // javascript selector can be added in the future if needed
+} as const;
+
+export type SelectorType = (typeof SELECTOR_TYPES)[keyof typeof SELECTOR_TYPES];
+export interface FieldProperties {
+  selector: string;
+  selectorType?: SelectorType;
+  dataType: FieldDataType;
+}
+
 export interface ScanRule {
   meta: ScanRuleMeta;
   scanRuleName: string;
@@ -47,11 +60,8 @@ export interface ScanRule {
   rootTag: string;
   tags: string[];
   fields: {
-    [fieldName: string]: {
-      selector: string;
-      dataType: FieldDataType;
-    };
-  }
+    [fieldName: string]: FieldProperties;
+  };
   audio?: {
     url: string;
     filename: string;

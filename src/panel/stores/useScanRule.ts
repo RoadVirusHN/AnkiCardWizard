@@ -1,14 +1,14 @@
-import { TEMPLATE_CODE } from '@/types/app.types';
-import { ExtractedMap, Model, Note, Template } from '@/types/scanRule.types';
+import { SCAN_RULE_CODE as SCAN_RULE_CODE } from '@/types/app.types';
+import { ExtractedMap, Note, ScanRule as ScanRule } from '@/types/scanRule.types';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 
-interface TemplateState {
-  templates: Template[];
-  addTemplate: (card: Template) => TEMPLATE_CODE;
-  removeTemplate: (name: string) => void;
-  modifyTemplate: (name: string, card: Template) => TEMPLATE_CODE;
+interface ScanRuleState {
+  scanRules: ScanRule[];
+  addScanRule: (scanRule: ScanRule) => SCAN_RULE_CODE;
+  removeScanRule: (name: string) => void;
+  modifyScanRule: (name: string, scanRule: ScanRule) => SCAN_RULE_CODE;
   notes: { [idx: string]: Note };
   addNote: (idx: string, note: Note) => void;
   removeNote: (idx: string) => void;
@@ -20,63 +20,60 @@ interface TemplateState {
   updateTag: (name: string, color: string) => void;
   extractedMaps: ExtractedMap;
   setExtractedMaps: (newMaps: ExtractedMap) => void;
-  models: {[modelName: string]: Model};
-  addModel: (model: Model) => void;
-  removeModel: (modelName: string) => void;
 }
 
-const isTemplateValid = (template: Template, curTemplates: Template[]): TEMPLATE_CODE => {
-  if (!template.templateName || template.templateName.trim() === '') {
-    return TEMPLATE_CODE.INVALID_TEMPLATE_NAME;
+const isScanRuleVaild = (scanRule: ScanRule, curScanRules: ScanRule[]): SCAN_RULE_CODE => {
+  if (!scanRule.scanRuleName || scanRule.scanRuleName.trim() === '') {
+    return SCAN_RULE_CODE.INVALID_SCAN_RULE_NAME;
   }
-  if (curTemplates.filter((t) => t.templateName === template.templateName).length > 0) {
-    return TEMPLATE_CODE.DUPLICATE_TEMPLATE_NAME;
+  if (curScanRules.filter((t) => t.scanRuleName === scanRule.scanRuleName).length > 0) {
+    return SCAN_RULE_CODE.DUPLICATE_SCAN_RULE_NAME;
   }
-  // if (!template.meta.author || template.meta.author.trim() === '') {
-  //   return TEMPLATE_CODE.INVALID_AUTHOR_NAME;
+  // if (!scanRule.meta.author || scanRule.meta.author.trim() === '') {
+  //   return SCAN_RULE_CODE.INVALID_AUTHOR_NAME;
   // }
-  if (!template.model) {
-    return TEMPLATE_CODE.INVALID_MODEL;
+  if (!scanRule.modelId) {
+    return SCAN_RULE_CODE.INVALID_MODEL;
   }
-  if (!template.rootTag || template.rootTag.trim() === '') {
-    return TEMPLATE_CODE.INVALID_ROOT_TAG;
+  if (!scanRule.rootTag || scanRule.rootTag.trim() === '') {
+    return SCAN_RULE_CODE.INVALID_ROOT_TAG;
   }
-  return TEMPLATE_CODE.OK;
+  return SCAN_RULE_CODE.OK;
 };
 
-const useTemplate = create<TemplateState>()(
+const useScanRule = create<ScanRuleState>()(
   persist(
     (set, get) => ({
-      templates: [],
-      addTemplate: (template: Template) => {
-        const code = isTemplateValid(template, get().templates);
-        if (code === TEMPLATE_CODE.OK)
-          set((state) => ({ templates: [...state.templates, template] }));
+      scanRules: [],
+      addScanRule: (scanRule: ScanRule) => {
+        const code = isScanRuleVaild(scanRule, get().scanRules);
+        if (code === SCAN_RULE_CODE.OK)
+          set((state) => ({ scanRules: [...state.scanRules, scanRule] }));
         return code;
       },
-      removeTemplate: (name: string) => {
+      removeScanRule: (name: string) => {
         set((state) => {
           const newNotes = {} as { [idx: string]: Note };
           Object.keys(state.notes).forEach((idx) => {
             const note = state.notes[idx];
-            if (note.templateName !== name) {
+            if (note.scanRuleName !== name) {
               newNotes[idx] = note;
             }
           });
           return {
-            templates: state.templates.filter((info) => info.templateName !== name),
+            scanRules: state.scanRules.filter((info) => info.scanRuleName !== name),
             notes: newNotes,
           };
         });
       },
-      modifyTemplate: (name: string, template: Template) => {
-        const code = isTemplateValid(template, get().templates);
-        if (code === TEMPLATE_CODE.DUPLICATE_TEMPLATE_NAME) {
+      modifyScanRule: (name: string, scanRule: ScanRule) => {
+        const code = isScanRuleVaild(scanRule, get().scanRules);
+        if (code === SCAN_RULE_CODE.DUPLICATE_SCAN_RULE_NAME) {
           set((state) => ({
-            templates: state.templates.map((c) => (c.templateName === name ? template : c)),
+            scanRules: state.scanRules.map((c) => (c.scanRuleName === name ? scanRule : c)),
           }));
-          return TEMPLATE_CODE.OK;
-        } else if (code === TEMPLATE_CODE.OK) return TEMPLATE_CODE.NO_SUCH_TEMPLATE;
+          return SCAN_RULE_CODE.OK;
+        } else if (code === SCAN_RULE_CODE.OK) return SCAN_RULE_CODE.NO_SUCH_SCAN_RULE;
         return code;
       },
       notes: {},
@@ -135,22 +132,9 @@ const useTemplate = create<TemplateState>()(
           extractedMaps: newMaps,
         }));
       },
-      models: {},
-      addModel: (model) => {
-        set((state) => ({
-          models: { ...state.models, [model.name]: model },
-        }));
-      },
-      removeModel: (modelName) => {
-        set((state) => {
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          const { [modelName]: _deleted, ...rest } = state.models;
-          return { models: rest };
-        });
-      },
     }),
     {
-      name: 'anki-card-wizard-template-store',
+      name: 'anki-note-wizard-scan-rule-store',
       storage: {
         getItem: async (name) => (await chrome.storage.local.get(name))[name],
         setItem: async (name, value) => await chrome.storage.local.set({ [name]: value }),
@@ -160,4 +144,4 @@ const useTemplate = create<TemplateState>()(
   )
 );
 
-export default useTemplate;
+export default useScanRule;

@@ -31,7 +31,7 @@ const ModifyScanRule = () => {
   const { scanRules, addScanRule, modifyScanRule } = useScanRules();
   const { models } = useAnkiConnectionStore();
   const currentScanRule = isEditMode && idx !== undefined ? scanRules[idx] : emptyScanRule;
-  const currentModel = models[currentScanRule.modelId] || { fields: [] };  
+  const currentModel = models[currentScanRule.modelId];  
   const tl = useLocale('pages.ModifyScanRule');
   const tabs = ["meta", "common", "fields"];
   const [activeTab, setActiveTab] = useState(tabs[0]);
@@ -87,13 +87,12 @@ return (
             setData={changeTemplatData}/>)}
         {activeTab === "field" && (
           <ScanRuleFieldEditor
-            fieldName={activeTab}
             scanRule={scanRuleData}
             setData={(newData) => {
               setScanRuleData(
                 {
                   ...scanRuleData,
-                  fields: scanRuleData.fields.map(f => f.name.toLowerCase() === activeTab ? { ...f, ...newData } : f)
+                  fields: newData
                 }
               );
               setIsChanged(true);
