@@ -6,7 +6,6 @@ import CodeIcon from "@/public/Icon/Icon-Code.svg";
 import addPageStyle from "./addPage.module.css";
 import commonStyle from "@/panel/common.module.css";
 import InspectionOverlay from "@/panel/components/InspectionOverlay/InspectionOverlay";
-import Preview from "@/panel/components/Preview/Preview";
 import { Editor } from "@monaco-editor/react";
 import Tags from "@/panel/components/Tags/Tags";
 import useAnkiConnectionStore from "@/panel/stores/useAnkiConnectionStore";
@@ -14,7 +13,7 @@ import ModelInput from "@/panel/components/Inputs/ModelInput/ModelInput";
 import { useState } from "react";
 import useGlobalVarStore from "@/panel/stores/useGlobalVarStore";
 import SimpleButton from "@/panel/components/SimpleButton/SimpleButton";
-import ScanRuleInput from "@/panel/components/Inputs/TemplatInput/ScanRuleInput";
+import ScanRuleInput from "@/panel/components/Inputs/ScanRuleInput/ScanRuleInput";
 import DeckInput from "@/panel/components/StatusBar/DeckInput/DeckInput";
 import useLocale from "@/panel/hooks/useLocale";
 import Icon from "@/panel/components/Icon/Icon";
@@ -66,8 +65,8 @@ const AddPage = ({}) => {
           setCurNote({...curNote, scanRuleName: scanRule});
           setIsChanged(true);
         }}/>
-        <ModelInput defaultModel={curNote.modelId} setModel={(model:string)=>{
-          setCurNote({...curNote, modelId: model});
+        <ModelInput defaultModelId={curNote.modelId} setModelId={(modelId:string)=>{
+          setCurNote({...curNote, modelId});
           setIsChanged(true);
         }}/>
         <Tags givenTags={curNote.tags} isModifying={isModifying} 
@@ -79,17 +78,18 @@ const AddPage = ({}) => {
           setIsChanged(true);
           setCurNote({...curNote, tags: curNote.tags.filter(t=>t!==tag)});
         }}/>
-        <h3>{tlC('front') +' '+tlC('preview')} {isModifying ?? <SimpleButton title="Extract Field Css Selector" src={MagicIcon} onClick={()=>enterInspectionMode()}/> }</h3>
         {
-          isModifying ?
+          Object.entries(curNote.fields).map(([fieldName, fieldContent])=>{
+          return <>
+          <h3>{fieldName +' '+tlC('code')} <SimpleButton title="Extract Field Css Selector" src={MagicIcon} onClick={()=>enterInspectionMode()}/> </h3>
           (<Editor
             defaultLanguage="html"
-            value={curNote.fields.Front}
+            value={fieldContent.value}
             width='100%'
             height='200px'
             theme={themeOption.theme === THEME.DARK ? "vs-dark" : "light"}
             onChange={(value)=>{
-              setCurNote({...curNote, fields: {...curNote.fields, Front: value || ''}}); 
+              setCurNote({...curNote, fields: {...curNote.fields, [fieldName]: {...fieldContent, value: value || ''}}}); 
               setIsChanged(true); 
             }}
             onMount={(editor)=>{
@@ -98,30 +98,9 @@ const AddPage = ({}) => {
               editor.onDidBlurEditorText(()=>{
               });
             }}
-            />) :
-            <Preview html={curNote.fields.Front} modelName={curNote.modelId}/>
-        }
-        <h3>{tlC('back') +' ' + tlC('preview')} {isModifying ?? <SimpleButton title="Extract Field Css Selector" src={MagicIcon} onClick={()=>enterInspectionMode()}/>}</h3>
-        {
-          isModifying ? 
-          (<Editor
-            defaultLanguage="html"
-            value={curNote.fields.Back}
-            width='100%'
-            height='200px'
-            theme={themeOption.theme === THEME.DARK ? "vs-dark" : "light"}
-            onChange={(value)=>{
-              setCurNote({...curNote, fields: {...curNote.fields, Back: value || ''}});  
-              setIsChanged(true);
-            }}
-            onMount={(editor)=>{
-              editor.onDidFocusEditorText(()=>{
-              });
-              editor.onDidBlurEditorText(()=>{
-              });
-            }}
-            />)
-          : <Preview html={curNote.fields.Back} modelName={curNote.modelId}/>
+            />) 
+            </>
+          })
         }
       </section> }
       <SimpleButton src={AddIcon} 

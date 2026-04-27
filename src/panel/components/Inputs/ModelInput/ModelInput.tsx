@@ -1,12 +1,12 @@
 import useAnkiConnectionStore from "@/panel/stores/useAnkiConnectionStore";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-const ModelInput = ({setModel, defaultModel}:{setModel: (model:string)=>void, defaultModel: string}) => {
+const ModelInput = ({setModelId, defaultModelId}:{setModelId: (modelId:string)=>void, defaultModelId: string}) => {
   const {models} = useAnkiConnectionStore();
-  const [curVal, setCurVal] = useState(defaultModel || models[0] || ''); 
-  const onChangeModel = (model:string) => {
-    if (models.length===0) return;
-    setModel(model);
+  const [curVal, setCurVal] = useState(defaultModelId || models[0].id || ''); 
+  const onChangeModel = (modelId:string) => {
+    if (Object.keys(models).length===0) return;
+    setModelId(modelId);
   }
   const [t] = useTranslation();
   return (
@@ -18,7 +18,7 @@ const ModelInput = ({setModel, defaultModel}:{setModel: (model:string)=>void, de
         onChangeModel(e.currentTarget.value); 
         setCurVal(e.currentTarget.value);
       }} value={curVal}>
-        {models.length > 0 ? models.map((model) => <option key={model} value={model}>{model}</option>) : (
+        {Object.keys(models).length > 0 ? Object.entries(models).map(([modelId,model]) => <option key={modelId} value={modelId}>{model.name}</option>) : (
           <option value=''>{t('component.ModelInput.Anki Connection Error')}</option>          
         )}
       </select>

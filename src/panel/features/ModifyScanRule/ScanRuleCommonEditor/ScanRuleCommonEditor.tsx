@@ -29,10 +29,11 @@ const ScanRuleCommonEditor = ({data, setData}:Props) => {
   return (<div>
     <div className={modifyScanRuleStyle.formGroup}>
       <label>{tl("Model Name")}</label>
+      {/* TODO : MODEL SELECTING DROP DOWN */}
       <input
         className={modifyScanRuleStyle.input}
-        value={data.modelName}
-        onChange={(e) => setData({ ...data, modelName: e.target.value })}
+        value={data.modelId}
+        onChange={(e) => setData({ ...data, modelId: e.target.value })}
       />
     </div>
     <div className={modifyScanRuleStyle.formGroup}>

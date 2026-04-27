@@ -5,7 +5,6 @@ import Main from "../features/Main/Main";
 import DetectPage from "../features/Detect/DetectPage";
 import AddPage from "../features/Add/AddPage";
 import ScanRulesPage from "../features/ScanRule/ScanRulesPage";
-import PreviewCard from '../features/_PreviewCard/PreviewCard';
 import ErrorPage from "../features/Error/ErrorPage";
 import ErrorTesting from "../features/ErrorTesting/ErrorTesting";
 
@@ -38,10 +37,6 @@ const router = (currentUrl: string)=> createMemoryRouter([
       {
         path: "scanRules/modify/:index?",
         element: <ModifyScanRule/>
-      },
-      {
-        path: "previewCard/:index",
-        element: <PreviewCard/>
       },
       {
         path:"errorTesting/runtime",

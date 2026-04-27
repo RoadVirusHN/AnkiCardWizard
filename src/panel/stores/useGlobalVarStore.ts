@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { Note } from 'types/scanRule.types';
-import { TAB, Tab } from '@/types/app.types';
+import { Default_BASIC_MODEL, TAB, Tab } from '@/types/app.types';
 
 
 interface GlobalVarState {
@@ -30,10 +30,10 @@ const useGlobalVarStore = create<GlobalVarState>()(
       currentAddingNote: {
         scanRuleName: '',
         deckName: '',
-        modelId: 'Basic',
+        modelId: Default_BASIC_MODEL.id,
         fields: {
-          Front: 'Front sample',
-          Back: 'Back sample',
+          Front: { value: 'Front', dataType: 'text' },
+          Back: { value: 'Back', dataType: 'text' },
         },
         tags: [],
       },
