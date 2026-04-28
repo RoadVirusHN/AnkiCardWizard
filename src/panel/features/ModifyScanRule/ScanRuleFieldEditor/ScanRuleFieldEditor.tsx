@@ -58,8 +58,6 @@ const ScanRuleFieldEditor = ({ scanRule, setData } : Props) => {
                 />
                 <SimpleButton title="Extract Field Css Selector" src={MagicIcon} onClick={()=>enterInspectionMode(onResult)}/> 
               </div>
-
-              {/* Data Type */}
               <select
                 className={styles.select}
                 value={scanRule.fields[item].dataType}

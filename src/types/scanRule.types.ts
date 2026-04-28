@@ -27,7 +27,7 @@ export interface Note {
   deckName: string;
   modelId: string;
   fields: {
-    [fieldName: string]: FieldContent;
+    [fieldName: string]: string;
   };
   tags: string[];
   audio?: {
@@ -48,10 +48,6 @@ export type SelectorType = (typeof SELECTOR_TYPES)[keyof typeof SELECTOR_TYPES];
 export interface FieldProperties {
   selector: string;
   selectorType?: SelectorType;
-  dataType: FieldDataType;
-}
-export interface FieldContent {
-  value: string;
   dataType: FieldDataType;
 }
 

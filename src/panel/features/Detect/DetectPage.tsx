@@ -9,7 +9,7 @@ import useAnkiConnectionStore from '@/panel/stores/useAnkiConnectionStore';
 import useGlobalVarStore from '@/panel/stores/useGlobalVarStore';
 import useScanRule from '@/panel/stores/useScanRule';
 import useLocale from '@/panel/hooks/useLocale';
-import { ExtractedFields, ExtractedInfos,  FieldContent,  Note, ScanRule } from '@/types/scanRule.types';
+import { ExtractedFields, ExtractedInfos,  FIELD_DATA_TYPES,  Note, ScanRule } from '@/types/scanRule.types';
 import { MESSAGE_TYPE } from '@/types/chrome.types';
 
 //TODO : Apply SCSS for css.
@@ -62,10 +62,17 @@ const DetectPage: React.FC = () => {
   const getNote = (scanRule : ScanRule, extracted : ExtractedFields) =>{    
     let fields = {} as Note['fields'];
     for (const fieldName of Object.keys(scanRule.fields)) {
-      fields[fieldName] = {
-        value: extracted[fieldName],
-        dataType: scanRule.fields[fieldName].dataType,
+      let value;
+      if (scanRule.fields[fieldName].dataType === FIELD_DATA_TYPES.IMAGE) {
+        value = '<img src=\"'+ extracted[fieldName] + '\"/>';
+      } else if (scanRule.fields[fieldName].dataType === FIELD_DATA_TYPES.AUDIO) {
+        value = '<audio src=\"' + extracted[fieldName] + '\" controls/>';
+      } else if (scanRule.fields[fieldName].dataType === FIELD_DATA_TYPES.VIDEO) {
+        value = '<video src=\"' + extracted[fieldName] + '\" controls/>';
+      } else {
+        value = extracted[fieldName];
       }
+      fields[fieldName] = value;
     }
     return ({
             scanRuleName: scanRule.scanRuleName,

@@ -32,8 +32,8 @@ const useGlobalVarStore = create<GlobalVarState>()(
         deckName: '',
         modelId: Default_BASIC_MODEL.id,
         fields: {
-          Front: { value: 'Front', dataType: 'text' },
-          Back: { value: 'Back', dataType: 'text' },
+          Front: 'Front',
+          Back: 'Back',
         },
         tags: [],
       },

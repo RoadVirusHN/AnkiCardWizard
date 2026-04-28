@@ -27,7 +27,7 @@ const DetectedDraft = ({key, note, scanRuleName, checkAdd}:DetectedDraftProps) =
         </div>
         {
           Object.keys(note.fields).map((fieldName)=>{
-            return <p className={detectPageStyle.back}>{note.fields[fieldName].value}</p>
+            return <p className={detectPageStyle.back}>{note.fields[fieldName]}</p>
           })
         }
       </div>
