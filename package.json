@@ -4,9 +4,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build:dev": "webpack --config webpack.dev.js && find dist -name '*basic-languages*.js' -not -name '*html*.js' -not -name '*css*.js' -not -name '*javascript*.js' -not -name '*typescript*.js' -delete",
+    "build:dev": "webpack --config webpack.dev.js",
     "watch:dev": "webpack --config webpack.dev.js --watch",
-    "build:prod": "webpack --config webpack.prod.js && find dist -name '*basic-languages*.js' -not -name '*html*.js' -not -name '*css*.js' -not -name '*javascript*.js' -not -name '*typescript*.js' -delete"
+    "build:prod": "webpack --config webpack.prod.js "
   },
   "repository": {
     "type": "git",
@@ -21,11 +21,8 @@
   "homepage": "https://github.com/RoadVirusHN/AnkiNoteWizard#readme",
   "description": "",
   "dependencies": {
-    "@monaco-editor/react": "^4.7.0",
     "css-selector-generator": "^3.8.0",
     "i18next": "^25.7.4",
-    "monaco-editor": "^0.54.0",
-    "monaco-editor-webpack-plugin": "^7.1.1",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
     "react-error-boundary": "^6.1.1",
