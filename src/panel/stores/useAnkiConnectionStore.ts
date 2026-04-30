@@ -12,7 +12,7 @@ interface AnkiConnectionState {
   decks: string[];
   models: { [modelIds: string]: Model };
   ankiUrl: string;
-  setAniUrl: (url: string) => void;
+  setAnkiUrl: (url: string) => void;
   checkConnection: () => Promise<void>;
   fetchAnki: <T>(request: FetchAnkiRequestBody) => Promise<AnkiResponseBody<T>>;
 }
@@ -35,7 +35,7 @@ const useAnkiConnectionStore = create<AnkiConnectionState>((set, get) => ({
   decks: [],
   models: {},
   ankiUrl: "http://127.0.0.1:8765",
-  setAniUrl: (url: string) => set({ ankiUrl: url }),
+  setAnkiUrl: (url: string) => set({ ankiUrl: url }),
   checkConnection: async () => {
     if (get().isPending) return;
     set({ isPending: true });

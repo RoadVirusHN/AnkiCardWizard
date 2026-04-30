@@ -17,11 +17,10 @@ import ScanRuleInput from "@/panel/components/Inputs/ScanRuleInput/ScanRuleInput
 import DeckInput from "@/panel/components/StatusBar/DeckInput/DeckInput";
 import useLocale from "@/panel/hooks/useLocale";
 import Icon from "@/panel/components/Icon/Icon";
-import useConfigure from "@/panel/stores/useConfigure";
 import useInspection from "@/panel/hooks/useInspection";
 import MagicIcon from "@/public/Icon/Icon-Magic.svg";
 import { NavLink } from "react-router";
-import { INSPECTION_MODE, THEME } from "@/types/app.types";
+import { INSPECTION_MODE } from "@/types/app.types";
 
 const AddPage = ({}) => {
   const {fetchAnki} = useAnkiConnectionStore();
@@ -29,9 +28,9 @@ const AddPage = ({}) => {
   const [curNote, setCurNote] = useState(currentAddingNote);
   const [isChanged, setIsChanged] = useState(false);
   const [isModifying, setIsModifying] = useState(true);
+  
   const tl = useLocale('pages.AddPage');
   const tlC = useLocale('common');
-  const {themeOption} = useConfigure();
   const {enterInspectionMode,cancleInspectionMode,isInspectionMode} = useInspection();
   return <div>
     <div className={addPageStyle.header}>     
@@ -79,26 +78,19 @@ const AddPage = ({}) => {
           setCurNote({...curNote, tags: curNote.tags.filter(t=>t!==tag)});
         }}/>
         {
-          Object.entries(curNote.fields).map(([fieldName, fieldContent])=>{
+          Object.entries(curNote.fields).map(([fieldName, value])=>{
           return <>
           <h3>{fieldName +' '+tlC('code')} <SimpleButton title="Extract Field Css Selector" src={MagicIcon} onClick={()=>enterInspectionMode()}/> </h3>
-          (<Editor
-            defaultLanguage="html"
-            value={fieldContent.value}
+          (<input
+            type="text"
+            value={value}
             width='100%'
-            height='200px'
-            theme={themeOption.theme === THEME.DARK ? "vs-dark" : "light"}
-            onChange={(value)=>{
-              setCurNote({...curNote, fields: {...curNote.fields, [fieldName]: {...fieldContent, value: value || ''}}}); 
+            onChange={(e)=>{
+              setCurNote({...curNote, fields: {...curNote.fields, [fieldName]: e.target.value || ''}}); 
               setIsChanged(true); 
             }}
-            onMount={(editor)=>{
-              editor.onDidFocusEditorText(()=>{
-              });
-              editor.onDidBlurEditorText(()=>{
-              });
-            }}
-            />) 
+            />)
+          {/* TODO : check value is media(img, audio, video) then show it. */}
             </>
           })
         }
@@ -111,6 +103,9 @@ const AddPage = ({}) => {
               note: curNote
             },
           };
+          //TODO : AnkiConnect Media Actions 연구 및 적용. 현재는 media 필드도 그냥 note의 field로 보내고 있음.
+
+
           fetchAnki(req).then((res)=>{
             setIsChanged(false);
             setCurNote(currentAddingNote);

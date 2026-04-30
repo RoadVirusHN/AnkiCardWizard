@@ -1,4 +1,5 @@
-import { LANGUAGE, Language, THEME, Theme, THEME_SETTING, ThemeSetting } from '@/types/app.types';
+import i18n from '@/locales/i18n';
+import { LOCALE, Locale, THEME, Theme, THEME_SETTING, ThemeSetting } from '@/types/app.types';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
@@ -9,11 +10,11 @@ interface ThemeOption {
 
 // WARN : less than 8kb per item in chrome.storage.sync, maximum 100kb total.
 interface ConfigureState {
-  language: Language;
+  locale: Locale;
   themeOption: ThemeOption;
   fontSize: string;
   styles: { [modelName: string]: { card: string; [cards: string]: string } };
-  setLanguage: (lang: Language) => void;
+  setLocale: (lang: Locale) => void;
   setThemeSetting: (themeSetting: ThemeSetting) => void;
   setFontSize: (fontSize: string) => void;
   setStyles: (modelName: string, key: string, newStyle: string) => void;
@@ -30,7 +31,7 @@ const DEFAULT_STYLE = `
 const useConfigure = create<ConfigureState>()(
   persist(
     (set) => ({
-      language: LANGUAGE.EN,
+      locale: LOCALE.EN,
       themeOption: {
         theme: THEME.LIGHT,
         userSetting: THEME_SETTING.NONE,
@@ -41,8 +42,9 @@ const useConfigure = create<ConfigureState>()(
           card: DEFAULT_STYLE,
         },
       },
-      setLanguage: (lang: Language) => {
-        set({ language: lang });
+      setLocale: (newLocale: Locale) => {
+        set({ locale: newLocale });
+        i18n.changeLanguage(newLocale);
       },
       setThemeSetting: (themeSetting: ThemeSetting) => {
         let newThemeOption = {

@@ -10,13 +10,13 @@ import { THEME, THEME_SETTING } from "@/types/app.types";
 const App = ({}) => {
   const {currentUrl} = useGlobalVarStore();
   const [router, setRouter] =  useState<ReturnType<typeof AnkiRouter>| null>(null);
-  const {language, themeOption, setThemeSetting, fontSize} = useConfigure();
+  const {locale, themeOption, setThemeSetting, fontSize} = useConfigure();
 
   useEffect(()=>{
     setRouter(AnkiRouter(currentUrl || '/'));
-    if (language) {
-      console.log("App.tsx setting i18n language to:", language);
-      i18n.changeLanguage(language);
+    if (locale) {
+      console.log("App.tsx setting i18n language to:", locale);
+      i18n.changeLanguage(locale);
     }
     // set theme based on system preference if userSetting is system-based or none.
     const isSystemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;

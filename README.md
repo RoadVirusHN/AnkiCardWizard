@@ -36,7 +36,6 @@ _폰트 크기, 테마, 국제화(한국어, 영어), AnkiConnect 연결 설정 
 - zustand : 중앙 상태 관리, chrome storage와의 연동을 통해 앱 종료 혹은 기기 변경 시에도 일부 상태와 설정 유지를 통한 유저 경험 향상.
 - Typescript : 타입 지원
 - react-i18next : 국제화 지원
-- Monaco Editor : 오프라인 웹 코드 에디터, 카드 및 스캔 규칙 수정에 이용됨.
 - Webpack : 멀티엔트리 번들러, 
 
 // 대충 Chrome Extension "Anki Card Wizard" <=> AnkiConnect <=> Anki app 연결 사진.

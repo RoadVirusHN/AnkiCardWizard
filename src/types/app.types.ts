@@ -21,11 +21,11 @@ export const THEME = {
 } as const;
 export type Theme = (typeof THEME)[keyof typeof THEME];
 
-export const LANGUAGE = {
+export const LOCALE = {
   EN: 'en',
   KO: 'ko',
 } as const;
-export type Language = (typeof LANGUAGE)[keyof typeof LANGUAGE];
+export type Locale = (typeof LOCALE)[keyof typeof LOCALE];
 
 export const TAB = {
   DETECT: 'DETECT',

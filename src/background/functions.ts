@@ -1,15 +1,15 @@
 import useConfigure from '@/panel/stores/useConfigure';
 import useScanRule from '@/panel/stores/useScanRule';
 import { defaultScanRules } from './constants';
-import { LANGUAGE, THEME_SETTING } from '@/types/app.types';
+import { LOCALE, THEME_SETTING } from '@/types/app.types';
 
 export const onInstalled = () => {
-  if (!useConfigure.getState().language) {
+  if (!useConfigure.getState().locale) {
     const uiLanguage = chrome.i18n.getUILanguage();
-    const defaultLang = uiLanguage.startsWith('ko') ? LANGUAGE.KO : LANGUAGE.EN;
+    const defaultLang = uiLanguage.startsWith('ko') ? LOCALE.KO : LOCALE.EN;
     console.log('Detected UI Language:', uiLanguage, 'Setting default language to:', defaultLang);
-    useConfigure.getState().setLanguage(defaultLang);
-    console.log('Extension installed or updated. Default language set to:', useConfigure.getState().language);
+    useConfigure.getState().setLocale(defaultLang);
+    console.log('Extension installed or updated. Default language set to:', useConfigure.getState().locale);
   }
   if (!useConfigure.getState().themeOption) {
     useConfigure.getState().setThemeSetting(THEME_SETTING.NONE);
@@ -38,7 +38,6 @@ export const sendAsyncMessage = async <T>(
       sendResponse({ error: 'No Active tab found' });
       return;
     }
-    // Content Script로 메시지 전송
     chrome.tabs.sendMessage(tabId, message, (response) => {
       if (chrome.runtime.lastError) {
         console.error('Content Script Error:', chrome.runtime.lastError.message);
