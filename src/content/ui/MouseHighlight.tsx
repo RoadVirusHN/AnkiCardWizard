@@ -8,7 +8,7 @@ interface HighlightRect {
   top: number;
   left: number;
 }
-const Highlight = ({onClick}: {onClick:(e:MouseEvent)=>void}) => {
+const MouseHighlight = ({onClick}: {onClick:(e:MouseEvent)=>void}) => {
   const [rect, setRect] = useState<HighlightRect>({width: 0, height: 0, top: 0, left: 0}); 
   const [isDisplay, setIsDisplay] = useState(true);
   useEffect(()=>{
@@ -39,4 +39,4 @@ const Highlight = ({onClick}: {onClick:(e:MouseEvent)=>void}) => {
       {top: rect.top, left: rect.left, width: rect.width, height: rect.height, 
       display: isDisplay ? 'block' : 'none'}}/>;
 };
-export default Highlight;
+export default MouseHighlight;
