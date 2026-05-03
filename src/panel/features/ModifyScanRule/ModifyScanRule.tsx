@@ -15,6 +15,7 @@ const emptyScanRule: ScanRule = {
     scanRuleName: "",
     meta: { author: "", description: "", version: "0.0.1" },
     modelId: Default_BASIC_MODEL.id,
+    modelName: Default_BASIC_MODEL.name,
     urlPatterns: ["*"],
     rootTag: "div.word",
     fields: {
@@ -43,8 +44,8 @@ const ModifyScanRule = () => {
   };
   const handleSave = () => {
     const code = isEditMode && idx !== undefined ? 
-      modifyScanRule(scanRules[idx].scanRuleName, scanRuleData) :
-      addScanRule(scanRuleData);
+    modifyScanRule(scanRules[idx].scanRuleName, scanRuleData) :
+    addScanRule(scanRuleData);
     if (code=== SCAN_RULE_CODE.OK) {
       setIsChanged(false);
     } else {
@@ -83,20 +84,12 @@ return (
             setData={changeTemplatData}/>)}
         {activeTab === "common" && (
           <ScanRuleCommonEditor 
-            data={scanRuleData} 
+            scanRule={scanRuleData} 
             setData={changeTemplatData}/>)}
-        {activeTab === "field" && (
+        {activeTab === "fields" && (
           <ScanRuleFieldEditor
             scanRule={scanRuleData}
-            setData={(newData) => {
-              setScanRuleData(
-                {
-                  ...scanRuleData,
-                  fields: newData
-                }
-              );
-              setIsChanged(true);
-            }}
+            setData={changeTemplatData}
           />
         )}
       </div>

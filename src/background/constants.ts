@@ -7,9 +7,10 @@ export const defaultScanRules: ScanRule[] = [
     meta: {},
     scanRuleName: 'Default ScanRule',
     modelId: Default_BASIC_MODEL.id,
+    modelName: Default_BASIC_MODEL.name,
     urlPatterns: ['*'],
     rootTag: 'body',
-    fields:{
+    fields: {
       Front: {
         selector: '',
         dataType: 'text',

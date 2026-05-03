@@ -8,12 +8,12 @@ import InspectionOverlay from "@/panel/components/InspectionOverlay/InspectionOv
 import useInspection from "@/panel/hooks/useInspection";
 import { uniqueCssSelectorOptions } from "@/content/ui/App";
 import SimpleButton from "@/panel/components/SimpleButton/SimpleButton";
-import { ScanRule, FieldProperties, FieldDataType } from "@/types/scanRule.types";
+import { ScanRule, FieldProperties, FieldDataType, FIELD_DATA_TYPES } from "@/types/scanRule.types";
 import { INSPECTION_MODE } from "@/types/app.types";
 
 interface Props {
   scanRule: ScanRule;
-  setData: (data: {[fieldName: string]: FieldProperties}) => void;
+  setData: (data: ScanRule) => void;
 }
 
 const ScanRuleFieldEditor = ({ scanRule, setData } : Props) => {
@@ -26,14 +26,13 @@ const ScanRuleFieldEditor = ({ scanRule, setData } : Props) => {
   const handleItemChange = (fieldName:string, newData: FieldProperties) => {
     const newItems = {...scanRule.fields};
     newItems[fieldName] = newData;
-    setData(newItems);
+    setData({ ...scanRule, fields: newItems });
   };
 
-  const tl = useLocale('pages.ModifyScanRule.ScanRuleSideEditor');
+  const tl = useLocale('pages.ModifyScanRule.ScanRuleFieldEditor');
   return (
     <div className={styles.editorContainer}>
-
-      {/* 3. Items List */}
+      {/* TODO : Field 우선순위 기능 */}
       <div className={styles.fieldHeader}>
         <div className={styles.sectionTitle} style={{marginBottom:0}}>{tl('Fields')}</div>
       </div>
@@ -63,10 +62,11 @@ const ScanRuleFieldEditor = ({ scanRule, setData } : Props) => {
                 value={scanRule.fields[item].dataType}
                 onChange={(e) => handleItemChange(item, {...scanRule.fields[item], dataType: e.target.value as FieldDataType})}
               >
-                <option value="text">{tl('Text')}</option>
-                <option value="image">{tl('Image')}</option>
-                <option value="audio">{tl('Audio')}</option>
-                <option value="video">{tl('Video')}</option>
+                {
+                  Object.keys(FIELD_DATA_TYPES).map(type=>(
+                    <option key={type} value={type}>{tl(type.toUpperCase())}</option>
+                  ))
+                }
               </select>
             </div>
           );

@@ -83,11 +83,17 @@ const extractFields = (root: Element, field: FieldProperties) => {
     } else {
       return 'Image source not found or element is not an media element(img, video, audio)';
     }
-  } else {
+  } else if (field.dataType === FIELD_DATA_TYPES.TEXT) {
     if (element && element.textContent) {
       return element.textContent;
     } else {
       return 'Content does not exist';
+    }
+  } else {
+    if (element) {
+      return element.innerHTML;
+    } else {
+      return 'Element does not exist';
     }
   }
 };

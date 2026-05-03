@@ -31,10 +31,10 @@ const useGlobalVarStore = create<GlobalVarState>()(
         scanRuleName: '',
         deckName: '',
         modelId: Default_BASIC_MODEL.id,
-        fields: {
-          Front: 'Front',
-          Back: 'Back',
-        },
+        fields: [
+          {key: 'Front', content: ''},
+          {key:'Back', content:''},
+        ],
         tags: [],
       },
       setCurrentUrl: (url: string) => {

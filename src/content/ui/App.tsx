@@ -32,7 +32,6 @@ const getCommonSelector = (
   while (current && current.nodeType === Node.ELEMENT_NODE && current.tagName !== 'HTML') {
     const tagName = current.tagName.toLowerCase();
     
-
     let selector = tagName;
 
     // ---------------------------------------------------------
@@ -72,7 +71,6 @@ const getCommonSelector = (
       break;
     }
   }
-
   // 부모 > 자식 관계 연결
   return path.join(' > ');
 };
@@ -177,7 +175,6 @@ const App = ({mode, port, cssSelectorOptions, deactivate}:{mode:InspectionMode, 
           setState(INSPECTION_STATE.SELECTOR_CONFIRM);
           const elements = document.querySelectorAll(s);
           setHighlightTargets(Array.from(elements) as HTMLElement[]);
-          console.log(elements)
           setTimeout(()=>{
             // TODO: confirm dialog to non block scrolling
             if (confirm(tl('Confirm Copy Selector'))) {           

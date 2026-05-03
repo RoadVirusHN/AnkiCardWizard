@@ -65,14 +65,14 @@ const useScanRule = create<ScanRuleState>()(
         });
       },
       modifyScanRule: (name: string, scanRule: ScanRule) => {
-        const code = isScanRuleVaild(scanRule, get().scanRules);
-        if (code === SCAN_RULE_CODE.DUPLICATE_SCAN_RULE_NAME) {
-          set((state) => ({
-            scanRules: state.scanRules.map((c) => (c.scanRuleName === name ? scanRule : c)),
-          }));
-          return SCAN_RULE_CODE.OK;
-        } else if (code === SCAN_RULE_CODE.OK) return SCAN_RULE_CODE.NO_SUCH_SCAN_RULE;
-        return code;
+        let founded = false;
+        set((state) => ({
+          scanRules: state.scanRules.map((c) => {
+            founded = true;
+            return (c.scanRuleName === name ? scanRule : c)
+          }),
+        }));
+        return founded ? SCAN_RULE_CODE.OK : SCAN_RULE_CODE.NO_SUCH_SCAN_RULE;
       },
       notes: {},
       addNote: (idx, note) => {

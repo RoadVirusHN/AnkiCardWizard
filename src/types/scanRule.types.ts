@@ -11,6 +11,7 @@ export const FIELD_DATA_TYPES = {
   IMAGE: 'image',
   AUDIO: 'audio',
   VIDEO: 'video',
+  HTML: 'html',
 } as const;
 
 export type FieldDataType = (typeof FIELD_DATA_TYPES)[keyof typeof FIELD_DATA_TYPES];
@@ -26,9 +27,7 @@ export interface Note {
   scanRuleName: string;
   deckName: string;
   modelId: string;
-  fields: {
-    [fieldName: string]: string;
-  };
+  fields: {key: string; content: string;}[];
   tags: string[];
   audio?: {
     url: string;
@@ -55,6 +54,7 @@ export interface ScanRule {
   meta: ScanRuleMeta;
   scanRuleName: string;
   modelId: string;
+  modelName: string;
   urlPatterns: string[];
   rootTag: string;
   tags: string[];

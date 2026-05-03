@@ -2,6 +2,10 @@ import ReturnIcon from "@/public/Icon/Icon-Return.svg";
 import modifyScanRuleStyle from "../modifyScanRule.module.css";
 import { useNavigate } from "react-router";
 import useLocale from "@/panel/hooks/useLocale";
+import Icon from "@/panel/components/Icon/Icon";
+import CancleIcon from "@/public/Icon/Icon-Reset.svg";
+import SaveIcon from "@/public/Icon/Icon-Save.svg";
+
 interface Props {
   title: string;
   isChanged: boolean;
@@ -15,6 +19,10 @@ const ModifyScanRuleHeader = ({title, isChanged, onSave, onCancle}: Props) => {
     <div className={modifyScanRuleStyle.headerLeft}>
       <img src={ReturnIcon} onClick={() => navigate("/scanRules")} />
       <span className={modifyScanRuleStyle.title}>{title}</span>
+    </div>
+    <div className={modifyScanRuleStyle.modBtns} style={{visibility: isChanged ? "visible" : "hidden"}}>
+      <Icon url={CancleIcon} handleClick={onCancle} style={{'cursor': 'pointer', margin: '5px'}}/>
+      <Icon url={SaveIcon} handleClick={onSave} style={{'cursor': 'pointer', margin: '5px'}}/>
     </div>
   </div>);
 };

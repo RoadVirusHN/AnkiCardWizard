@@ -83,7 +83,7 @@
 .formGroup label {
   font-size: 0.7rem;
   font-weight: 600;
-  color: #666;
+  color: var(--color-primary);
 }
 
 .req { color: var(--color-danger); }
@@ -101,7 +101,7 @@
   border: 1px solid var(--color-dark);
   border-radius: 6px;
   font-size: 0.7rem;
-  background: white;
+  background: var(--color-dark);
   box-sizing: border-box;
 }
 
@@ -127,7 +127,6 @@
   margin: 2px 0 0 0;
 }
 
-/* --- Editor Styles --- */
 .editorContainer {
   display: flex;
   flex-direction: column;
@@ -138,7 +137,7 @@
 .sectionTitle {
   font-size: 0.6rem;
   font-weight: 700;
-  color: #555;
+  color: var(--color-primary);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
@@ -147,7 +146,7 @@
 .previewBox {
   width: 100%;
   border: 1px dashed var(--color-dark);
-  background: white;
+  background: var(--color-light);
   border-radius: 6px;
   padding: 10px;
   min-height: 60px;
@@ -158,17 +157,16 @@
 }
 
 .previewContent {
-  transform: scale(0.85); /* 요구사항 */
+  transform: scale(0.85);
   transform-origin: center;
   width: 100%;
   text-align: center;
 }
-
-/* Monaco */
-.monacoWrapper {
-  border: 1px solid var(--color-dark);
-  border-radius: 6px;
-  overflow: hidden;
+.modBtns {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
 }
 
 /* Fields List */
@@ -181,7 +179,7 @@
 
 .addBtn {
   background: var(--color-primary);
-  color: white;
+  color: var(--color-light);
   border: none;
   border-radius: 4px;
   padding: 4px 8px;
@@ -200,7 +198,7 @@
   display: flex;
   align-items: center;
   gap: 4px;
-  background: white;
+  background: var(--color-dark);
   padding: 4px;
   border-radius: 6px;
   box-shadow: 0 1px 3px rgba(0,0,0,0.05);
@@ -208,7 +206,7 @@
 
 .fieldName { flex: 0 0 20%; min-width: 40px; }
 .selectorWrapper { flex: 1; display: flex; gap: 2px; }
-.fieldSelector { flex: 1; }
+.fieldSelector { flex: 1; background-color: var(--color-light); }
 
 .miniPickBtn {
   background: none;
@@ -218,7 +216,7 @@
   padding: 0 2px;
 }
 
-.select { width: auto; padding: 4px; }
+.select { width: auto; padding: 4px; background-color: var(--color-light);}
 
 .chkWrapper {
   display: flex;
@@ -227,7 +225,7 @@
   justify-content: center;
   padding: 0 4px;
 }
-.chkLabel { font-size: 0.5rem; color: #888; }
+.chkLabel { font-size: 0.5rem; color: var(--color-secondary); }
 
 .delBtn {
   background: none;

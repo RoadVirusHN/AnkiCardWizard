@@ -86,6 +86,7 @@
       "common": "Common",
       "front": "Front",
       "back": "Back",
+      "fields": "Fields",
       "modify scanRule": "Modify ScanRule",
       "new scanRule": "New ScanRule",
       "ModifyScanRuleHeader": {
@@ -103,7 +104,7 @@
         "Version": "Version",
         "Description": "Description"
       },
-      "ScanRuleSideEditor": {
+      "ScanRuleFieldEditor": {
         "Preview": "Preview",
         "HTML Code": "HTML Code",
         "Fields": "Fields",
@@ -113,9 +114,11 @@
         "Displaying Field Name": "Displaying Field Name",
         "CSS Selector": "CSS Selector",
         "Pick tag from page": "Pick tag from page.",
-        "Text": "Text",
-        "Image": "Image",
-        "Audio": "Audio",
+        "TEXT": "Text",
+        "IMAGE": "Image",
+        "AUDIO": "Audio",
+        "VIDEO": "Video",
+        "HTML": "HTML",
         "is Optional": "is Optional?",
         "ScanRuleFieldInput":{
           "content": "Content",

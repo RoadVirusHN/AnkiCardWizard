@@ -84,8 +84,7 @@
     "ModifyScanRule":{
       "meta": "메타 정보",
       "common": "공통",
-      "front": "앞면",
-      "back": "뒷면",
+      "fields": "요소",
       "modify scanRule": "스캔 규칙 수정",
       "new scanRule": "새 스캔 규칙",
       "ModifyScanRuleHeader": {
@@ -103,7 +102,7 @@
         "Version": "버전",
         "Description": "설명"
       },
-      "ScanRuleSideEditor": {
+      "ScanRuleFieldEditor": {
         "Preview": "미리보기",
         "HTML Code": "HTML 코드",
         "Fields": "요소",
@@ -113,9 +112,11 @@
         "Displaying Field Name": "표시되는 요소명",
         "CSS Selector": "CSS 선택자",
         "Pick tag from page": "페이지에서 태그를 선택하세요.",
-        "Text": "텍스트",
-        "Image": "이미지",
-        "Audio": "오디오",
+        "TEXT": "텍스트",
+        "IMAGE": "이미지",
+        "AUDIO": "오디오",
+        "VIDEO": "비디오",
+        "HTML": "HTML",
         "is Optional": "선택사항 여부",
         "ScanRuleFieldInput":{
           "content": "내용",
