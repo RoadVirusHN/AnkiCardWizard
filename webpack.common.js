@@ -73,8 +73,9 @@ module.exports = {
       ]
     }),
     new MonacoWebpackPlugin({
-      languages: ["css","html"],
-      inline: true
+      languages: ["css","html","javascript","typescript"],
+      inline: true,
+      filename: '[name].worker.js'
     }),
     // new DelWebpackPlugin({
     //   patterns: [
