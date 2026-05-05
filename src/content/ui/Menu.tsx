@@ -4,6 +4,8 @@ import commonStyles from "./common.module.css";
 export interface MenuItem {
   key: string;
   onClick: (e:MouseEvent) => void;
+  onHover?: (e:MouseEvent) => void;
+  disable?: boolean;
 }
 interface MenuProps {
   items: MenuItem[];
@@ -32,10 +34,14 @@ const Menu = ({items, deClick, header, pos}:MenuProps) => {
   >
     <div className={commonStyles.header}>{header}</div>
     {items.map((item, index)=>(
-      <button key={index} onClick={(e)=>{
+      <button key={index} onMouseOver={(e)=>{
+        e.stopPropagation();
+        if(item.onHover) item.onHover(e.nativeEvent as MouseEvent);
+      }} onClick={(e)=>{
         e.stopPropagation();
         item.onClick(e.nativeEvent as MouseEvent);
-      }}>
+      }}
+      disabled={item.disable}>
         {item.key}
       </button>
     ))}

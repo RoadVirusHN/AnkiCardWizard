@@ -13,8 +13,7 @@ interface _UseInspectionParams {
 
 const useInspection = (
   mode = INSPECTION_MODE.TEXT_EXTRACTION as InspectionMode,
-  rootSelector = 'body',
-  cssSelectorOptions = {} as CssSelectorGeneratorOptionsInput
+  rootSelector = 'body'
 ) => {
 
   const [panelPort, setPanelPort] = useState<chrome.runtime.Port|null>();
@@ -30,7 +29,7 @@ const useInspection = (
     if (newPort){
       const [tab] = await chrome.tabs.query({ active: true, lastFocusedWindow: true });
       const tabId = tab.id;
-      newPort.postMessage({type:MESSAGE_TYPE.SET_INSPECTION_TAB_ID, tabId, data: {mode, rootSelector, cssSelectorOptions} });
+      newPort.postMessage({type:MESSAGE_TYPE.SET_INSPECTION_TAB_ID, tabId, data: {mode, rootSelector} });
       newPort.onMessage.addListener((msg)=>{
         let data = msg.data as string;
         onResult(data.trim());

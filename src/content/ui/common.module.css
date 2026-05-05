@@ -11,6 +11,13 @@
   position: fixed;
   pointer-events: none;
   z-index: 999999;
+  border: 2px solid var(--color-on);
+  box-sizing: border-box;
+}
+.rootTagHighlight {
+  position: fixed;
+  pointer-events: none;
+  z-index: 999999;
   border: 2px solid var(--color-danger);
   box-sizing: border-box;
 }
@@ -30,7 +37,7 @@
   box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 .menu {
-  position: fixed;
+  position: absolute;
   z-index: 1000001;
   background-color: var(--color-light);
   border: 1px solid var(--color-secondary);

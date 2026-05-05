@@ -5,6 +5,10 @@ import DelIcon from "@/public/Icon/Icon-Dump.svg";
 import { useNavigate } from "react-router";
 import useGlobalVarStore from "@/panel/stores/useGlobalVarStore";
 import { Note, ScanRule } from "@/types/scanRule.types";
+import { Editor } from "@monaco-editor/react";
+import { THEME } from "@/types/app.types";
+import useConfigure from "@/panel/stores/useConfigure";
+import FieldInput from "./FieldInput";
 
 
 interface DetectedDraftProps {
@@ -16,27 +20,27 @@ interface DetectedDraftProps {
 
 const DetectedDraft = ({key, note, scanRuleName, checkAdd}:DetectedDraftProps) => {
    const navigate = useNavigate();
-   const {notes, removeNote} = useScanRule();
+   const {notes, removeNote,updateNote} = useScanRule();
    const {setCurrentDetected, currentDetected} = useGlobalVarStore();
+   const {themeOption} = useConfigure();
    return (  
-    <article className={detectPageStyle.detectedCardContainer} onClick={()=>{navigate(`/previewCard/${key}`)}}>
+    <article className={detectPageStyle.detectedDraftContainer} onClick={()=>{navigate(`/previewCard/${key}`)}}>
       <input type="checkbox" onChange={e=>{checkAdd(e.target.checked)}} onClick={e=>e.stopPropagation()}/>
-      <div className={detectPageStyle.detectedCardContent}>
+      <div className={detectPageStyle.detectedDraftContent}>
         <div style={{display: 'flex'}}>
           <span className={detectPageStyle.scanRuleName} >{scanRuleName}</span>
         </div>
         {
-          Object.keys(note.fields).map((fieldName)=>{
-            return <p className={detectPageStyle.back}>{note.fields[fieldName]}</p>
+          note.fields.map((item)=>{
+            return <FieldInput field={item}/>
           })
         }
       </div>
-      {/* TODO : Add Del function - make Hash of card and ban it. */}
       <div className={detectPageStyle.delButton}>
         <img src={DelIcon} onClick={(e)=>{
           e.stopPropagation();
           removeNote(key);
-          setCurrentDetected(currentDetected - 1); // TODO : make change when notes changed.
+          setCurrentDetected(currentDetected - 1);
         }} style={{cursor: 'pointer'}}/>
       </div>
     </article>);

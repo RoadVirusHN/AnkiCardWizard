@@ -1,12 +1,8 @@
-import { useMemo } from "react";
-import Editor from "@monaco-editor/react";
 import styles from "../modifyScanRule.module.css";
 import useLocale from "@/panel/hooks/useLocale";
-import useConfigure from "@/panel/stores/useConfigure";
 import MagicIcon from "@/public/Icon/Icon-Magic.svg";
 import InspectionOverlay from "@/panel/components/InspectionOverlay/InspectionOverlay";
 import useInspection from "@/panel/hooks/useInspection";
-import { uniqueCssSelectorOptions } from "@/content/ui/App";
 import SimpleButton from "@/panel/components/SimpleButton/SimpleButton";
 import { ScanRule, FieldProperties, FieldDataType, FIELD_DATA_TYPES } from "@/types/scanRule.types";
 import { INSPECTION_MODE } from "@/types/app.types";
@@ -21,14 +17,14 @@ const ScanRuleFieldEditor = ({ scanRule, setData } : Props) => {
     enterInspectionMode,
     cancleInspectionMode,
     isInspectionMode
-  } = useInspection(INSPECTION_MODE.TAG_EXTRACTION, scanRule.rootTag, uniqueCssSelectorOptions);
+  } = useInspection(INSPECTION_MODE.TAG_EXTRACTION, scanRule.rootTag);
 
   const handleItemChange = (fieldName:string, newData: FieldProperties) => {
     const newItems = {...scanRule.fields};
     newItems[fieldName] = newData;
     setData({ ...scanRule, fields: newItems });
   };
-
+  console.log(scanRule);
   const tl = useLocale('pages.ModifyScanRule.ScanRuleFieldEditor');
   return (
     <div className={styles.editorContainer}>
@@ -55,7 +51,9 @@ const ScanRuleFieldEditor = ({ scanRule, setData } : Props) => {
                   placeholder={tl("CSS Selector")}
                   onChange={(e) => handleItemChange(item, {...scanRule.fields[item], selector: e.target.value})}
                 />
-                <SimpleButton title="Extract Field Css Selector" src={MagicIcon} onClick={()=>enterInspectionMode(onResult)}/> 
+                <SimpleButton title="Extract Field Css Selector" src={MagicIcon} onClick={()=>{
+                  enterInspectionMode(onResult);
+                  }}/> 
               </div>
               <select
                 className={styles.select}

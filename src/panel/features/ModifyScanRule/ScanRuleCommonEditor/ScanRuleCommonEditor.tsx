@@ -6,7 +6,6 @@ import InspectionOverlay from "@/panel/components/InspectionOverlay/InspectionOv
 import SimpleButton from "@/panel/components/SimpleButton/SimpleButton";
 import MagicIcon from "@/public/Icon/Icon-Magic.svg";
 import useInspection from "@/panel/hooks/useInspection";
-import { nonuniqueCssSelectorOptions } from "@/content/ui/App";
 import { ScanRule } from "@/types/scanRule.types";
 import { INSPECTION_MODE } from "@/types/app.types";
 import useAnkiConnectionStore from "@/panel/stores/useAnkiConnectionStore";
@@ -27,7 +26,7 @@ const ScanRuleCommonEditor = ({scanRule, setData}:Props) => {
     };
   }
   const {models} = useAnkiConnectionStore();
-  const {enterInspectionMode, cancleInspectionMode, isInspectionMode} = useInspection(INSPECTION_MODE.TAG_EXTRACTION, scanRule.rootTag, nonuniqueCssSelectorOptions);
+  const {enterInspectionMode, cancleInspectionMode, isInspectionMode} = useInspection(INSPECTION_MODE.TAG_EXTRACTION, scanRule.rootTag );
   return (<div>
     <div className={modifyScanRuleStyle.formGroup}>
       {/* TODO : refresh options when Anki connected */}

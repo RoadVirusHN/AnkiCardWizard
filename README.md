@@ -29,8 +29,6 @@ _원하는 노트를 스캔 규칙을 이용해 직접 간편하게 작성해보
 _폰트 크기, 테마, 국제화(한국어, 영어), AnkiConnect 연결 설정 등을 변경 가능 합니다._
 
 
-
-
 ## 🤖 Tech Stacks & Architecture
 - React : 확장 프로그램 frontend 구현, 컴포넌트화
 - zustand : 중앙 상태 관리, chrome storage와의 연동을 통해 앱 종료 혹은 기기 변경 시에도 일부 상태와 설정 유지를 통한 유저 경험 향상.
@@ -134,19 +132,18 @@ npm run build:prod # Generate files for deploying build in the 'release' folder
   - [x] 에러 페이지
   - [x] 런타임 에러 핸들링
 - [ ] TDD?
+- [ ] Media 파일 지원 - AnkiConnect/storeMediaFile 액션으로 미디어를 저장하고, 집어 넣어야 함
 #### 감지 기능 
 - [x] 덱 감지 및 불러오기
-- [ ] 모델 감지 및 불러오기
+- [x] 모델 감지 및 불러오기
 - [x] 스캔 규칙 별 선별 탐색
 - [x] Anki 연결 확인 및 재연결
 - [x] root tag 기반 탐색
 - [x] Unique Tag 탐색
 - [x] Non-Unique Tag 탐색
+- [ ] 감지된 태그 화면 상 위치 확인 기능
 #### 초안 추가 기능
 - [x] 초안 추가 기능
-- [ ] 이미지 추출 지원
-- [ ] 오디오 추출 지원
-- [ ] 동영상 추출 지원
 - [x] 초안 내용 수정 기능
   - [x] 태그 수정 기능
 #### 스캔 규칙 관련 기능
@@ -160,13 +157,15 @@ npm run build:prod # Generate files for deploying build in the 'release' folder
 - [x] 언어 설정
   - [x] 영어
   - [x] 한국어
-- [ ] AnkiConnect 설정
+- [x] AnkiConnect 설정
+- [ ] 모델 별 Field 우선순위
 
 #### 디자인
 - [ ] 반응형
 - [ ] 스캔 규칙 리스트
 - [ ] 초안 리스트
 - [x] 에러 페이지
+- [ ] Anki 연결 및 설정 안내 페이지
 - [ ] 초안 수정 페이지
 - [ ] 스캔 규칙 수정 페이지
 - [ ] 초안 추가 페이지

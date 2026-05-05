@@ -60,7 +60,7 @@ const DetectPage: React.FC = () => {
   }
 
   const getNote = (scanRule : ScanRule, extracted : ExtractedFields) =>{    
-    let fields = {} as Note['fields'];
+    let fields = [] as Note['fields'];
     for (const fieldName of Object.keys(scanRule.fields)) {
       let value;
       if (scanRule.fields[fieldName].dataType === FIELD_DATA_TYPES.IMAGE) {
@@ -72,7 +72,7 @@ const DetectPage: React.FC = () => {
       } else {
         value = extracted[fieldName];
       }
-      fields[fieldName] = value;
+      fields.push({key: fieldName, content: value});
     }
     return ({
             scanRuleName: scanRule.scanRuleName,
@@ -106,18 +106,17 @@ const DetectPage: React.FC = () => {
   }
   return (
     <div className={detectPageStyle.pageContainer}>
-
       <div className={detectPageStyle.header}>
         <DeckInput/> 
         <div className={detectPageStyle.headerButtons}>
-          <SimpleButton disabled={isPending} className={detectPageStyle.redetectCard} onClick={requestExtracteds}>
+          <SimpleButton disabled={isPending} className={detectPageStyle.redetectDraft} onClick={requestExtracteds}>
             {isPending ? tl("Scanning") : '↺ '+tl("Scan")}
           </SimpleButton>
         </div>
         <SimpleButton src={AddIcon} onClick={addSelected} text={selected.size > 0 ? `+ ${selected.size}` : tl('Add')}/>
       </div>
 
-      <div className={detectPageStyle.cardsWrapper}>
+      <div className={detectPageStyle.draftsWrapper}>
         {notes && Object.keys(notes).length > 0 ? (
           Object.keys(notes).map((key) => { 
             const note = notes[key];
@@ -131,7 +130,7 @@ const DetectPage: React.FC = () => {
             );
           })
         ) : (
-          <div className={detectPageStyle.noCard}>{tl("No Note Detected")}</div>
+          <div className={detectPageStyle.noDrfat}>{tl("No Note Detected")}</div>
         )}
       </div>
     </div>

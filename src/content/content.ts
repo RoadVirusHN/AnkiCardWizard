@@ -3,7 +3,13 @@ import i18n from '@/locales/i18n';
 import { initReactI18next } from 'react-i18next';
 import enTranslations from '@/locales/en.json';
 import koTranslations from '@/locales/ko.json';
-import { ScanRule, FIELD_DATA_TYPES, FieldProperties, ExtractedInfos, ExtractedFields } from '@/types/scanRule.types';
+import {
+  ScanRule,
+  FIELD_DATA_TYPES,
+  FieldProperties,
+  ExtractedInfos,
+  ExtractedFields,
+} from '@/types/scanRule.types';
 
 console.log('✅ Content script loaded');
 export const initLocale = () => {

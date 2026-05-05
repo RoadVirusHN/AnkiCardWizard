@@ -15,7 +15,7 @@ export const MESSAGE_TYPE = {
   SEND_INSPECTION_DATA_FROM_CONTENT: 'SEND_INSPECTION_DATA_FROM_CONTENT',
   CHANGE_LANGUAGE: 'CHANGE_LANGUAGE'
 } as const;
-  
+
 export type MessageType = (typeof MESSAGE_TYPE)[keyof typeof MESSAGE_TYPE];
 
 export const PORT_NAMES = {
@@ -24,4 +24,3 @@ export const PORT_NAMES = {
 } as const;
 
 export type PortNames = (typeof PORT_NAMES)[keyof typeof PORT_NAMES];
-

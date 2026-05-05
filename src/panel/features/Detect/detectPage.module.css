@@ -24,7 +24,7 @@
   gap: 4px;
 }
 
-.redetectCard {
+.redetectDraft {
   font-size: 0.8rem;
   background-color: var(--color-dark);
   color: var(--color-primary);
@@ -34,7 +34,7 @@
   user-select: none;
   transition: background-color 0.2s;
 }
-.redetectCard:hover {
+.redetectDraft:hover {
   background-color: var(--color-primary);
   color: var(--color-light);
 }
@@ -43,15 +43,15 @@
   color: var(--color-hyperlink);
 }
 
-/* 카드 리스트 */
-.cardsWrapper {
+/* 초안 리스트 */
+.draftsWrapper {
   display: flex;
   flex-direction: column;
   gap: 10px;
   margin-bottom: 40px;
 }
 
-.noCard {
+.noDraft {
   text-align: center;
   color: var(--color-secondary);
   font-size: 0.8rem;
@@ -59,7 +59,7 @@
 }
 
 /* 각 카드 */
-.detectedCardContainer {
+.detectedDraftContainer {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -72,10 +72,10 @@
   border-color: var(--color-dark);
   cursor: pointer;
 }
-.detectedCardContainer:hover {
+.detectedDraftContainer:hover {
   border-color: var(--color-hyperlink);
 }
-.detectedCardContent {
+.detectedDraftContent {
   display: flex;
   flex-direction: column;
   align-items: start;
@@ -86,21 +86,15 @@
   margin-bottom: 5px;
 }
 
-.front {
+.field {
   margin: 3px;
   word-wrap: break-word;
 }
 
-.back {
-  margin: 3px;
-  word-wrap: break-word;
-  color: var(--color-secondary);
-}
-
-.detectedCardContainer input {
+.detectedDraftContainer input {
   flex-shrink: 0;
 }
-.detectedCardContainer .delButton{
+.detectedDraftContainer .delButton{
   flex-shrink: 0;
 }
 

@@ -3,7 +3,6 @@ import { persist } from 'zustand/middleware';
 import { Note } from 'types/scanRule.types';
 import { Default_BASIC_MODEL, TAB, Tab } from '@/types/app.types';
 
-
 interface GlobalVarState {
   currentUrl: string;
   currentTab: Tab;
@@ -32,8 +31,8 @@ const useGlobalVarStore = create<GlobalVarState>()(
         deckName: '',
         modelId: Default_BASIC_MODEL.id,
         fields: [
-          {key: 'Front', content: ''},
-          {key:'Back', content:''},
+          { key: 'Front', content: '' },
+          { key: 'Back', content: '' },
         ],
         tags: [],
       },

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import commonStyles from "./common.module.css";
-import { isValidElement } from "./App";
+import { isValidElement } from "../function";
 
 interface HighlightRect {
   width: number;

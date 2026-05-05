@@ -1,6 +1,5 @@
 import { createRoot, Root } from "react-dom/client";
 import App from "@/content/ui/App";
-import { CssSelectorGeneratorOptionsInput } from "css-selector-generator/types/types";
 import { EXTENSION_UI_ID } from "./constants";
 import { INSPECTION_MODE, InspectionMode } from "@/types/app.types";
 
@@ -9,7 +8,7 @@ let contentPort: chrome.runtime.Port | null = null; // 포트 연결 상태 관�
 // -----------------------------------------------------------------------------
 // 2. UI 생성 로직 (Overlay, Tooltip, Menu)
 // -----------------------------------------------------------------------------
-function createUIComponents(inspectionMode: InspectionMode, port: chrome.runtime.Port, cssSelectorOptions: CssSelectorGeneratorOptionsInput) {
+function createUIComponents(inspectionMode: InspectionMode, port: chrome.runtime.Port, rootTag: string) {
   if (document.getElementById(EXTENSION_UI_ID)) return;
   const container = document.createElement('div');
   
@@ -18,7 +17,6 @@ function createUIComponents(inspectionMode: InspectionMode, port: chrome.runtime
     if (store && store.state){
       if (store.state.themeOption) {
         const theme = store.state.themeOption.theme;
-        console.log(store.state.themeOption, theme);
         container.setAttribute('data-theme', theme);
       }
       if (store.state.fontSize) {
@@ -42,12 +40,13 @@ function createUIComponents(inspectionMode: InspectionMode, port: chrome.runtime
 
   root = createRoot(container);
   document.body.appendChild(container);
-  root.render(<App mode={inspectionMode} port={port} cssSelectorOptions={cssSelectorOptions} deactivate={deactivateInspectionMode}/>); // React 앱 렌더링
+  console.log("rootTags : ", Array.from(document.querySelectorAll(rootTag)));
+  root.render(<App mode={inspectionMode} port={port} roots={Array.from(document.querySelectorAll(rootTag))} deactivate={deactivateInspectionMode}/>); // React 앱 렌더링
 }
 
-export const activateInspectionMode = (mode: InspectionMode = INSPECTION_MODE.TEXT_EXTRACTION, port: chrome.runtime.Port, cssSelectorOptions: CssSelectorGeneratorOptionsInput) => {
+export const activateInspectionMode = (mode: InspectionMode = INSPECTION_MODE.TEXT_EXTRACTION, port: chrome.runtime.Port, rootTag: string) => {
   console.log(`Activate InspectionMode: ${mode}`);
-  createUIComponents(mode, port, cssSelectorOptions); // UI 준비
+  createUIComponents(mode, port, rootTag); // UI 준비
   contentPort = port;
 };
 

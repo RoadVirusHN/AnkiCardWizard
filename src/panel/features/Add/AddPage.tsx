@@ -78,19 +78,20 @@ const AddPage = ({}) => {
           setCurNote({...curNote, tags: curNote.tags.filter(t=>t!==tag)});
         }}/>
         {
-          Object.entries(curNote.fields).map(([fieldName, value])=>{
+          curNote.fields.map((item, idx)=>{
+            const fieldName = item.key;
+            const content = item.content;
           return <>
           <h3>{fieldName +' '+tlC('code')} <SimpleButton title="Extract Field Css Selector" src={MagicIcon} onClick={()=>enterInspectionMode()}/> </h3>
           (<input
             type="text"
-            value={value}
+            value={content}
             width='100%'
             onChange={(e)=>{
               setCurNote({...curNote, fields: {...curNote.fields, [fieldName]: e.target.value || ''}}); 
               setIsChanged(true); 
             }}
             />)
-          {/* TODO : check value is media(img, audio, video) then show it. */}
             </>
           })
         }

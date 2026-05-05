@@ -1,6 +1,5 @@
 import { getExtractedFromPage } from './content';
 import { activateInspectionMode, deactivateInspectionMode } from './tagExtraction';
-import { CssSelectorGeneratorOptionsInput } from 'css-selector-generator/types/types';
 import { ScanRule } from '@/types/scanRule.types';
 import { InspectionMode } from '@/types/app.types';
 import { Message, MESSAGE_TYPE, PORT_NAMES } from '@/types/chrome.types';
@@ -23,15 +22,11 @@ export const messageHandler = async (
       port.onDisconnect.addListener(() => {
         deactivateInspectionMode();
       });
-      const { mode, rootSelector, cssSelectorOptions } = message.data as {
+      const { mode, rootSelector } = message.data as {
         mode: InspectionMode;
         rootSelector: string;
-        cssSelectorOptions: CssSelectorGeneratorOptionsInput;
       };
-      activateInspectionMode(mode, port, {
-        ...cssSelectorOptions,
-        root: document.querySelector(rootSelector) || document.body,
-      });
+      activateInspectionMode(mode, port, rootSelector);
       break;
   }
   return isAsync;
