@@ -1,3 +1,4 @@
+import { createPortal } from "react-dom";
 import { isValidElement } from "../function";
 import commonStyles from "./common.module.css";
 
@@ -6,10 +7,10 @@ import commonStyles from "./common.module.css";
 const SelectorHighlight = ({target, mode="HIGHLIGHT"}: {target: HTMLElement, mode?: "ROOTS" | "HIGHLIGHT"}) => {
   if (!isValidElement(target)) return;
   const curRect = target.getBoundingClientRect();
-  return <div 
+  return createPortal(<div 
     className={mode==="ROOTS" ? commonStyles.rootTagHighlight :commonStyles.selectorHighlight} 
     style={
-      {top: curRect.top, left: curRect.left, width: curRect.width, height: curRect.height, 
-      display: 'block'}}/>;
+      {top: curRect.top + scrollY, left: curRect.left + scrollX, width: curRect.width, height: curRect.height, 
+      display: 'block', position: "absolute"}}/>, document.body);
 };
 export default SelectorHighlight;

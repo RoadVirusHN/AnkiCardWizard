@@ -10,6 +10,7 @@ import { MESSAGE_TYPE } from "@/types/chrome.types";
 import SelectorHighlight from "./SelectorHighlight";
 import { getCommonSelector, getUniqueSelector, isValidElement, tagToText } from "../function";
 import { EXTENSION_UI_ID } from "../constants";
+import { createPortal } from "react-dom";
 
 const INSPECTION_STATE = {
   HIGHLIGHT: 'HIGHLIGHT',
@@ -113,6 +114,7 @@ const App = ({mode, port, roots, deactivate}:{mode:InspectionMode, port:chrome.r
         if (!parent || parent.tagName === 'BODY') return;
         setItems(createMenuItems(parent, {x, y}));
         setMenuHeader(tagToText(parent));
+        setHighlightTargets([parent]);
       }, onHover: (e:MouseEvent)=>{
         const parent = target.parentElement;
         if (!parent || parent.tagName === 'BODY') {
@@ -125,9 +127,10 @@ const App = ({mode, port, roots, deactivate}:{mode:InspectionMode, port:chrome.r
         e.stopPropagation();
         const children = Array.from(target.children) as HTMLElement[];
         if (children.length === 0) return;
+        const rect = target.getBoundingClientRect();
         setItems([
           {key: '⬅',onClick: ()=>{
-          setItems(createMenuItems(target, {x,y}));
+          setItems(createMenuItems(target, {x:rect.top,y:rect.top}));
           }, onHover: (e:MouseEvent)=>{
             setHighlightTargets([target]);
           }},
@@ -136,7 +139,9 @@ const App = ({mode, port, roots, deactivate}:{mode:InspectionMode, port:chrome.r
             onClick: (e:MouseEvent) => {
               e.stopPropagation();
               setMenuHeader(tagToText(child));
-              setItems(createMenuItems(child, {x,y}));
+              const rect = child.getBoundingClientRect();
+              setItems(createMenuItems(child, {x: rect.x,y:rect.y}));
+              setHighlightTargets([child]);
         }, onHover: (e:MouseEvent)=>{
           setHighlightTargets([child]);
         }}))]);
@@ -155,8 +160,8 @@ const App = ({mode, port, roots, deactivate}:{mode:InspectionMode, port:chrome.r
     if (!(target instanceof HTMLElement && isValidElement(target))) return;
     if (mode== INSPECTION_MODE.TAG_EXTRACTION || mode=== INSPECTION_MODE.FIELD_EXTRACTION) {
       showMenu(
-        createMenuItems(target,{x: rect.left + scrollX, y: rect.top + scrollY},),
-          rect.left + scrollX, rect.top + scrollY,
+        createMenuItems(target,{x: rect.left, y: rect.top},),
+          rect.left, rect.top,
         tagToText(target));
     } else {
       copyToClipboard((target.textContent ?? "").trim(), rect.left, rect.top, port);
@@ -166,11 +171,11 @@ const App = ({mode, port, roots, deactivate}:{mode:InspectionMode, port:chrome.r
     {state === INSPECTION_STATE.HIGHLIGHT && <MouseHighlight onClick={onHighlightClicked}/>}
     {state === INSPECTION_STATE.MENU &&
      ( mode == INSPECTION_MODE.TAG_EXTRACTION && items.length > 0 ? 
-     <Menu items={items} 
+     createPortal(<Menu items={items} 
       header={menuHeader}
       deClick={()=>{
         setState(INSPECTION_STATE.HIGHLIGHT);
-      }} pos={{x,y}}/> : <></>)}
+      }} pos={{x,y}}/>,document.body) : <></>)}
     {state === INSPECTION_STATE.TOOLTIP &&<Tooltip text={text} pos={{x,y}}/>}
     {roots.map((root, idx)=> <SelectorHighlight key={idx} target={root} mode={"ROOTS"}/>)}
     {highlightTargets.map((target, idx)=> <SelectorHighlight key={idx} target={target}/>)}
