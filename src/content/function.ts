@@ -1,6 +1,5 @@
-import { cssSelectorGenerator } from 'css-selector-generator';
 import commonStyles from './ui/common.module.css';
-import { EXTENSION_UI_ID, uniqueCssSelectorOptions } from './constants';
+import { EXTENSION_UI_ID } from './constants';
 
 export const getCommonSelector = (el: HTMLElement, blacklist: string[] = []): string => {
   const path: string[] = [];
@@ -53,10 +52,68 @@ export const getCommonSelector = (el: HTMLElement, blacklist: string[] = []): st
   return path.join(' > ');
 };
 
-export const getUniqueSelector = (el: HTMLElement, root: HTMLElement): string[] => {
-  let res = Array.from(cssSelectorGenerator(el, { ...uniqueCssSelectorOptions, root }));
-  return res;
-};
+/**
+ * 특정 Root 요소로부터 Target 요소까지의 CSS Selector를 생성합니다.
+ * 예: .mean_list > li:nth-of-type(2) > .mean
+ */
+export function getRelativeSelector(target: HTMLElement, root: HTMLElement): string {
+  const path: string[] = [];
+  let current = target;
+
+  // 1. Root에 도달하거나 DOM 끝에 닿을 때까지 반복
+  while (current && current !== root) {
+    let selector = current.tagName.toLowerCase();
+
+    // A. ID가 있으면 게임 끝 (단, Root 내부 ID여야 의미 있음)
+    if (current.id) {
+      selector = `#${current.id}`;
+      path.unshift(selector);
+      break; // ID는 유일하므로 상위 경로 필요 없음 (선택사항: Root 범위 내라면 break)
+    }
+
+    // B. 클래스 처리 (유의미한 클래스만 추출)
+    if (current.className && typeof current.className === 'string') {
+      // 공백을 점(.)으로 치환하고, 쓸모없는 클래스(active, hover 등)는 필터링 가능
+      const cleanClasses = current.className
+        .trim()
+        .split(/\s+/)
+        .filter(c => !['highlight', 'on', 'active'].includes(c)) // 제외할 클래스
+        .join('.');
+      
+      if (cleanClasses) {
+        selector += `.${cleanClasses}`;
+      }
+    }
+
+    // C. 형제 요소 중 나를 특정할 수 있는지 검사 (nth-of-type 필요성 체크)
+    const parent = current.parentElement;
+    if (parent) {
+      const siblings = Array.from(parent.children);
+      
+      // 나와 태그+클래스가 똑같은 형제가 몇 명인지 센다
+      const sameTypeSiblings = siblings.filter(sib => 
+        sib.tagName === current.tagName && 
+        sib.className === current.className
+      );
+
+      // 쌍둥이가 있다면 순서(nth-of-type)를 붙여준다
+      if (sameTypeSiblings.length > 1) {
+        // 전체 형제 중 나의 인덱스 찾기 (nth-child)
+        // 혹은 태그별 인덱스(nth-of-type)를 써도 됨. 여기선 nth-child 사용
+        const index = siblings.indexOf(current) + 1;
+        selector += `:nth-child(${index})`;
+      }
+    }
+
+    path.unshift(selector);
+    current = current.parentElement as HTMLElement;
+  }
+
+  return path.join(' > ');
+}
+
+
+
 
 // 요소 유효성 검사
 export const isValidElement = (element: HTMLElement) => {

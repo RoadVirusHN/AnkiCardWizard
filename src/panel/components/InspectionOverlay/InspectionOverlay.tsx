@@ -43,4 +43,6 @@ const InspectionOverlay = ({mode, cancleInspectionMode}:{ mode: InspectionMode, 
      </div>
   </> ;
 };
+// TODO : mode에 따라 다른 instruction 보여주기
+// TODO : 모드가 실행되지 않을 시 새로고침 유도
 export default InspectionOverlay;

@@ -17,18 +17,21 @@ const ScanRuleFieldEditor = ({ scanRule, setData } : Props) => {
     enterInspectionMode,
     cancleInspectionMode,
     isInspectionMode
-  } = useInspection(INSPECTION_MODE.TAG_EXTRACTION, scanRule.rootTag);
+  } = useInspection(INSPECTION_MODE.FIELD_EXTRACTION, scanRule.rootTag);
 
   const handleItemChange = (fieldName:string, newData: FieldProperties) => {
     const newItems = {...scanRule.fields};
     newItems[fieldName] = newData;
     setData({ ...scanRule, fields: newItems });
   };
-  console.log(scanRule);
   const tl = useLocale('pages.ModifyScanRule.ScanRuleFieldEditor');
+  
+  // TODO : 예시 화면 추가 (ex. selector에 따라 추출되는 데이터 미리보기) 
+  // TODO : Field 별로 여러 selector 등록 기능 (ex. title 필드의 경우 제목이 여러개일 수 있어서 우선순위에 따라 여러 selector 등록 가능하게)
+  // TODO : Field 우선순위 기능
+  // TODO : XPath, JavaScript Selector 등 다양한 selector 지원
   return (
     <div className={styles.editorContainer}>
-      {/* TODO : Field 우선순위 기능 */}
       <div className={styles.fieldHeader}>
         <div className={styles.sectionTitle} style={{marginBottom:0}}>{tl('Fields')}</div>
       </div>
@@ -70,7 +73,7 @@ const ScanRuleFieldEditor = ({ scanRule, setData } : Props) => {
           );
         })}
       </div>
-      {isInspectionMode ?? <InspectionOverlay mode={INSPECTION_MODE.TAG_EXTRACTION} cancleInspectionMode={cancleInspectionMode}/>}
+      {isInspectionMode && <InspectionOverlay mode={INSPECTION_MODE.FIELD_EXTRACTION} cancleInspectionMode={cancleInspectionMode}/>}
     </div>
   );
 };

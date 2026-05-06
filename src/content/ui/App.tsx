@@ -8,7 +8,7 @@ import useLocale from "@/panel/hooks/useLocale";
 import { INSPECTION_MODE, InspectionMode } from "@/types/app.types";
 import { MESSAGE_TYPE } from "@/types/chrome.types";
 import SelectorHighlight from "./SelectorHighlight";
-import { getCommonSelector, getUniqueSelector, isValidElement, tagToText } from "../function";
+import { getCommonSelector, getRelativeSelector, isValidElement, tagToText } from "../function";
 import { EXTENSION_UI_ID } from "../constants";
 import { createPortal } from "react-dom";
 
@@ -40,8 +40,9 @@ const App = ({mode, port, roots, deactivate}:{mode:InspectionMode, port:chrome.r
       deactivate();
     }, 2000); // 2초 후에 툴팁 숨김
   };
-
+  console.log("App rendered with mode: ", mode, " and roots: ", roots);
   const showMenu = (items:MenuItem[], x: number, y: number, header:string) => {
+    console.log("Showing menu at: ", x, y, " with items: ", items);
     setState(INSPECTION_STATE.MENU);
     setItems(items);
     setPosition({ x, y });
@@ -69,6 +70,7 @@ const App = ({mode, port, roots, deactivate}:{mode:InspectionMode, port:chrome.r
   };
 
   const createMenuItems = (target:HTMLElement, pos:{x:number,y:number}): MenuItem[] =>{
+    console.log("Creating menu items for target: ", target, " at position: ", pos);
     const {x,y} = pos;
     return [{key:'📄 ' + tl('Extract Text'), onClick:()=>{
         const text =target.textContent?.trim() || '';
@@ -76,26 +78,29 @@ const App = ({mode, port, roots, deactivate}:{mode:InspectionMode, port:chrome.r
       }},
       {key:'🎯 ' + tl('Extract Selector'), onClick:()=>{
         let selectors = [] as string[];
-        console.log("mode : ", mode);
-
+        console.log("mode: ", mode);
         if (mode === INSPECTION_MODE.TAG_EXTRACTION) {
           selectors = [getCommonSelector(target, [EXTENSION_UI_ID, ...Object.keys(commonStyles)])];
         } else {
+          console.log("WERE IN FIELD EXTRACTION MODE, GETTING UNIQUE SELECTOR");
+          console.log("roots: ", roots);
+          let found = false;
           for (const root of roots) {
             if (root.contains(target)) {
-              selectors = getUniqueSelector(target, root);
+              console.log("Found target within root: ", root);
+              selectors = [getRelativeSelector(target, root)];
+              found = true;
               break;
             }
           }
-          if (!confirm(tl('selected tag does not child of root, copy selector anyway?'))) {
+          console.log("Got selectors: ", selectors);
+          if (!found&&!confirm(tl('selected tag does not child of root, copy selector anyway?'))) {
             return;
           }
         }
-        console.log(selectors);
         setItems(Array.from(selectors, s=>({key: s, onClick:()=>{
           setState(INSPECTION_STATE.SELECTOR_CONFIRM);
           const elements = document.querySelectorAll(s);
-          console.log("elements : ", elements);
           setHighlightTargets(Array.from(elements) as HTMLElement[]);
           setTimeout(()=>{
             // TODO: confirm dialog to non block scrolling
@@ -167,10 +172,11 @@ const App = ({mode, port, roots, deactivate}:{mode:InspectionMode, port:chrome.r
       copyToClipboard((target.textContent ?? "").trim(), rect.left, rect.top, port);
     }
   };
+  // TODO : prevent css conflict with website, use css module or shadow dom
   return <>
     {state === INSPECTION_STATE.HIGHLIGHT && <MouseHighlight onClick={onHighlightClicked}/>}
     {state === INSPECTION_STATE.MENU &&
-     ( mode == INSPECTION_MODE.TAG_EXTRACTION && items.length > 0 ? 
+     ( mode === INSPECTION_MODE.TAG_EXTRACTION||mode === INSPECTION_MODE.FIELD_EXTRACTION && items.length > 0 ? 
      createPortal(<Menu items={items} 
       header={menuHeader}
       deClick={()=>{
