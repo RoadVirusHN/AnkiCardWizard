@@ -32,7 +32,7 @@ const AddPage = ({}) => {
   const tl = useLocale('pages.AddPage');
   const tlC = useLocale('common');
   const {enterInspectionMode,cancleInspectionMode,isInspectionMode} = useInspection();
-  return <div>
+  return <div className={addPageStyle.container}>
     <div className={addPageStyle.header}>     
       <h2>{tl('Add Note to Anki')}</h2>
       <div className={commonStyle.toggle}>
@@ -46,20 +46,14 @@ const AddPage = ({}) => {
             setCurrentAddingNote(curNote);
           }} style={{'cursor': 'pointer', margin: '5px'}}/>
         </div>
-        <Icon url={PreviewIcon}/>
-        <label className={commonStyle.switch}>
-          <input type="checkbox" onChange={(e)=>{
-            setIsModifying(e.target.checked);
-          }} checked={isModifying}/>
-          <span className={commonStyle.slider} title={tlC(isModifying ? "modify" : "preview")}/>
-        </label>
-        <Icon url={CodeIcon}/>
       </div>
-      <NavLink to="/errorTesting/runtime">go to Error page</NavLink>
+      <NavLink to="/errorTesting/runtime">go to Error page(testing)</NavLink>
     </div>
-      {<section className={addPageStyle.previewPage}>
+      {<section className={addPageStyle.content}>
         {isInspectionMode ?? <InspectionOverlay mode={INSPECTION_MODE.TEXT_EXTRACTION} cancleInspectionMode={cancleInspectionMode}/>}
-        <DeckInput onChange={(deck:string)=>{setCurNote({...curNote, deckName: deck})}}/>
+        <div className={addPageStyle.formGroup}>
+          <DeckInput onChange={(deck:string)=>{setCurNote({...curNote, deckName: deck})}}/>
+        </div>
         <ScanRuleInput defaultScanRule={curNote.scanRuleName} setScanRule={(scanRule:string)=>{
           setCurNote({...curNote, scanRuleName: scanRule});
           setIsChanged(true);
@@ -81,18 +75,29 @@ const AddPage = ({}) => {
           curNote.fields.map((item, idx)=>{
             const fieldName = item.key;
             const content = item.content;
-          return <>
-          <h3>{fieldName +' '+tlC('code')} <SimpleButton title="Extract Field Css Selector" src={MagicIcon} onClick={()=>enterInspectionMode()}/> </h3>
-          (<input
-            type="text"
-            value={content}
-            width='100%'
-            onChange={(e)=>{
-              setCurNote({...curNote, fields: {...curNote.fields, [fieldName]: e.target.value || ''}}); 
-              setIsChanged(true); 
-            }}
-            />)
-            </>
+          return (            
+          <div key={item.key} className={addPageStyle.fieldRow}>
+              {/* Field Name */}
+              <div>
+                <div className={addPageStyle.fieldName}>{fieldName}</div>
+              </div>
+              
+              <div className={addPageStyle.fieldContentWrapper}>
+                <input
+                  className={`${addPageStyle.input} ${addPageStyle.fieldContent}`}
+                  placeholder={tl("Field Content")}
+                  onChange={(e) => {
+                    const newFields = [...curNote.fields];
+                    newFields[idx] = {...newFields[idx], content: e.target.value};
+                    setCurNote({...curNote, fields: newFields});
+                    setIsChanged(true);
+                  }}
+                />
+                <SimpleButton title="Extract Data" src={MagicIcon} onClick={()=>{
+                  enterInspectionMode();
+                  }}/> 
+              </div>
+            </div>)
           })
         }
       </section> }

@@ -1,3 +1,13 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100%;
+  background-color: var(--color-light);
+  color: var(--color-primary);
+  overflow: hidden;
+}
+
 .header {
   display: flex;
   justify-content: space-between;
@@ -12,12 +22,53 @@
   text-align: start;
   color: var(--color-primary);
 }
-.previewPage{
+.content{
+  flex: 1;
+  overflow-y: auto; /* 내용만 스크롤 */
+  padding: 12px;
+  box-sizing: border-box;
+}
+
+
+/* Settings Form */
+.settingsForm {
   display: flex;
   flex-direction: column;
-  align-items: start;
-  margin-left: 5px;
-  margin-right: 5px;
+  gap: 12px;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.formGroup label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+.input, .select, .textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid var(--color-dark);
+  border-radius: 6px;
+  font-size: 0.7rem;
+  background: var(--color-dark);
+  box-sizing: border-box;
+}
+.fieldName { flex: 0 0 20%; min-width: 40px; }
+.fieldContentWrapper { flex: 1; display: flex; gap: 2px; }
+.fieldContent { flex: 1; background-color: var(--color-light); }
+.fieldRow {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--color-dark);
+  padding: 4px;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
 }
 .modBtns {
   display: flex;
