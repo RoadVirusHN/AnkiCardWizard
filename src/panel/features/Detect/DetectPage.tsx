@@ -2,15 +2,15 @@ import detectPageStyle from '@/panel/features/Detect/detectPage.module.css';
 import { JSX, useState } from 'react';
 import useCustomCard from '@/panel/stores/useScanRule';
 import DetectedDraft from './DetectedDraft/DetectedDraft';
-import DeckInput from '@/panel/components/StatusBar/DeckInput/DeckInput';
+import DeckInput from '@/panel/components/Inputs/DeckInput/DeckInput';
 import AddIcon from '@/public/Icon/Icon-Add.svg';
-import SimpleButton from '@/panel/components/SimpleButton/SimpleButton';
 import useAnkiConnectionStore from '@/panel/stores/useAnkiConnectionStore';
 import useGlobalVarStore from '@/panel/stores/useGlobalVarStore';
 import useScanRule from '@/panel/stores/useScanRule';
 import useLocale from '@/panel/hooks/useLocale';
 import { ExtractedFields, ExtractedInfos,  FIELD_DATA_TYPES,  Note, ScanRule } from '@/types/scanRule.types';
 import { MESSAGE_TYPE } from '@/types/chrome.types';
+import SimpleButton from '@/panel/components/Inputs/SimpleButton/SimpleButton';
 
 //TODO : Apply SCSS for css.
 //TODO : MAKE Interfaces&Types FILE

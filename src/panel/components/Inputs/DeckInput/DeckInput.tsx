@@ -1,0 +1,32 @@
+import useAnkiConnectionStore from "@/panel/stores/useAnkiConnectionStore";
+import DecksIcon from "@/public/Icon/Icon-Decks.svg";
+import useGlobalVarStore from "@/panel/stores/useGlobalVarStore";
+import { useState } from "react";
+import Icon from "../../Icon/Icon";
+import SimpleSelect from "../SimpleSelect/SimpleSelect";
+import useLocale from "@/panel/hooks/useLocale";
+
+const DeckInput = ({initDeck,onChange}:{initDeck? : string, onChange? : (deck:string)=>void}) => {
+  const {decks} = useAnkiConnectionStore();
+  const {currentDeck,setCurrentDeck} = useGlobalVarStore();
+  const [curDeck, setCurDeck] = useState(initDeck || currentDeck);
+  const onChangeDeck = (deck:string) => {
+    if (decks.length===0) return;
+    setCurrentDeck(deck);
+  }
+  const tl = useLocale('common');
+  return (
+    <SimpleSelect label={<Icon url={DecksIcon} title={tl('deck')}/>}
+      defaultValue={curDeck} 
+      options={
+        decks.length === 0 ? [{key:tl('common.Anki Disconnected'), val:'', isDisabled: true}] :
+        decks.map((deck) => ({key: deck, val: deck}))
+      }
+      onChange={(e)=>{
+        setCurDeck(e.currentTarget.value);
+        if(onChange) onChange(e.currentTarget.value);
+        else onChangeDeck(e.currentTarget.value);
+      }}/>
+  );
+};
+export default DeckInput;

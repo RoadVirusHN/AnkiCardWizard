@@ -1,9 +1,9 @@
 import useLocale from "@/panel/hooks/useLocale";
 import { isRouteErrorResponse, useNavigate, useRouteError } from "react-router";
 import errorPageStyle from "./errorPage.module.css";
-import SimpleButton from "@/panel/components/SimpleButton/SimpleButton";
 import { FallbackProps } from "react-error-boundary";
 import i18n from "@/locales/i18n";
+import SimpleButton from "@/panel/components/Inputs/SimpleButton/SimpleButton";
 
 const getErrorGuide = (infos:{status: string, message: string},tl:(key: string, altKey?: string) => string)=>{
   let altKey = "pages.ErrorPage.codes." + infos.status;

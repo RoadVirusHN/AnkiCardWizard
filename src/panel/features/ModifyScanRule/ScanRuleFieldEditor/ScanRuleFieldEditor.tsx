@@ -3,9 +3,9 @@ import useLocale from "@/panel/hooks/useLocale";
 import MagicIcon from "@/public/Icon/Icon-Magic.svg";
 import InspectionOverlay from "@/panel/components/InspectionOverlay/InspectionOverlay";
 import useInspection from "@/panel/hooks/useInspection";
-import SimpleButton from "@/panel/components/SimpleButton/SimpleButton";
 import { ScanRule, FieldProperties, FieldDataType, FIELD_DATA_TYPES } from "@/types/scanRule.types";
 import { INSPECTION_MODE } from "@/types/app.types";
+import SimpleButton from "@/panel/components/Inputs/SimpleButton/SimpleButton";
 
 interface Props {
   scanRule: ScanRule;

@@ -2,25 +2,23 @@ import PreviewIcon from "@/public/Icon/Icon-Preview.svg";
 import AddIcon from "@/public/Icon/Icon-Add.svg";
 import CancleIcon from "@/public/Icon/Icon-Reset.svg";
 import SaveIcon from "@/public/Icon/Icon-Save.svg";
-import CodeIcon from "@/public/Icon/Icon-Code.svg";
 import addPageStyle from "./addPage.module.css";
 import commonStyle from "@/panel/common.module.css";
 import InspectionOverlay from "@/panel/components/InspectionOverlay/InspectionOverlay";
-import { Editor } from "@monaco-editor/react";
 import Tags from "@/panel/components/Tags/Tags";
 import useAnkiConnectionStore from "@/panel/stores/useAnkiConnectionStore";
 import ModelInput from "@/panel/components/Inputs/ModelInput/ModelInput";
 import { useState } from "react";
 import useGlobalVarStore from "@/panel/stores/useGlobalVarStore";
-import SimpleButton from "@/panel/components/SimpleButton/SimpleButton";
 import ScanRuleInput from "@/panel/components/Inputs/ScanRuleInput/ScanRuleInput";
-import DeckInput from "@/panel/components/StatusBar/DeckInput/DeckInput";
+import DeckInput from "@/panel/components/Inputs/DeckInput/DeckInput";
 import useLocale from "@/panel/hooks/useLocale";
 import Icon from "@/panel/components/Icon/Icon";
 import useInspection from "@/panel/hooks/useInspection";
 import MagicIcon from "@/public/Icon/Icon-Magic.svg";
 import { NavLink } from "react-router";
 import { INSPECTION_MODE } from "@/types/app.types";
+import SimpleButton from "@/panel/components/Inputs/SimpleButton/SimpleButton";
 
 const AddPage = ({}) => {
   const {fetchAnki} = useAnkiConnectionStore();

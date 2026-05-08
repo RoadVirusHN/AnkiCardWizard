@@ -4,9 +4,9 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import useConfigure from '@/panel/stores/useConfigure';
 import useLocale from '@/panel/hooks/useLocale';
-import SimpleButton from '@/panel/components/SimpleButton/SimpleButton';
 import { LOCALE, Locale, THEME_SETTING, ThemeSetting } from '@/types/app.types';
 import useAnkiConnectionStore from '@/panel/stores/useAnkiConnectionStore';
+import SimpleButton from '@/panel/components/Inputs/SimpleButton/SimpleButton';
 
 
 const ConfigPage: React.FC = () => {
@@ -73,7 +73,7 @@ const ConfigPage: React.FC = () => {
         }} value={curAnkiUrl} />
       </div>
       <SimpleButton onClick={()=>{
-        //Add default scanRules
+        //TODO: Add default scanRules
 
       }}>
         {tl('Add Default ScanRules')}

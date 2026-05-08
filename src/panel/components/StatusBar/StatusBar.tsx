@@ -1,5 +1,5 @@
 import AnkiStatus from "./AnkiStatus/AnkiStatus";
-import DeckInput from "./DeckInput/DeckInput";
+import DeckInput from "../Inputs/DeckInput/DeckInput";
 import statusBarStyle from "./statusBar.module.css";
 const StatusBar= ({}) => {
   return (

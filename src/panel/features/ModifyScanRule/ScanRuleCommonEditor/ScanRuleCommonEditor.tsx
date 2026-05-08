@@ -3,12 +3,12 @@ import Tags from "@/panel/components/Tags/Tags";
 import { useRef } from "react";
 import useLocale from "@/panel/hooks/useLocale";
 import InspectionOverlay from "@/panel/components/InspectionOverlay/InspectionOverlay";
-import SimpleButton from "@/panel/components/SimpleButton/SimpleButton";
 import MagicIcon from "@/public/Icon/Icon-Magic.svg";
 import useInspection from "@/panel/hooks/useInspection";
 import { ScanRule } from "@/types/scanRule.types";
 import { INSPECTION_MODE } from "@/types/app.types";
 import useAnkiConnectionStore from "@/panel/stores/useAnkiConnectionStore";
+import SimpleButton from "@/panel/components/Inputs/SimpleButton/SimpleButton";
 
 interface Props {
   scanRule : ScanRule;

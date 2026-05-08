@@ -1,6 +1,8 @@
 import { useState } from "react";
 import useScanRule from "@/panel/stores/useScanRule";
-import { useTranslation } from "react-i18next";
+import useLocale from "@/panel/hooks/useLocale";
+import SimpleSelect from "../SimpleSelect/SimpleSelect";
+
 const ScanRuleInput = ({setScanRule, defaultScanRule}:{setScanRule: (model:string)=>void, defaultScanRule: string}) => {
   const {scanRules: scanRules} = useScanRule();
   const [curVal, setCurVal] = useState(defaultScanRule || 'Empty'); 
@@ -8,20 +10,15 @@ const ScanRuleInput = ({setScanRule, defaultScanRule}:{setScanRule: (model:strin
     if (scanRules.length===0) return;
     setScanRule(scanRule);
   }
-  const [t] = useTranslation();
+  const tl = useLocale('common');
   return (
-    <div>
-      <label htmlFor="scan-rule-select">
-        {t('common.scanRules')}
-      </label>
-      <select id="scan-rule-select" name="scan-rule-select" style={{height: '20px', width: '180px'}} onChange={(e)=>{
-        onChangeModel(e.currentTarget.value); 
-        setCurVal(e.currentTarget.value);
-      }} value={curVal}>
-        <option value=''>{t('common.empty')}</option>          
-        {scanRules.map((scanRule) => <option key={scanRule.scanRuleName} value={scanRule.scanRuleName}>{scanRule.scanRuleName}</option>)}
-      </select>
-    </div>
+    <SimpleSelect label={tl('scanRules')}
+      defaultValue={curVal} 
+      options={
+       [{key:tl('empty'), val:''}, ...scanRules.map((scanRule) => ({key: scanRule.scanRuleName, val: scanRule.scanRuleName}))]
+      }
+      onChange={(e)=>{onChangeModel(e.currentTarget.value); setCurVal(e.currentTarget.value);}}
+    />
   );
 };
 export default ScanRuleInput;

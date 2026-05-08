@@ -1,0 +1,27 @@
+import { ChangeEvent, JSX } from "react";
+import simpleSelectStyle from "./simpleSelect.module.css";
+
+
+interface SimpleSelectProps {
+  label: string|JSX.Element;
+  placeholder?: string;
+  defaultValue?: string;
+  options: {key:string;val:string;isDisabled?:boolean}[];
+  onChange: (e:ChangeEvent<HTMLSelectElement>) => void;
+}
+
+
+const SimpleSelect = ({label,placeholder,defaultValue,options,onChange}:SimpleSelectProps) => {
+  //TODO : Responsive design 
+  // 1. when options are too many, make the select box scrollable and set a max height
+  // 2. when width is too long, make the label and select box stack horizontally.
+  return <div className={simpleSelectStyle.formGroup}>
+    <label htmlFor="simple-input">{label}</label>
+    <select id="simple-input" name="simple-input" className={simpleSelectStyle.select} onChange={onChange} value={defaultValue}>
+      <option value="" disabled>{placeholder || 'Select an option'}</option>
+      {options.map(({key,val,isDisabled},idx) => <option key={idx} value={val} disabled={isDisabled}>{key}</option>)}
+    </select>
+  </div>;
+  }
+
+export default SimpleSelect;
