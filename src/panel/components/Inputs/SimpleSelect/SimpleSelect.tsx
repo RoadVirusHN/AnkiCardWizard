@@ -3,7 +3,7 @@ import simpleSelectStyle from "./simpleSelect.module.css";
 
 
 interface SimpleSelectProps {
-  label: string|JSX.Element;
+  label?: string|JSX.Element;
   placeholder?: string;
   defaultValue?: string;
   options: {key:string;val:string;isDisabled?:boolean}[];
@@ -18,7 +18,7 @@ const SimpleSelect = ({label,placeholder,defaultValue,options,onChange}:SimpleSe
   return <div className={simpleSelectStyle.formGroup}>
     <label htmlFor="simple-input">{label}</label>
     <select id="simple-input" name="simple-input" className={simpleSelectStyle.select} onChange={onChange} value={defaultValue}>
-      <option value="" disabled>{placeholder || 'Select an option'}</option>
+      {placeholder  ? <option value="" disabled>{placeholder}</option> : null}
       {options.map(({key,val,isDisabled},idx) => <option key={idx} value={val} disabled={isDisabled}>{key}</option>)}
     </select>
   </div>;

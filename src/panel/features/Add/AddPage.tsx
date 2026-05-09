@@ -1,4 +1,5 @@
 import PreviewIcon from "@/public/Icon/Icon-Preview.svg";
+import DecksIcon from "@/public/Icon/Icon-Decks.svg";
 import AddIcon from "@/public/Icon/Icon-Add.svg";
 import CancleIcon from "@/public/Icon/Icon-Reset.svg";
 import SaveIcon from "@/public/Icon/Icon-Save.svg";
@@ -50,7 +51,7 @@ const AddPage = ({}) => {
       {<section className={addPageStyle.content}>
         {isInspectionMode ?? <InspectionOverlay mode={INSPECTION_MODE.TEXT_EXTRACTION} cancleInspectionMode={cancleInspectionMode}/>}
         <div className={addPageStyle.formGroup}>
-          <DeckInput onChange={(deck:string)=>{setCurNote({...curNote, deckName: deck})}}/>
+          <DeckInput label={tl('decks')} onChange={(deck:string)=>{setCurNote({...curNote, deckName: deck})}}/>
         </div>
         <ScanRuleInput defaultScanRule={curNote.scanRuleName} setScanRule={(scanRule:string)=>{
           setCurNote({...curNote, scanRuleName: scanRule});
@@ -108,8 +109,6 @@ const AddPage = ({}) => {
             },
           };
           //TODO : AnkiConnect Media Actions 연구 및 적용. 현재는 media 필드도 그냥 note의 field로 보내고 있음.
-
-
           fetchAnki(req).then((res)=>{
             setIsChanged(false);
             setCurNote(currentAddingNote);
