@@ -16,8 +16,8 @@ const SimpleSelect = ({label,placeholder,defaultValue,options,onChange}:SimpleSe
   // 1. when options are too many, make the select box scrollable and set a max height
   // 2. when width is too long, make the label and select box stack horizontally.
   return <div className={simpleSelectStyle.formGroup}>
-    <label htmlFor="simple-input">{label}</label>
-    <select id="simple-input" name="simple-input" className={simpleSelectStyle.select} onChange={onChange} value={defaultValue}>
+    <label htmlFor="simple-select">{label}</label>
+    <select id="simple-select" name="simple-select" className={simpleSelectStyle.select} onChange={onChange} value={defaultValue}>
       {placeholder  ? <option value="" disabled>{placeholder}</option> : null}
       {options.map(({key,val,isDisabled},idx) => <option key={idx} value={val} disabled={isDisabled}>{key}</option>)}
     </select>

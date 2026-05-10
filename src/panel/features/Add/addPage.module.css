@@ -1,11 +1,11 @@
 .container {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: fit-content;
   width: 100%;
   background-color: var(--color-light);
   color: var(--color-primary);
-  overflow: hidden;
+  overflow-y: auto;
 }
 
 .header {
@@ -24,7 +24,6 @@
 }
 .content{
   flex: 1;
-  overflow-y: auto; /* 내용만 스크롤 */
   padding: 12px;
   box-sizing: border-box;
 }
@@ -75,4 +74,16 @@
   justify-content: center;
   align-items: center;
   cursor: pointer;
+}
+
+.addBtn {
+  background-color: var(--color-dark);
+  color: var(--color-primary);
+  width: 80%;
+  padding: 4px 8px;
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  bottom : 5px;
+  left: 10%;
 }

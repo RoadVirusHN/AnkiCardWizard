@@ -100,7 +100,9 @@ const AddPage = ({}) => {
           })
         }
       </section> }
+      <div style={{height:'45px'}}/> {/* for button space */} 
       <SimpleButton src={AddIcon} 
+        className={addPageStyle.addBtn}
         onClick={()=>{
           const req = {
             action: 'addNote',
