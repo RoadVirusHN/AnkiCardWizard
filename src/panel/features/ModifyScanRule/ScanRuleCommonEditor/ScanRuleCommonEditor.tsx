@@ -9,6 +9,8 @@ import { ScanRule } from "@/types/scanRule.types";
 import { INSPECTION_MODE } from "@/types/app.types";
 import useAnkiConnectionStore from "@/panel/stores/useAnkiConnectionStore";
 import SimpleButton from "@/panel/components/Inputs/SimpleButton/SimpleButton";
+import SimpleInput from "@/panel/components/Inputs/SimpleInput/SimpleInput";
+import SimpleSelect from "@/panel/components/Inputs/SimpleSelect/SimpleSelect";
 
 interface Props {
   scanRule : ScanRule;
@@ -27,40 +29,28 @@ const ScanRuleCommonEditor = ({scanRule, setData}:Props) => {
   }
   const {models} = useAnkiConnectionStore();
   const {enterInspectionMode, cancleInspectionMode, isInspectionMode} = useInspection(INSPECTION_MODE.TAG_EXTRACTION, scanRule.rootTag );
+  
+  const options = models
+    ? Object.entries(models).map(([modelId, model]) => ({ key: model.name, val: modelId, isDisabled: false }))
+    : [{ key: tl("No Models Founded, Please Connect to Anki"), val: "", isDisabled: true }];
+  
   return (<div>
-    <div className={modifyScanRuleStyle.formGroup}>
-      {/* TODO : refresh options when Anki connected */}
-      <label>{tl("Model")}</label>
-      <select value={scanRule.modelId} onChange={(e) => {
+    <SimpleSelect
+      label={tl("Model")} 
+      options={[
+        {key: scanRule.modelName, val: scanRule.modelId, isDisabled: false},
+      ].concat(options.filter(option => option.val !== scanRule.modelId))}   
+      defaultValue={scanRule.modelId} 
+      onChange={(e) => {
         setData({ ...scanRule, modelId: e.target.value, modelName: models[e.target.value].name, fields: Object.fromEntries(models[e.target.value].fields.map((field:string) => [field, { selector: "", dataType: "text" }])) });
-      }}>
-        <option value={scanRule.modelId} >
-          {scanRule.modelName}
-        </option>
-        {
-          Object.keys(models).length === 0 ? (
-            <option value="" disabled>
-              {tl("No Models Founded, Please Connect to Anki")}
-            </option>
-          ) : (
-            Object.entries(models).filter(([modelId,model])=>modelId!==scanRule.modelId).map(([modelId, model]) => (
-              <option key={modelId} value={modelId}>
-                {model.name}
-              </option>
-            ))
-          )
-        }
-      </select>
-    </div>
-    <div className={modifyScanRuleStyle.formGroup}>
-      <label>{tl("URL Patterns")}</label>
-      <input
-        className={modifyScanRuleStyle.input}
-        value={scanRule.urlPatterns.join(", ")}
-        onChange={(e) => ({ ...scanRule, urlPatterns: e.target.value.split(",").map(s=>s.trim()) })}
-        placeholder="*"
-      />
-    </div>
+      }}    
+    />
+    <SimpleInput 
+      label={tl("URL Patterns")} 
+      placeholder={"*"} 
+      defaultValue={scanRule.urlPatterns.join(", ")} 
+      onChange={(e) => ({ ...scanRule, urlPatterns: e.target.value.split(",").map(s=>s.trim()) })}
+    />
     <Tags givenTags={scanRule.tags} isModifying={true} onAddTag={
       (newTag) => {
         if (!scanRule.tags.includes(newTag)) {

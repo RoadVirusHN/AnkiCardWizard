@@ -1,12 +1,17 @@
 import { ChangeEvent, JSX } from "react";
 import simpleSelectStyle from "./simpleSelect.module.css";
 
+type SimpleSelectOption = {
+  key: string;
+  val: string;
+  isDisabled?: boolean;
+};
 
 interface SimpleSelectProps {
   label?: string|JSX.Element;
   placeholder?: string;
   defaultValue?: string;
-  options: {key:string;val:string;isDisabled?:boolean}[];
+  options: SimpleSelectOption[];
   onChange: (e:ChangeEvent<HTMLSelectElement>) => void;
 }
 
