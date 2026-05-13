@@ -8,12 +8,12 @@ import Icon from "../Icon/Icon";
 
 interface TagsProps {
   givenTags: string[];
-  isModifying: boolean;
-  onRemoveTag: (tag: string)=>void;
-  onAddTag: (tag: string)=>void;
+  isModifying?: boolean;
+  onRemoveTag?: (tag: string)=>void;
+  onAddTag?: (tag: string)=>void;
 }
 
-const Tags = ({givenTags, isModifying, onRemoveTag, onAddTag}:TagsProps) => {
+const Tags = ({givenTags, isModifying=false, onRemoveTag=(t)=>{}, onAddTag=(t)=>{}}:TagsProps) => {
   const {tags, addTag} = useScanRule();
   const {t} = useTranslation();
   const deleteTag = (e: React.MouseEvent, tag: string) => {
