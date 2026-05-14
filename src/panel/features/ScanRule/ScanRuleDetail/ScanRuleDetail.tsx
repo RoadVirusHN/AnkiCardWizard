@@ -1,26 +1,40 @@
-import useScanRule from "@/panel/stores/useScanRule";
 import scanRuleDetailStyle from "./scanRuleDetail.module.css";
 import ModifySvg from "@/public/Icon/Icon-Modify.svg";
-import DumpSvg from "@/public/Icon/Icon-Dump.svg";
+// TODO : Add Link Icon
+import LinkSvg from "@/public/Icon/Icon-Filter.svg";
 import { useNavigate } from "react-router";
 import { ScanRule } from "@/types/scanRule.types";
-const ScanRuleDetail = ({scanRule, idx}:{scanRule: ScanRule, idx: number}) => {
-  const {removeScanRule: removeScanRule} = useScanRule();
+import Tags from "@/panel/components/Tags/Tags";
+const ScanRuleDetail = ({scanRule, idx, onCheck}:{scanRule: ScanRule, idx: number, onCheck: (e: React.MouseEvent<HTMLInputElement>) => void}) => {
   const navigate = useNavigate();
-  
+  // TODO : Add Link Functionality
+  // TODO : Configurable elipsis for title and description by font size.
   return (<div className={scanRuleDetailStyle.scanRule}>
-    <h2>{scanRule.scanRuleName}</h2>
-    {scanRule.meta.description}
-    {scanRule.tags}
-    <img src={DumpSvg} 
-    onClick={()=>{
-      if (confirm(`정말 "${scanRule.scanRuleName}" 카드를 삭제하시겠습니까?`)){
-        removeScanRule(scanRule.scanRuleName);
-      }
-    }}/>
-    <img src={ModifySvg} onClick={()=>{
-      navigate(`/scanRules/modify/${idx}`);
-    }}/>
+    <div className={scanRuleDetailStyle.main}>
+      <div className={scanRuleDetailStyle.meta}>
+        <div className={scanRuleDetailStyle.title}>
+          <h2>{scanRule.scanRuleName}</h2>
+          <p>
+            {scanRule.meta.author ? <p>by {scanRule.meta.author}</p> : null}
+          </p>
+        </div>
+      </div>
+      <div className={scanRuleDetailStyle.description}>
+        {scanRule.meta.description?.slice(0,135)}{scanRule.meta.description && scanRule.meta.description.length > 135 ? '...' : ''}
+      </div>
+      <div className={scanRuleDetailStyle.info}>
+        <p>Model: {scanRule.modelName.slice(0,30)}{scanRule.modelName.length>30? "...":""}</p>
+        <Tags givenTags={scanRule.tags.slice(0,4)} />
+      </div>
+    </div> 
+    <div className={scanRuleDetailStyle.buttonGroup}>
+        <input type="checkbox" onClick={onCheck}/>
+        <img src={ModifySvg} onClick={()=>{
+          navigate(`/scanRules/modify/${idx}`);
+        }}/>      
+        {/* TODO : Scanrule Link 기능 */}
+        <img src={LinkSvg} onClick={()=>{}}/>
+    </div>
   </div>);
 };
 export default ScanRuleDetail;
