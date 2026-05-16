@@ -1,0 +1,14 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.buttonGroup{
+  display: flex;
+  gap: 12px;
+  justify-content: space-around;
+  bottom: 6px;
+  position: fixed;
+}
