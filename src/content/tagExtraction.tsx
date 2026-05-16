@@ -2,8 +2,8 @@ import { createRoot, Root } from "react-dom/client";
 import App from "@/content/ui/App";
 import { EXTENSION_UI_ID } from "./constants";
 import { INSPECTION_MODE, InspectionMode } from "@/types/app.types";
-
-let root : Root;
+import root from "react-shadow";
+let appRoot : Root;
 let contentPort: chrome.runtime.Port | null = null; // 포트 연결 상태 관리;
 // -----------------------------------------------------------------------------
 // 2. UI 생성 로직 (Overlay, Tooltip, Menu)
@@ -38,10 +38,10 @@ function createUIComponents(inspectionMode: InspectionMode, port: chrome.runtime
     zIndex: '999999'
   });
 
-  root = createRoot(container);
+  appRoot = createRoot(container);
   document.body.appendChild(container);
   console.log("rootTags : ", Array.from(document.querySelectorAll(rootTag)));
-  root.render(<App mode={inspectionMode} port={port} roots={Array.from(document.querySelectorAll(rootTag))} deactivate={deactivateInspectionMode}/>); // React 앱 렌더링
+  appRoot.render(<App mode={inspectionMode} port={port} roots={Array.from(document.querySelectorAll(rootTag))} deactivate={deactivateInspectionMode}/>); // React 앱 렌더링
 }
 
 export const activateInspectionMode = (mode: InspectionMode = INSPECTION_MODE.TEXT_EXTRACTION, port: chrome.runtime.Port, rootTag: string) => {
@@ -52,7 +52,7 @@ export const activateInspectionMode = (mode: InspectionMode = INSPECTION_MODE.TE
 
 export const deactivateInspectionMode = () => {
   console.log('DeActivate InspectionMode');
-  root.unmount();
+  appRoot.unmount();
   if(document.getElementById(EXTENSION_UI_ID)) document.getElementById(EXTENSION_UI_ID)?.remove();
   contentPort?.disconnect();
 };

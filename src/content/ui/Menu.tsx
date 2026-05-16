@@ -5,6 +5,7 @@ export interface MenuItem {
   key: string;
   onClick: (e:MouseEvent) => void;
   onHover?: (e:MouseEvent) => void;
+  onMouseLeave?: (e:React.MouseEvent) => void;
   disable?: boolean;
 }
 interface MenuProps {
@@ -14,7 +15,7 @@ interface MenuProps {
   pos: {x:number, y:number};
 }
 
-const Menu = ({items, deClick, header, pos}:MenuProps) => {
+const Menu = ({items, deClick, header,pos}:MenuProps) => {
   const menuRef = useRef<HTMLDivElement>(null);
   useEffect(()=>{
     const handleClickOutside= (e:MouseEvent)=>{
@@ -41,6 +42,7 @@ const Menu = ({items, deClick, header, pos}:MenuProps) => {
         e.stopPropagation();
         item.onClick(e.nativeEvent as MouseEvent);
       }}
+      onMouseLeave={item.onMouseLeave}
       disabled={item.disable}>
         {item.key}
       </button>

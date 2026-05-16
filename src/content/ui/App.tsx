@@ -72,6 +72,7 @@ const App = ({mode, port, roots, deactivate}:{mode:InspectionMode, port:chrome.r
   const createMenuItems = (target:HTMLElement, pos:{x:number,y:number}): MenuItem[] =>{
     console.log("Creating menu items for target: ", target, " at position: ", pos);
     const {x,y} = pos;
+    setHighlightTargets([target]);
     return [{key:'📄 ' + tl('Extract Text'), onClick:()=>{
         const text =target.textContent?.trim() || '';
         copyToClipboard(text,x, y, port);
@@ -120,13 +121,15 @@ const App = ({mode, port, roots, deactivate}:{mode:InspectionMode, port:chrome.r
         setItems(createMenuItems(parent, {x, y}));
         setMenuHeader(tagToText(parent));
         setHighlightTargets([parent]);
-      }, onHover: (e:MouseEvent)=>{
+      }, onHover: ()=>{
         const parent = target.parentElement;
         if (!parent || parent.tagName === 'BODY') {
           setHighlightTargets([]);
           return;
         }
         setHighlightTargets([parent]);
+      }, onMouseLeave: ()=>{
+        setHighlightTargets([target]);
       }},
       {key:'📂 ' + tl('Select Children') + ` (${target.children.length?? "No Children"})`, onClick:(e)=>{
         e.stopPropagation();
@@ -136,7 +139,7 @@ const App = ({mode, port, roots, deactivate}:{mode:InspectionMode, port:chrome.r
         setItems([
           {key: '⬅',onClick: ()=>{
           setItems(createMenuItems(target, {x:rect.top,y:rect.top}));
-          }, onHover: (e:MouseEvent)=>{
+          }, onHover: ()=>{
             setHighlightTargets([target]);
           }},
           ...Array.from(children, (child) => ({
@@ -147,11 +150,15 @@ const App = ({mode, port, roots, deactivate}:{mode:InspectionMode, port:chrome.r
               const rect = child.getBoundingClientRect();
               setItems(createMenuItems(child, {x: rect.x,y:rect.y}));
               setHighlightTargets([child]);
-        }, onHover: (e:MouseEvent)=>{
+        }, onHover: ()=>{
           setHighlightTargets([child]);
+        }, onMouseLeave: ()=>{
+          setHighlightTargets([target]);
         }}))]);
-      }, onHover: (e:MouseEvent)=>{
+      }, onHover: ()=>{
         setHighlightTargets(Array.from(target.children) as HTMLElement[]);
+      }, onMouseLeave: ()=>{
+        setHighlightTargets([target]);
       }}
     ]
   };
@@ -165,14 +172,14 @@ const App = ({mode, port, roots, deactivate}:{mode:InspectionMode, port:chrome.r
     if (!(target instanceof HTMLElement && isValidElement(target))) return;
     if (mode== INSPECTION_MODE.TAG_EXTRACTION || mode=== INSPECTION_MODE.FIELD_EXTRACTION) {
       showMenu(
-        createMenuItems(target,{x: rect.left, y: rect.top},),
-          rect.left, rect.top,
+        createMenuItems(target,{x: e.clientX, y: e.clientY},),
+          e.clientX, e.clientY,
         tagToText(target));
     } else {
       copyToClipboard((target.textContent ?? "").trim(), rect.left, rect.top, port);
     }
   };
-  // TODO : prevent css conflict with website, use css module or shadow dom
+
   return <>
     {state === INSPECTION_STATE.HIGHLIGHT && <MouseHighlight onClick={onHighlightClicked}/>}
     {state === INSPECTION_STATE.MENU &&
@@ -181,7 +188,8 @@ const App = ({mode, port, roots, deactivate}:{mode:InspectionMode, port:chrome.r
       header={menuHeader}
       deClick={()=>{
         setState(INSPECTION_STATE.HIGHLIGHT);
-      }} pos={{x,y}}/>,document.body) : <></>)}
+      }} 
+      pos={{x,y}}/>,document.body) : <></>)}
     {state === INSPECTION_STATE.TOOLTIP &&<Tooltip text={text} pos={{x,y}}/>}
     {roots.map((root, idx)=> <SelectorHighlight key={idx} target={root} mode={"ROOTS"}/>)}
     {highlightTargets.map((target, idx)=> <SelectorHighlight key={idx} target={target}/>)}

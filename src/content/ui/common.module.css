@@ -3,33 +3,38 @@
   position: absolute;
   pointer-events: none;
   z-index: 999999;
-  background-color: rgba(173, 216, 230, 0.5);
-  border: 2px solid var(--color-hyperlink);
+  /* inline styled to force style vs web page. */
+  /* background-color: rgba(173, 216, 230, 0.5) !important;
+  border: 2px solid var(--color-hyperlink) !important; */ 
   box-sizing: border-box;
 }
 .selectorHighlight {
   position: absolute;
   pointer-events: none;
   z-index: 999999;
-  border: 2px solid var(--color-on);
+  /* inline styled to force style vs web page. */
+  /* border: 2px solid var(--color-on) !important;
+  border-color: var(--color-on) !important; */
   box-sizing: border-box;
 }
 .rootTagHighlight {
   position: absolute;
   pointer-events: none;
   z-index: 999999;
-  border: 2px solid var(--color-danger);
+  /* inline styled to force style vs web page. */
+  /* border: 2px solid var(--color-danger) !important;
+  border-color: var(--color-danger) !important; */
   box-sizing: border-box;
 }
 .extension-tooltip{
   position: fixed;
   z-index: 1000000;
   padding: 5px 10px;
-  background-color: var(--color-light);
-  color: var(--color-primary);
-  border-radius: 4px;
+  background-color: var(--color-light) !important;
+  color: var(--color-primary) !important;
+  border-radius: 4px !important;
   pointer-events: none;
-  font-size: 1em;
+  font-size: 1em !important;
   max-width: 300px;
   white-space: nowrap;
   overflow: hidden;
@@ -39,7 +44,7 @@
 .menu {
   position: fixed;
   z-index: 1000001;
-  background-color: var(--color-light);
+  background-color: var(--color-light) !important;
   border: 1px solid var(--color-secondary);
   border-radius: 6px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
@@ -49,19 +54,19 @@
   max-width: 300px;
   max-height: 500px;
   padding: 5px;
-  font-family: sans-serif;
-  font-size: 1em;
-  color: var(--color-primary);
+  font-family: sans-serif !important;
+  font-size: 1em !important;
+  color: var(--color-primary) !important;
   overflow-x: hidden;
   overflow-y: auto;
 }
 
 .header {
-  font-weight: bold;
-  font-size: 1.2em;
+  font-weight: bold !important;
+  font-size: 1.2em !important;
   padding: 8px 12px;
-  color: var(--color-primary);
-  border-bottom: 1px solid var(--color-primary);
+  color: var(--color-primary ) !important;
+  border-bottom: 1px solid var(--color-primary) !important;
   margin-bottom: 5px;
 }
 .menu button {
@@ -72,10 +77,11 @@
   background: transparent;
   text-align: left;
   cursor: pointer;
-  color: var(--color-secondary);
-  border-bottom: 1px solid var(--color-primary);
-  font-size: 1em;
+  color: var(--color-secondary) !important;
+  border-bottom: 1px solid var(--color-primary) !important;
+  border-color: var(--color-primary) !important;
+  font-size: 1em !important;
 }
 .menu button:hover {
-  background: var(--color-light);
+  background: var(--color-light) !important;
 }

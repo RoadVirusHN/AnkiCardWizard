@@ -33,10 +33,14 @@ const MouseHighlight = ({onClick}: {onClick:(e:MouseEvent)=>void}) => {
       document.removeEventListener('click', onClick, true);
     }
   },[]);
-  return <div 
+  return <div
     className={commonStyles.highlight} 
     style={
       {top: rect.top, left: rect.left, width: rect.width, height: rect.height, 
-      display: isDisplay ? 'block' : 'none'}}/>;
+      display: isDisplay ? 'block' : 'none',
+      /* inline styled to force !important style vs web page css. */
+      backgroundColor: 'rgba(173, 216, 230, 0.5) !important',
+      border: '2px solid var(--color-hyperlink) !important'
+    }}/>;
 };
 export default MouseHighlight;
