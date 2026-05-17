@@ -82,6 +82,39 @@
   border-color: var(--color-primary) !important;
   font-size: 1em !important;
 }
+
 .menu button:hover {
   background: var(--color-light) !important;
+}
+
+.my-confirm {
+  display: flex;
+  flex-direction: column;  
+  
+  position: fixed;
+  left: 50%;
+  bottom: 50%;
+  transform: translate(-50%, 50%);
+
+  z-index: 1000000;
+  padding: 5px 10px;
+  
+  background-color: var(--color-light) !important;
+  color: var(--color-primary) !important;
+  border-radius: 4px !important;
+  
+  pointer-events: none;
+  max-width: 500px;
+
+  font-size: 1em !important;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  
+  overflow: hidden;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.my-confirm .buttons{
+  display: flex;
+  justify-content: space-between;
 }
